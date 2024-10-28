@@ -180,58 +180,11 @@ h3 {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-body {
-  font-family: 'Roboto', sans-serif;
-  line-height: 1.6;
-  color: #333;
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 20px;
-}
-
-.container {
-  background-color: white;
-  padding: 30px;
-  border-radius: 10px;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-}
-
-h1,
-h2,
-h3 {
-  color: #0f3a68;
-}
-
-.tab-buttons {
-  display: flex;
-}
-
-.tab-button {
-  background-color: #0f3a68;
-  color: white;
-}
-
-.tab-button.active {
-  background-color: #4CAF50;
-}
-
-.score-distribution-container {
-  display: flex;
-}
-
-.chart-wrapper {
-  flex: 2;
-}
-
-.stats-wrapper {
-  flex: 1;
-}
-
 .evaluator-table tbody tr {
-    transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease;
 }
 
 .evaluator-table tbody tr:hover {
-    background-color: #f0f4f8;
-    cursor: pointer;
+  background-color: #f0f4f8;
+  cursor: pointer;
 }
