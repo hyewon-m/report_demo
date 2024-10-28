@@ -73,7 +73,7 @@
                     <div class="evaluator-filter">
                         <h4>평가자 필터링</h4>
                         <div class="filter-group">
-                            <button class="toggle-btn" onclick="toggleFilter('status-filter')">상태</button>
+                            <button class="toggle-btn" onclick="toggleFilter('status-filter')">Status</button>
                             <div id="status-filter" class="filter-content" style="display: none;">
                                 <select>
                                     <option value="all">전체</option>
@@ -83,7 +83,7 @@
                             </div>
                         </div>
                         <div class="filter-group">
-                            <button class="toggle-btn" onclick="toggleFilter('score-filter')">점수</button>
+                            <button class="toggle-btn" onclick="toggleFilter('score-filter')">Score</button>
                             <div id="score-filter" class="filter-content" style="display: none;">
                                 <input type="number" min="0" max="100" placeholder="최소 점수">
                                 <span>~</span>
@@ -91,12 +91,12 @@
                             </div>
                         </div>
                         <div class="filter-group">
-                            <button class="toggle-btn" onclick="toggleFilter('submission-filter')">제출 유무</button>
+                            <button class="toggle-btn" onclick="toggleFilter('submission-filter')">Competency</button>
                             <div id="submission-filter" class="filter-content" style="display: none;">
                                 <select>
                                     <option value="all">전체</option>
-                                    <option value="submitted">제출</option>
-                                    <option value="not-submitted">미제출</option>
+                                    <option value="submitted">DS</option>
+                                    <option value="not-submitted">SQL</option>
                                 </select>
                             </div>
                         </div>
@@ -106,29 +106,33 @@
                             <thead>
                                 <tr>
                                     <th>이름</th>
+                                    <th>DS</th>
                                     <th>상태</th>
-                                    <th>점수</th>
-                                    <th>제출</th>
+                                    <th>SQL</th>
+                                    <th>상태</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr onclick="goToEvaluatorPage('평가자1')">
                                     <td>평가자 1</td>
+                                    <td>85</td>
+                                    <th>합격</th>
+                                    <td>70</td>
                                     <td>합격</td>
-                                    <td>3</td>
-                                    <td>미제출</td>
                                 </tr>
                                 <tr onclick="goToEvaluatorPage('평가자2')">
                                     <td>평가자 2</td>
+                                    <td>0</td>
                                     <td>불합격</td>
-                                    <td>4</td>
-                                    <td>제출</td>
+                                    <td>0</td>
+                                    <td>불합격</td>
                                 </tr>
                                 <tr onclick="goToEvaluatorPage('평가자3')">
                                     <td>평가자 3</td>
-                                    <td>불합격</td>
+                                    <td>70</td>
+                                    <td>합격</td>
                                     <td>21</td>
-                                    <td>제출</td>
+                                    <td>불합격</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -136,22 +140,6 @@
                 </div>
             </div>
         </div>
-
-        <div id="test" class="tab">
-            <h2>테스트 정보</h2>
-            <ul>
-                <li>점수 분포</li>
-                <li>채점 결과
-                    <ul>
-                        <li>코드</li>
-                        <li>부분 점수 채점 결과(TC)</li>
-                    </ul>
-                </li>
-                <li>타임라인</li>
-                <li>CM</li>
-            </ul>
-        </div>
-    </div>
 
     <script src="script.js"></script>
 </body>
