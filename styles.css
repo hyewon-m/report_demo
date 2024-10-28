@@ -226,3 +226,12 @@ h3 {
 .stats-wrapper {
   flex: 1;
 }
+
+.evaluator-table tbody tr {
+    transition: background-color 0.3s ease;
+}
+
+.evaluator-table tbody tr:hover {
+    background-color: #f0f4f8;
+    cursor: pointer;
+}
