@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>평가 결과</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>평가 결과</h1>
+
+        <div class="tab-buttons">
+            <button class="tab-button" onclick="goToPage('index.html')">Overview</button>
+            <button class="tab-button active" onclick="showTab('evaluation')">Test Detail</button>
+            <!-- <button class="tab-button" onclick="goToPage('index.html#test')">테스트 정보</button> -->
+        </div>
+
+        <div id="evaluation" class="tab active">
+            <div class="tab-buttons">
+                <button class="tab-button active" onclick="showTab('ds')">DS</button>
+                <button class="tab-button" onclick="showTab('sql')">SQL</button>
+            </div>
+
+            <div id="ds" class="tab active">
+                <h2>DS 평가 결과</h2>
+
+                <div class="score-distribution-container">
+                    <div class="chart-wrapper">
+                        <h3>점수 분포</h3>
+                        <canvas id="dsScoreDistributionChart"></canvas>
+                    </div>
+                    <div class="stats-wrapper">
+                        <h3>평가 통계</h3>
+                        <div class="stats-container">
+                            <div class="stat-item">
+                                <span class="stat-label">평균:</span>
+                                <span class="stat-value" id="dsAverage"></span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">최고점수:</span>
+                                <span class="stat-value" id="dsMax"></span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">최저점수:</span>
+                                <span class="stat-value" id="dsMin"></span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">중간값:</span>
+                                <span class="stat-value" id="dsMedian"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <h3>문제별 정답자 수</h3>
+                <div class="chart-container">
+                    <canvas id="dsCorrectAnswersChart"></canvas>
+                </div>
+            </div>
+
+            <div id="sql" class="tab">
+                <h2>SQL 평가 결과</h2>
+                
+                <div class="score-distribution-container">
+                    <div class="chart-wrapper">
+                        <h3>점수 분포</h3>
+                        <canvas id="sqlScoreDistributionChart"></canvas>
+                    </div>
+                    <div class="stats-wrapper">
+                        <h3>평가 통계</h3>
+                        <div class="stats-container">
+                            <div class="stat-item">
+                                <span class="stat-label">평균:</span>
+                                <span class="stat-value" id="sqlAverage"></span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">최고점수:</span>
+                                <span class="stat-value" id="sqlMax"></span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">최저점수:</span>
+                                <span class="stat-value" id="sqlMin"></span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">중간값:</span>
+                                <span class="stat-value" id="sqlMedian"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <h3>문제별 정답자 수</h3>
+                <div class="chart-container">
+                    <canvas id="sqlCorrectAnswersChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            showTab('evaluation');
+            showTab('ds');
+            loadData();
+        });
+    </script>
+</body>
+</html>

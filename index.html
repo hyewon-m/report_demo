@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Codepresso Styled Webpage</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>평가 결과</h1>
+
+        <div class="tab-buttons">
+            <button class="tab-button active" onclick="showTab('overview')">Overview</button>
+            <button class="tab-button" onclick="goToPage('test-result.html')">Test Detail</button>
+            <!-- <button class="tab-button" onclick="showTab('test')">테스트 정보</button> -->
+        </div>
+
+        <div id="overview" class="tab active">
+            <!-- Overview 내용 -->
+            <h2>Overview</h2>
+            
+            <div class="exam-info">
+                <h3>시험 정보</h3>
+                <ul>
+                    <li><strong>시험명:</strong> CJ</li>
+                    <li><strong>시행일자:</strong> 2024년 10월 11일</li>
+                    <li><strong>응시인원:</strong> 35명</li>
+                </ul>
+            </div>
+            
+            <div class="evaluation-info">
+                <h3>평가 결과</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Competency</th>
+                            <th>Difficulty</th>
+                            <th>Tags</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>DS</td>
+                            <td>Level1</td>
+                            <td>
+                                <span class="tag">Preprocessing</span>
+                                <span class="tag">Feature scaling</span>
+                                <span class="tag">Visualization</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>SQL</td>
+                            <td>Level2</td>
+                            <td>
+                                <span class="tag">Data Retrieval</span>
+                                <span class="tag">Data Filtering</span>
+                                <span class="tag">Data Joining</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+              
+            <div class="evaluator-overview">
+                <h3>평가자 overview</h3>
+                <div class="evaluator-container">
+                    <div class="evaluator-filter">
+                        <h4>평가자 필터링</h4>
+                        <div class="filter-group">
+                            <button class="toggle-btn" onclick="toggleFilter('status-filter')">상태</button>
+                            <div id="status-filter" class="filter-content" style="display: none;">
+                                <select>
+                                    <option value="all">전체</option>
+                                    <option value="pass">합격</option>
+                                    <option value="fail">불합격</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="filter-group">
+                            <button class="toggle-btn" onclick="toggleFilter('score-filter')">점수</button>
+                            <div id="score-filter" class="filter-content" style="display: none;">
+                                <input type="number" min="0" max="100" placeholder="최소 점수">
+                                <span>~</span>
+                                <input type="number" min="0" max="100" placeholder="최대 점수">
+                            </div>
+                        </div>
+                        <div class="filter-group">
+                            <button class="toggle-btn" onclick="toggleFilter('submission-filter')">제출 유무</button>
+                            <div id="submission-filter" class="filter-content" style="display: none;">
+                                <select>
+                                    <option value="all">전체</option>
+                                    <option value="submitted">제출</option>
+                                    <option value="not-submitted">미제출</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="evaluator-table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>이름</th>
+                                    <th>상태</th>
+                                    <th>점수</th>
+                                    <th>제출</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr onclick="goToEvaluatorPage('평가자1')">
+                                    <td>평가자 1</td>
+                                    <td>합격</td>
+                                    <td>3</td>
+                                    <td>미제출</td>
+                                </tr>
+                                <tr onclick="goToEvaluatorPage('평가자2')">
+                                    <td>평가자 2</td>
+                                    <td>불합격</td>
+                                    <td>4</td>
+                                    <td>제출</td>
+                                </tr>
+                                <tr onclick="goToEvaluatorPage('평가자3')">
+                                    <td>평가자 3</td>
+                                    <td>불합격</td>
+                                    <td>21</td>
+                                    <td>제출</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="test" class="tab">
+            <h2>테스트 정보</h2>
+            <ul>
+                <li>점수 분포</li>
+                <li>채점 결과
+                    <ul>
+                        <li>코드</li>
+                        <li>부분 점수 채점 결과(TC)</li>
+                    </ul>
+                </li>
+                <li>타임라인</li>
+                <li>CM</li>
+            </ul>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
