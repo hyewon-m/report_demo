@@ -5,6 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>평가자 상세 정보</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation"></script>
@@ -114,6 +115,10 @@
       color: white;
       font-weight: bold;
     }
+  
+    .score-progress.low-score {
+      background-color: #FF4136; 
+    }
 
     .time-info {
       margin-top: 30px;
@@ -141,6 +146,83 @@
       margin-top: 20px;
       height: 300px;
     }
+
+    .sub-tab-container {
+      display: flex;
+      justify-content: center;
+      margin-top: 20px;
+      margin-bottom: 20px;
+    }
+
+    .sub-tab-button {
+      background-color: #0f3a68;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      margin: 0 5px;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+
+    .sub-tab-button.active {
+      background-color: #4CAF50;
+    }
+
+    .sub-tab-content {
+      display: none;
+    }
+
+    .sub-tab-content.active {
+      display: block;
+    }
+
+    #suspiciousActivitiesList {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    #suspiciousActivitiesList li {
+      background-color: #f0f0f0;
+      margin-bottom: 10px;
+      padding: 10px;
+      border-radius: 5px;
+    }
+
+    #suspiciousActivitiesTable,
+    #sqlSuspiciousActivitiesTable {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    #suspiciousActivitiesTable th,
+    #suspiciousActivitiesTable td,
+    #sqlSuspiciousActivitiesTable th,
+    #sqlSuspiciousActivitiesTable td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: left;
+    }
+
+    #suspiciousActivitiesTable th,
+    #sqlSuspiciousActivitiesTable th {
+      background-color: #f2f2f2;
+      font-weight: bold;
+    }
+
+    #suspiciousActivitiesTable tr:nth-child(even),
+    #sqlSuspiciousActivitiesTable tr:nth-child(even) {
+      background-color: #f9f9f9;
+    }
+
+    #suspiciousActivitiesTable tr:hover,
+    #sqlSuspiciousActivitiesTable tr:hover {
+      background-color: #f5f5f5;
+    }
+
+    .scrollable-table {
+      max-height: 300px;
+      overflow-y: auto;
+    }
   </style>
 </head>
 
@@ -154,14 +236,10 @@
     </div>
 
     <div id="ds" class="tab-content active">
-      <h2>DS 점수 분포 및 평가자 위치</h2>
-      <div class="chart-container">
-        <canvas id="dsScoreDistributionChart"></canvas>
-      </div>
       <h2>DS Level 1 Result</h2>
       <div class="score-summary">
         <div class="total-score">
-          <h3>Conpetency Score</h3>
+          <h3>Competency Score</h3>
           <div class="score-circle">
             <span class="score-value">85</span>
             <span class="score-max">/100</span>
@@ -189,6 +267,12 @@
           </div>
         </div>
       </div>
+
+      <h2>DS 점수 분포 및 평가자 위치</h2>
+      <div class="chart-container">
+        <canvas id="dsScoreDistributionChart"></canvas>
+      </div>
+
       <div class="time-info">
         <h3>소요 시간</h3>
         <div class="time-bar">
@@ -196,8 +280,35 @@
             <span class="time-text">110분 / 120분</span>
           </div>
         </div>
+
+        <div class="sub-tab-container">
+          <button class="sub-tab-button active" onclick="openSubTab('chartTab', 'ds')">Chart</button>
+          <button class="sub-tab-button" onclick="openSubTab('listTab', 'ds')">List</button>
+          
+        </div>
+        <div id="chartTab" class="sub-tab-content active">
+          <h4>타임라인 그래프</h4>
+          <canvas id="ganttChart"></canvas>
+        </div>
+
+        <div id="listTab" class="sub-tab-content">
+          <h4>부정행위 상세</h4>
+          <table id="suspiciousActivitiesTable">
+            <thead>
+              <tr>
+                <th>시간</th>
+                <th>문제 번호</th>
+                <th>활동 유형</th>
+                <th>영상 확인</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Table body will be populated by JavaScript -->
+            </tbody>
+          </table>
+        </div>
       </div>
-      <canvas id="ganttChart"></canvas>
+
       <h2>DS Competency comment</h2>
       <p id="dsCompetencyDescription"></p>
 
@@ -206,14 +317,10 @@
     </div>
 
     <div id="sql" class="tab-content">
-      <h2>SQL 점수 분포 및 평가자 위치</h2>
-      <div class="chart-container">
-        <canvas id="sqlScoreDistributionChart"></canvas>
-      </div>
       <h2>SQL Level 2 Result</h2>
       <div class="score-summary">
         <div class="total-score">
-          <h3>Conpetency Score</h3>
+          <h3>Competency Score</h3>
           <div class="score-circle">
             <span class="score-value">70</span>
             <span class="score-max">/100</span>
@@ -241,6 +348,11 @@
           </div>
         </div>
       </div>
+
+      <h2>SQL 점수 분포 및 평가자 위치</h2>
+      <div class="chart-container">
+        <canvas id="sqlScoreDistributionChart"></canvas>
+      </div>
       <div class="time-info">
         <h3>소요 시간</h3>
         <div class="time-bar">
@@ -248,7 +360,37 @@
             <span class="time-text">100분 / 120분</span>
           </div>
         </div>
+
+        <div class="sub-tab-container">
+          <button class="sub-tab-button active" onclick="openSubTab('sqlChartTab', 'sql')">Chart</button>
+          <button class="sub-tab-button" onclick="openSubTab('sqlListTab', 'sql')">List</button>
+          
+        </div>
+        <div id="sqlChartTab" class="sub-tab-content active">
+          <h4>타임라인 그래프</h4>
+          <canvas id="sqlGanttChart"></canvas>
+        </div>
+        
+        <div id="sqlListTab" class="sub-tab-content">
+          <h4>부정행위 상세</h4>
+          <div class="scrollable-table">
+            <table id="sqlSuspiciousActivitiesTable">
+              <thead>
+                <tr>
+                  <th>시간</th>
+                  <th>문제 번호</th>
+                  <th>활동 유형</th>
+                  <th>영상 확인</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- 테이블 내용은 JavaScript로 채워집니다 -->
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
+      
       <h2>SQL Competency comment</h2>
       <p id="sqlCompetencyDescription"></p>
 
@@ -258,6 +400,18 @@
   </div>
 
   <script>
+    function updateScoreProgressColors() {
+      const scoreProgressBars = document.querySelectorAll('.score-progress');
+      scoreProgressBars.forEach(bar => {
+        const width = parseFloat(bar.style.width);
+        if (width < 70) {
+          bar.classList.add('low-score');
+        } else {
+          bar.classList.remove('low-score');
+        }
+      });
+    }
+
     function openTab(tabName) {
       var tabContents = document.getElementsByClassName("tab-content");
       var tabButtons = document.getElementsByClassName("tab-button");
@@ -271,7 +425,37 @@
       event.currentTarget.classList.add("active");
 
       runAnimations(tabName);
+      setTimeout(updateScoreProgressColors, 100);
     }
+
+    function openSubTab(tabName, parentTabId) {
+  // 부모 탭 내의 모든 서브 탭 컨텐츠와 버튼을 찾습니다
+  var parentTab = document.getElementById(parentTabId);
+  var tabContents = parentTab.getElementsByClassName("sub-tab-content");
+  var tabButtons = parentTab.getElementsByClassName("sub-tab-button");
+
+  // 모든 서브 탭 컨텐츠를 숨기고 버튼의 active 클래스를 제거합니다
+  for (var i = 0; i < tabContents.length; i++) {
+    tabContents[i].style.display = "none";
+    tabButtons[i].classList.remove("active");
+  }
+
+  // 선택된 서브 탭 컨텐츠를 보이게 하고 해당 버튼을 활성화합니다
+  document.getElementById(tabName).style.display = "block";
+  event.currentTarget.classList.add("active");
+}
+
+// 페이지 로드 시 초기 상태 설정
+document.addEventListener('DOMContentLoaded', function() {
+  // DS 탭의 초기 서브 탭 설정
+  document.getElementById('chartTab').style.display = "block";
+  document.querySelector('#ds .sub-tab-button').classList.add("active");
+
+  // SQL 탭의 초기 서브 탭 설정
+  document.getElementById('sqlChartTab').style.display = "block";
+  document.querySelector('#sql .sub-tab-button').classList.add("active");
+});
+
 
     function runAnimations(tabName) {
       document.querySelectorAll('.time-progress').forEach(el => {
@@ -286,6 +470,7 @@
         }
       }, 100);
     }
+
 
     function createScoreDistributionChart(canvasId, label, data, score) {
       const ctx = document.getElementById(canvasId).getContext('2d');
@@ -312,7 +497,7 @@
             backgroundColor: 'rgba(255, 99, 132, 1)',
             borderWidth: 2,
             pointRadius: 7,
-            pointStyle: 'triangle'
+            pointStyle: 'dot'
           }]
         },
         options: {
@@ -346,36 +531,35 @@
 
     function getCompetencyDescription(score, field) {
       if (field === 'DS') {
-        if (score >= 80) return "데이터 사이언스 분야에서 뛰어난 역량을 보여주고 있습니다. 고급 기술을 적용할 수 있는 수준입니다.";
-        else if (score >= 60) return "데이터 사이언스의 기본 개념을 잘 이해하고 있으며, 실무에 적용할 수 있는 수준입니다.";
-        else return "데이터 사이언스의 기초 개념을 이해하고 있지만, 더 많은 학습과 실습이 필요합니다.";
+        if (score >= 80) return "데이터 사이언스 분야에서 뛰어난 역량을 보여주고 있습니다.데이터 전처리, 특성 스케일링, 시각화 등의 핵심 기술을 능숙하게 다룰 수 있습니다. 복잡한 데이터셋을 효과적으로 분석하고 인사이트를 도출할 수 있는 능력을 갖추고 있습니다.";
+        else if (score >= 60) return "데이터 사이언스의 기본 개념을 잘 이해하고 있으며, 실무에 적용할 수 있는 수준입니다. 기본적인 데이터 분석과 모델링 작업을 수행할 수 있지만, 더 복잡한 문제에 대해서는 추가적인 학습이 필요할 수 있습니다.";
+        else return "데이터 사이언스의 기초 개념을 이해하고 있지만, 더 많은 학습과 실습이 필요합니다. 기본적인 데이터 처리와 분석은 가능하지만, 고급 기술의 적용에는 어려움이 있을 수 있습니다.";
       } else if (field === 'SQL') {
-        if (score >= 80) return "SQL을 능숙하게 다루며, 복잡한 쿼리를 작성하고 최적화할 수 있는 수준입니다.";
-        else if (score >= 60) return "SQL의 기본 문법을 이해하고 일반적인 데이터베이스 작업을 수행할 수 있는 수준입니다.";
-        else return "SQL의 기초를 이해하고 있지만, 더 복잡한 쿼리 작성 능력을 향상시킬 필요가 있습니다.";
+        if (score >= 80) return "SQL을 능숙하게 다루며, 복잡한 쿼리를 작성하고 최적화할 수 있는 수준입니다. 대규모 데이터베이스에서 효율적으로 데이터를 추출하고 조작할 수 있는 고급 기술을 보유하고 있습니다.";
+        else if (score >= 60) return "SQL의 기본 문법을 이해하고 일반적인 데이터베이스 작업을 수행할 수 있는 수준입니다. 간단한 쿼리부터 중간 수준의 복잡한 쿼리까지 작성할 수 있지만, 더 복잡한 최적화 기법에 대해서는 추가 학습이 필요할 수 있습니다.";
+        else return "SQL의 기초를 이해하고 있지만, 더 복잡한 쿼리 작성 능력을 향상시킬 필요가 있습니다. 기본적인 SELECT, INSERT, UPDATE, DELETE 문은 사용할 수 있지만, 조인이나 서브쿼리 등의 고급 기능 사용에는 어려움이 있을 수 있습니다.";
       }
     }
-
     function getCompetencyComments(scores, field) {
       const comments = [];
       if (field === 'DS') {
-        if (scores.preprocessing >= 30) comments.push("데이터 전처리 능력이 우수합니다.");
-        else comments.push("데이터 전처리 기술을 더 향상시킬 필요가 있습니다.");
+        if (scores.preprocessing >= 30) comments.push("데이터 전처리 능력이 우수합니다. 다양한 데이터 유형에 대한 효과적인 정제 및 변환 기술을 보유하고 있습니다.");
+        else comments.push("데이터 전처리 기술을 더 향상시킬 필요가 있습니다. 결측치 처리, 이상치 탐지, 데이터 정규화 등의 기법에 대한 추가 학습이 도움이 될 것입니다.");
 
-        if (scores.featureScaling >= 28) comments.push("특성 스케일링을 효과적으로 수행할 수 있습니다.");
-        else comments.push("특성 스케일링 기법에 대한 추가 학습이 필요합니다.");
+        if (scores.featureScaling >= 28) comments.push("특성 스케일링을 효과적으로 수행할 수 있습니다. 다양한 스케일링 기법을 상황에 맞게 적용할 수 있는 능력이 돋보입니다.");
+        else comments.push("특성 스케일링 기법에 대한 추가 학습이 필요합니다. 정규화, 표준화 등 다양한 스케일링 방법의 특성과 적용 시기에 대한 이해를 깊게 할 필요가 있습니다.");
 
-        if (scores.visualization >= 27) comments.push("데이터 시각화 능력이 뛰어납니다.");
-        else comments.push("데이터 시각화 기술을 더 발전시킬 필요가 있습니다.");
+        if (scores.visualization >= 27) comments.push("데이터 시각화 능력이 뛰어납니다. 복잡한 데이터를 효과적으로 표현하고 인사이트를 도출할 수 있는 시각화 기술을 보유하고 있습니다.");
+        else comments.push("데이터 시각화 기술을 더 발전시킬 필요가 있습니다. 다양한 차트 유형과 시각화 라이브러리 사용법에 대한 추가 학습이 도움이 될 것입니다.");
       } else if (field === 'SQL') {
-        if (scores.dataRetrieval >= 25) comments.push("데이터 검색 능력이 우수합니다.");
-        else comments.push("데이터 검색 쿼리 작성 능력을 향상시킬 필요가 있습니다.");
+        if (scores.dataRetrieval >= 25) comments.push("데이터 검색 능력이 우수합니다. 복잡한 조건을 가진 쿼리를 효율적으로 작성할 수 있습니다.");
+        else comments.push("데이터 검색 쿼리 작성 능력을 향상시킬 필요가 있습니다. WHERE 절의 다양한 조건 사용과 서브쿼리 활용 등에 대한 추가 학습이 도움이 될 것입니다.");
 
-        if (scores.dataFiltering >= 28) comments.push("데이터 필터링을 효과적으로 수행할 수 있습니다.");
-        else comments.push("데이터 필터링 기법에 대한 추가 학습이 필요합니다.");
+        if (scores.dataFiltering >= 28) comments.push("데이터 필터링을 효과적으로 수행할 수 있습니다. 복잡한 조건을 사용한 데이터 필터링 능력이 뛰어납니다.");
+        else comments.push("데이터 필터링 기법에 대한 추가 학습이 필요합니다. 고급 WHERE 절 사용법과 HAVING 절 활용 등에 대한 이해를 깊게 할 필요가 있습니다.");
 
-        if (scores.dataJoining >= 25) comments.push("데이터 조인 능력이 뛰어납니다.");
-        else comments.push("데이터 조인 기술을 더 발전시킬 필요가 있습니다.");
+        if (scores.dataJoining >= 25) comments.push("데이터 조인 능력이 뛰어납니다. 다양한 조인 유형을 상황에 맞게 적절히 사용할 수 있습니다.");
+        else comments.push("데이터 조인 기술을 더 발전시킬 필요가 있습니다. INNER JOIN, OUTER JOIN, CROSS JOIN 등 다양한 조인 유형과 그 활용에 대한 추가 학습이 도움이 될 것입니다.");
       }
       return comments;
     }
@@ -406,15 +590,72 @@
 
       updateCompetencyInfo();
       runAnimations('ds');
+      updateScoreProgressColors();
     });
 
-    document.addEventListener('DOMContentLoaded', function () {
-      const urlParams = new URLSearchParams(window.location.search);
-      const evaluatorName = urlParams.get('name');
-      document.getElementById('evaluatorName').textContent = evaluatorName;
+    function createGanttChart(canvasId, data) {
+      const ctx = document.getElementById(canvasId).getContext('2d');
+      new Chart(ctx, {
+        type: 'bar',
+        data: data,
+        options: {
+          indexAxis: 'y',
+          scales: {
+            x: {
+              type: 'linear',
+              position: 'top',
+              title: {
+                display: true,
+                text: '시간 (분)'
+              }
+            },
+            y: {
+              title: {
+                display: true,
+                text: '문제'
+              }
+            }
+          },
+          plugins: {
+            legend: {
+              display: true,
+              position: 'bottom'
+            },
+            tooltip: {
+              callbacks: {
+                title: function(context) {
+                  return context[0].dataset.label;
+                },
+                label: function(context) {
+                  const start = context.raw.x[0];
+                  const end = context.raw.x[1];
+                  return `${context.label}: ${start}분 - ${end}분`;
+                }
+              }
+            }
+          }
+        }
+      });
+    }
 
-    });
-    const ganttData = {
+    function populateSuspiciousActivitiesTable(tableId, activities) {
+      const tableBody = document.querySelector(`#${tableId} tbody`);
+      activities.forEach(activity => {
+        const row = tableBody.insertRow();
+        row.insertCell(0).textContent = activity.time;
+        row.insertCell(1).textContent = activity.problem;
+        row.insertCell(2).textContent = activity.type;
+        const detailCell = row.insertCell(3);
+        if (activity.detail === '동영상 재생버튼') {
+          detailCell.innerHTML = '<i class="fas fa-play-circle"></i> ';
+        } else {
+          detailCell.textContent = activity.detail;
+        }
+      });
+    }
+
+    // DS 간트 차트 데이터
+    const dsGanttData = {
       labels: ['문제 1', '문제 2', '문제 3', '문제 4'],
       datasets: [
         {
@@ -448,37 +689,70 @@
       ]
     };
 
-    // 간트차트 설정
-    const ganttConfig = {
-      type: 'bar',
-      data: ganttData,
-      options: {
-        indexAxis: 'y',
-        scales: {
-          x: {
-            type: 'linear',
-            position: 'top'
-          },
-          y: {
-            title: {
-              display: true,
-              text: '문제'
-            }
-          }
+    // SQL 간트 차트 데이터
+    const sqlGanttData = {
+      labels: ['문제 1', '문제 2', '문제 3', '문제 4'],
+      datasets: [
+        {
+          label: '문제 풀이',
+          data: [
+            { x: [0, 20], y: '문제 1' },
+            { x: [25, 50], y: '문제 2' },
+            { x: [55, 75], y: '문제 3' },
+            { x: [80, 100], y: '문제 4' }
+          ],
+          backgroundColor: 'rgba(75, 192, 192, 0.6)'
         },
-        plugins: {
-          legend: {
-            display: true,
-            position: 'bottom'
-          }
+        {
+          label: '탭 전환',
+          data: [
+            { x: [10, 12], y: '문제 1' },
+            { x: [35, 37], y: '문제 2' },
+            { x: [65, 67], y: '문제 3' }
+          ],
+          backgroundColor: 'rgba(255, 99, 132, 0.6)'
+        },
+        {
+          label: '복사 붙여넣기',
+          data: [
+            { x: [5, 6], y: '문제 1' },
+            { x: [40, 42], y: '문제 2' },
+            { x: [70, 72], y: '문제 3' }
+          ],
+          backgroundColor: '#e4ec9a'
         }
-      }
+      ]
     };
 
-    // 간트차트 생성
-    const ganttCtx = document.getElementById('ganttChart').getContext('2d');
-    new Chart(ganttCtx, ganttConfig);
+    // DS 부정행위 데이터
+    const dsSuspiciousActivities = [
+      { time: '00:15:00', problem: '1번문제', type: '탭 전환', detail: '동영상 재생버튼' },
+      { time: '00:05:00', problem: '1번문제', type: '복사 붙여넣기', detail: '동영상 재생버튼' },
+      { time: '00:45:00', problem: '2번문제', type: '탭 전환', detail: '동영상 재생버튼' },
+      { time: '00:50:00', problem: '2번문제', type: '복사 붙여넣기', detail: '동영상 재생버튼' },
+      { time: '01:20:00', problem: '3번문제', type: '탭 전환', detail: '동영상 재생버튼' },
+      { time: '01:07:00', problem: '3번문제', type: '복사 붙여넣기', detail: '동영상 재생버튼' }
+    ];
+
+    // SQL 부정행위 데이터
+    const sqlSuspiciousActivities = [
+      { time: '00:10:00', problem: '1번문제', type: '탭 전환', detail: '동영상 재생버튼' },
+      { time: '00:05:00', problem: '1번문제', type: '복사 붙여넣기', detail: '동영상 재생버튼' },
+      { time: '00:35:00', problem: '2번문제', type: '탭 전환', detail: '동영상 재생버튼' },
+      { time: '00:40:00', problem: '2번문제', type: '복사 붙여넣기', detail: '동영상 재생버튼' },
+      { time: '00:65:00', problem: '3번문제', type: '탭 전환', detail: '동영상 재생버튼' },
+      { time: '00:70:00', problem: '3번문제', type: '복사 붙여넣기', detail: '동영상 재생버튼' },
+      { time: '00:75:00', problem: '3번문제', type: '탭 전환', detail: '동영상 재생버튼' },
+      { time: '00:85:00', problem: '4번문제', type: '탭 전환', detail: '동영상 재생버튼' },
+      { time: '00:90:00', problem: '4번문제', type: '복사 붙여넣기', detail: '동영상 재생버튼' },
+      { time: '00:95:00', problem: '4번문제', type: '탭 전환', detail: '동영상 재생버튼' }
+    ];
+
+    // 차트 및 테이블 생성
+    createGanttChart('ganttChart', dsGanttData);
+    createGanttChart('sqlGanttChart', sqlGanttData);
+    populateSuspiciousActivitiesTable('suspiciousActivitiesTable', dsSuspiciousActivities);
+    populateSuspiciousActivitiesTable('sqlSuspiciousActivitiesTable', sqlSuspiciousActivities);
   </script>
 </body>
-
 </html>
