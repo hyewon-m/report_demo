@@ -7,6 +7,43 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .chart-info-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-top: 20px;
+        }
+        .chart-container {
+            width: 70%;
+        }
+        .stats-wrapper {
+            flex: 1;
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-left: 20px;
+        }
+        .stats-container {
+            display: flex;
+            flex-direction: column;
+        }
+        .stat-item {
+            margin-bottom: 15px;
+        }
+        .stat-label {
+            font-weight: bold;
+            color: #0f3a68;
+        }
+        .stat-value {
+            font-size: 16px;
+            color: #4CAF50;
+        }
+        .stat-value div {
+            margin-bottom: 3px;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
@@ -15,7 +52,6 @@
         <div class="tab-buttons">
             <button class="tab-button" onclick="goToPage('index.html')">Overview</button>
             <button class="tab-button active" onclick="showTab('evaluation')">Test Detail</button>
-            <!-- <button class="tab-button" onclick="goToPage('index.html#test')">테스트 정보</button> -->
         </div>
 
         <div id="evaluation" class="tab active">
@@ -59,6 +95,39 @@
                 <div class="chart-container">
                     <canvas id="dsCorrectAnswersChart"></canvas>
                 </div>
+
+                <h3>문제별 점수 분포</h3>
+                <div class="chart-info-container">
+                    <div class="chart-container">
+                        <canvas id="dsScoreDistributionByQuestionChart"></canvas>
+                    </div>
+                    <div class="stats-wrapper">
+                        <h3>문제 정보</h3>
+                        <div class="stats-container">
+                            <div class="stat-item">
+                                <span class="stat-label">문제 1:</span>
+                                <div class="stat-value">
+                                    <div>난이도: 어려움</div>
+                                    <div>유형: 프로젝트</div>
+                                </div>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">문제 2:</span>
+                                <div class="stat-value">
+                                    <div>난이도: 중간</div>
+                                    <div>유형: 객관식</div>
+                                </div>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">문제 3:</span>
+                                <div class="stat-value">
+                                    <div>난이도: 쉬움</div>
+                                    <div>유형: 객관식</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div id="sql" class="tab">
@@ -96,6 +165,39 @@
                 <div class="chart-container">
                     <canvas id="sqlCorrectAnswersChart"></canvas>
                 </div>
+
+                <h3>문제별 점수 분포</h3>
+                <div class="chart-info-container">
+                    <div class="chart-container">
+                        <canvas id="sqlScoreDistributionByQuestionChart"></canvas>
+                    </div>
+                    <div class="stats-wrapper">
+                        <h3>문제 정보</h3>
+                        <div class="stats-container">
+                            <div class="stat-item">
+                                <span class="stat-label">문제 1:</span>
+                                <div class="stat-value">
+                                    <div>난이도: 어려움</div>
+                                    <div>유형: 프로젝트</div>
+                                </div>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">문제 2:</span>
+                                <div class="stat-value">
+                                    <div>난이도: 중간</div>
+                                    <div>유형: 객관식</div>
+                                </div>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">문제 3:</span>
+                                <div class="stat-value">
+                                    <div>난이도: 쉬움</div>
+                                    <div>유형: 객관식</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -106,7 +208,65 @@
             showTab('evaluation');
             showTab('ds');
             loadData();
+            createScoreDistributionByQuestionChart('ds');
+            createScoreDistributionByQuestionChart('sql');
         });
+
+        function createScoreDistributionByQuestionChart(subject) {
+            const ctx = document.getElementById(subject + 'ScoreDistributionByQuestionChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['0-20%', '21-40%', '41-60%', '61-80%', '81-100%'],
+                    datasets: [
+                        {
+                            label: '문제 1',
+                            data: [5, 10, 15, 40, 30],
+                            backgroundColor: 'rgba(75, 192, 192, 0.6)',
+                            borderColor: 'rgba(75, 192, 192, 1)',
+                            borderWidth: 1
+                        },
+                        {
+                            label: '문제 2',
+                            data: [10, 20, 30, 25, 15],
+                            backgroundColor: 'rgba(255, 159, 64, 0.6)',
+                            borderColor: 'rgba(255, 159, 64, 1)',
+                            borderWidth: 1
+                        },
+                        {
+                            label: '문제 3',
+                            data: [8, 12, 25, 35, 20],
+                            backgroundColor: 'rgba(153, 102, 255, 0.6)',
+                            borderColor: 'rgba(153, 102, 255, 1)',
+                            borderWidth: 1
+                        }
+                    ]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: '분포'
+                            }
+                        },
+                        x: {
+                            title: {
+                                display: true,
+                                text: '점수 구간'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top'
+                        }
+                    }
+                }
+            });
+        }
     </script>
 </body>
 </html>
