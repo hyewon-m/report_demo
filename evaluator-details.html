@@ -369,7 +369,7 @@
       border-radius: 5px;
     }
 
-    .problem-content{
+    .problem-content {
       background-color: #f0f4f8;
       padding: 10px;
       margin-bottom: 10px;
@@ -420,61 +420,62 @@
 
 
     .guideline-content {
-  background-color: #f0f4f8;
-  padding: 10px;
-  margin-bottom: 10px;
-  border-radius: 5px;
-}
-.static-analysis {
-  background-color: #f0f4f8;
-  padding: 15px;
-  border-radius: 8px;
-  margin-bottom: 20px;
-}
+      background-color: #f0f4f8;
+      padding: 10px;
+      margin-bottom: 10px;
+      border-radius: 5px;
+    }
 
-.static-analysis h4 {
-  margin-top: 0;
-  color: #0f3a68;
-  border-bottom: 2px solid #0f3a68;
-  padding-bottom: 10px;
-}
+    .static-analysis {
+      background-color: #f0f4f8;
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+    }
 
-.metrics-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 15px;
-  margin-top: 15px;
-}
+    .static-analysis h4 {
+      margin-top: 0;
+      color: #0f3a68;
+      border-bottom: 2px solid #0f3a68;
+      padding-bottom: 10px;
+    }
 
-.metric {
-  background-color: white;
-  padding: 10px;
-  border-radius: 5px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+      margin-top: 15px;
+    }
 
-.metric-label {
-  display: block;
-  font-weight: bold;
-  margin-bottom: 5px;
-  color: #0f3a68;
-}
+    .metric {
+      background-color: white;
+      padding: 10px;
+      border-radius: 5px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
 
-.metric-value {
-  display: block;
-  font-size: 1.2em;
-  color: #4CAF50;
-}
+    .metric-label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 5px;
+      color: #0f3a68;
+    }
 
-.metric-value[style^="--percentage"]::before {
-  content: '';
-  display: block;
-  width: var(--percentage);
-  height: 5px;
-  background-color: #4CAF50;
-  border-radius: 2.5px;
-  margin-top: 5px;
-}
+    .metric-value {
+      display: block;
+      font-size: 1.2em;
+      color: #4CAF50;
+    }
+
+    .metric-value[style^="--percentage"]::before {
+      content: '';
+      display: block;
+      width: var(--percentage);
+      height: 5px;
+      background-color: #4CAF50;
+      border-radius: 2.5px;
+      margin-top: 5px;
+    }
   </style>
 </head>
 
@@ -541,138 +542,136 @@
             </div>
             <div class="guideline-content">
               <h4>지침</h4>
-                <p>모든 코드는 evaluate_model() 함수에 작성하세요. 다음 순서를 따라 코드를 작성하세요:</p>
-                <ol>
-                  <li>
-                    <strong>[Step.1] 데이터 로드 및 전처리</strong>
-                    <ul>
-                      <li>Pandas 라이브러리를 사용하여 './data.csv' 파일을 읽어 DataFrame 변수인 data에 저장하세요.</li>
-                      <li>결측값이 있는 행을 제거하여 데이터의 완전성을 유지하세요.</li>
-                    </ul>
-                  </li>
-                  <li>
-                    <strong>[Step.2] 훈련 세트와 테스트 세트 분할</strong>
-                    <ul>
-                      <li>선택된 특성과 목표 변수를 사용하여 데이터를 훈련 세트(80%)와 테스트 세트(20%)로 분할하세요.</li>
-                      <li>random_state는 42로 설정하세요.</li>
-                    </ul>
-                  </li>
-                  <li>
-                    <strong>[Step.3] 특성 스케일링 및 선택</strong>
-                    <ul>
-                      <li>StandardScaler를 사용하여 특성을 스케일링하세요.</li>
-                      <li>SelectKBest와 f_regression을 사용하여 상위 2개의 가장 중요한 특성을 선택하여 selected_features 변수에 리스트로 저장하세요.</li>
-                    </ul>
-                  </li>
-                  <li>
-                    <strong>[Step.4] 모델 초기화 및 학습</strong>
-                    <ul>
-                      <li>여러 회귀 모델(Random Forest, Linear Regression, Ridge Regression, Lasso Regression)을 정의하고 초기화하세요.
-                      </li>
-                      <li>각 모델을 훈련 데이터에 대해 학습시키세요.</li>
-                      <li>가장 적합한 모델명을 best_model_name 변수에 저장하세요.</li>
-                    </ul>
-                  </li>
-                  <li>
-                    <strong>[Step.5] 모델 예측 및 평가</strong>
-                    <ul>
-                      <li>각 모델을 사용하여 테스트 데이터에 대한 예측을 수행합니다.</li>
-                      <li>예측 결과와 실제 결과 간의 MSE와 R2 점수를 계산하여 model_scores 변수에 리스트로 저장하세요.</li>
-                      <li>MSE를 기준으로 가장 성능이 좋은 모델을 선택하고, 해당 모델의 MSE와 R2 점수를 출력하세요.</li>
-                    </ul>
-                  </li>
-                  <li>
-                    <strong>[Step.6] 결과 시각화</strong>
-                    <ul>
-                      <li>하나의 차트에 모든 플롯을 포함하여 작성하세요 (figsize=(10, 6)).</li>
-                      <li>실제 수익(x축)과 예측 수익(y축)을 산점도로 표시하세요 (투명도 50%).</li>
-                      <li>실제 수익과 예측 수익이 일치하는 이상적인 라인을 굵기가 2인 빨간색 점선으로 표시하세요.</li>
-                      <li>그래프 제목을 'Actual vs Predicted Box Office Revenue\nusing {best_model_name}'로 설정하세요.</li>
-                    </ul>
-                  </li>
-                </ol>
-              </div>
+              <p>모든 코드는 evaluate_model() 함수에 작성하세요. 다음 순서를 따라 코드를 작성하세요:</p>
+              <ol>
+                <li>
+                  <strong>[Step.1] 데이터 로드 및 전처리</strong>
+                  <ul>
+                    <li>Pandas 라이브러리를 사용하여 './data.csv' 파일을 읽어 DataFrame 변수인 data에 저장하세요.</li>
+                    <li>결측값이 있는 행을 제거하여 데이터의 완전성을 유지하세요.</li>
+                  </ul>
+                </li>
+                <li>
+                  <strong>[Step.2] 훈련 세트와 테스트 세트 분할</strong>
+                  <ul>
+                    <li>선택된 특성과 목표 변수를 사용하여 데이터를 훈련 세트(80%)와 테스트 세트(20%)로 분할하세요.</li>
+                    <li>random_state는 42로 설정하세요.</li>
+                  </ul>
+                </li>
+                <li>
+                  <strong>[Step.3] 특성 스케일링 및 선택</strong>
+                  <ul>
+                    <li>StandardScaler를 사용하여 특성을 스케일링하세요.</li>
+                    <li>SelectKBest와 f_regression을 사용하여 상위 2개의 가장 중요한 특성을 선택하여 selected_features 변수에 리스트로 저장하세요.</li>
+                  </ul>
+                </li>
+                <li>
+                  <strong>[Step.4] 모델 초기화 및 학습</strong>
+                  <ul>
+                    <li>여러 회귀 모델(Random Forest, Linear Regression, Ridge Regression, Lasso Regression)을 정의하고 초기화하세요.
+                    </li>
+                    <li>각 모델을 훈련 데이터에 대해 학습시키세요.</li>
+                    <li>가장 적합한 모델명을 best_model_name 변수에 저장하세요.</li>
+                  </ul>
+                </li>
+                <li>
+                  <strong>[Step.5] 모델 예측 및 평가</strong>
+                  <ul>
+                    <li>각 모델을 사용하여 테스트 데이터에 대한 예측을 수행합니다.</li>
+                    <li>예측 결과와 실제 결과 간의 MSE와 R2 점수를 계산하여 model_scores 변수에 리스트로 저장하세요.</li>
+                    <li>MSE를 기준으로 가장 성능이 좋은 모델을 선택하고, 해당 모델의 MSE와 R2 점수를 출력하세요.</li>
+                  </ul>
+                </li>
+                <li>
+                  <strong>[Step.6] 결과 시각화</strong>
+                  <ul>
+                    <li>하나의 차트에 모든 플롯을 포함하여 작성하세요 (figsize=(10, 6)).</li>
+                    <li>실제 수익(x축)과 예측 수익(y축)을 산점도로 표시하세요 (투명도 50%).</li>
+                    <li>실제 수익과 예측 수익이 일치하는 이상적인 라인을 굵기가 2인 빨간색 점선으로 표시하세요.</li>
+                    <li>그래프 제목을 'Actual vs Predicted Box Office Revenue\nusing {best_model_name}'로 설정하세요.</li>
+                  </ul>
+                </li>
+              </ol>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-    <div class="score-summary">
-      <div class="total-score">
-        <h3>Competency Score</h3>
-        <div class="score-circle">
-          <span class="score-value">85</span>
-          <span class="score-max">/100</span>
-        </div>
-      </div>
-      <div class="individual-scores">
-        <h3>Skill</h3>
-        <div class="score-bar">
-          <div class="score-label">Preprocessing</div>
-          <div class="score-progress" style="width: 85.7%;">
-            <span class="score-text">30/35</span>
+      <div class="score-summary">
+        <div class="total-score">
+          <h3>Competency Score</h3>
+          <div class="score-circle">
+            <span class="score-value">85</span>
+            <span class="score-max">/100</span>
           </div>
         </div>
-        <div class="score-bar">
-          <div class="score-label">Feature scaling</div>
-          <div class="score-progress" style="width: 80%;">
-            <span class="score-text">28/35</span>
+        <div class="individual-scores">
+          <h3>Skill</h3>
+          <div class="score-bar">
+            <div class="score-label">Preprocessing</div>
+            <div class="score-progress" style="width: 85.7%;">
+              <span class="score-text">30/35</span>
+            </div>
+          </div>
+          <div class="score-bar">
+            <div class="score-label">Feature scaling</div>
+            <div class="score-progress" style="width: 80%;">
+              <span class="score-text">28/35</span>
+            </div>
+          </div>
+          <div class="score-bar">
+            <div class="score-label">Visualization</div>
+            <div class="score-progress" style="width: 90%;">
+              <span class="score-text">27/30</span>
+            </div>
           </div>
         </div>
-        <div class="score-bar">
-          <div class="score-label">Visualization</div>
-          <div class="score-progress" style="width: 90%;">
-            <span class="score-text">27/30</span>
+      </div>
+      <h2>DS 점수 분포 및 평가자 위치</h2>
+      <div class="chart-container">
+        <canvas id="dsScoreDistributionChart"></canvas>
+      </div>
+
+      <div class="time-info">
+        <h3>소요 시간</h3>
+        <div class="time-bar">
+          <div class="time-progress" id="dsTimeProgress">
+            <span class="time-text">110분 / 120분</span>
           </div>
         </div>
-      </div>
-    </div>
 
-    <h2>DS 점수 분포 및 평가자 위치</h2>
-    <div class="chart-container">
-      <canvas id="dsScoreDistributionChart"></canvas>
-    </div>
+        <div class="sub-tab-container">
+          <button class="sub-tab-button active" onclick="openSubTab('chartTab', 'ds')">Chart</button>
+          <button class="sub-tab-button" onclick="openSubTab('listTab', 'ds')">List</button>
 
-    <div class="time-info">
-      <h3>소요 시간</h3>
-      <div class="time-bar">
-        <div class="time-progress" id="dsTimeProgress">
-          <span class="time-text">110분 / 120분</span>
+        </div>
+        <div id="chartTab" class="sub-tab-content active">
+          <h4>타임라인 그래프</h4>
+          <canvas id="ganttChart"></canvas>
+        </div>
+
+        <div id="listTab" class="sub-tab-content">
+          <h4>부정행위 상세</h4>
+          <table id="suspiciousActivitiesTable">
+            <thead>
+              <tr>
+                <th>시간</th>
+                <th>문제 번호</th>
+                <th>활동 유형</th>
+                <th>영상 확인</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Table body will be populated by JavaScript -->
+            </tbody>
+          </table>
         </div>
       </div>
+      <h2>DS Competency comment</h2>
+      <p id="dsCompetencyDescription"></p>
 
-      <div class="sub-tab-container">
-        <button class="sub-tab-button active" onclick="openSubTab('chartTab', 'ds')">Chart</button>
-        <button class="sub-tab-button" onclick="openSubTab('listTab', 'ds')">List</button>
-
-      </div>
-      <div id="chartTab" class="sub-tab-content active">
-        <h4>타임라인 그래프</h4>
-        <canvas id="ganttChart"></canvas>
-      </div>
-
-      <div id="listTab" class="sub-tab-content">
-        <h4>부정행위 상세</h4>
-        <table id="suspiciousActivitiesTable">
-          <thead>
-            <tr>
-              <th>시간</th>
-              <th>문제 번호</th>
-              <th>활동 유형</th>
-              <th>영상 확인</th>
-            </tr>
-          </thead>
-          <tbody>
-            <!-- Table body will be populated by JavaScript -->
-          </tbody>
-        </table>
-      </div>
-    </div>
-
-    <h2>DS Competency comment</h2>
-    <p id="dsCompetencyDescription"></p>
-
-    <h2>DS Skill comment</h2>
-    <ul id="dsCompetencyComments"></ul>
+      <h2>DS Skill comment</h2>
+      <ul id="dsCompetencyComments"></ul>
+    
   </div>
 
   <div id="sql" class="tab-content">
@@ -785,6 +784,11 @@
 
       runAnimations(tabName);
       setTimeout(updateScoreProgressColors, 100);
+      if (tabName === 'ds') {
+        openSubTab('chartTab', 'ds');
+      } else if (tabName === 'sql') {
+        openSubTab('sqlChartTab', 'sql');
+      }
     }
 
     function openSubTab(tabName, parentTabId) {
@@ -808,12 +812,16 @@
     document.addEventListener('DOMContentLoaded', function () {
       // DS 탭의 초기 서브 탭 설정
       document.getElementById('chartTab').style.display = "block";
-      document.querySelector('#ds .sub-tab-button').classList.add("active");
-
+      // document.querySelector('#ds .sub-tab-button').classList.add("active");
+      document.querySelector('.tab-button[onclick="openTab(\'ds\')"]').addEventListener('click', function () {
+        openTab('ds');
+      });
       // SQL 탭의 초기 서브 탭 설정
       document.getElementById('sqlChartTab').style.display = "block";
-      document.querySelector('#sql .sub-tab-button').classList.add("active");
-
+      // document.querySelector('#sql .sub-tab-button').classList.add("active");
+      document.querySelector('.tab-button[onclick="openTab(\'sql\')"]').addEventListener('click', function () {
+        openTab('sql');
+      });
       const toggleInputs = document.querySelectorAll('.toggle-input');
       toggleInputs.forEach(input => {
         input.addEventListener('change', function () {
