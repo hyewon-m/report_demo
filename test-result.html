@@ -43,6 +43,70 @@
         .stat-value div {
             margin-bottom: 3px;
         }
+        .chart-info-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-top: 20px;
+}
+
+.chart-controls-wrapper {
+  width: 70%;
+}
+
+.controls-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.question-button, .sql-question-button {
+  margin: 0 5px;
+  padding: 5px 10px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.question-button.active {
+  background-color: #45a049;
+  font-weight: bold;
+}
+
+.chart-container {
+  width: 90%;
+  height: 400px; /* 그래프의 높이를 고정 */
+}
+
+.stats-wrapper {
+  width: 25%;
+  background-color: #f8f9fa;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  margin-left: 20px;
+}
+
+.stats-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.stat-item {
+  margin-bottom: 15px;
+}
+
+.stat-label {
+  font-weight: bold;
+  color: #0f3a68;
+}
+
+.stat-value {
+  font-size: 14px;
+  color: #4CAF50;
+}
     </style>
 </head>
 <body>
@@ -97,36 +161,31 @@
                 </div>
 
                 <h3>문제별 점수 분포</h3>
-                <div class="chart-info-container">
-                    <div class="chart-container">
-                        <canvas id="dsScoreDistributionByQuestionChart"></canvas>
-                    </div>
-                    <div class="stats-wrapper">
-                        <h3>문제 정보</h3>
-                        <div class="stats-container">
-                            <div class="stat-item">
-                                <span class="stat-label">문제 1:</span>
-                                <div class="stat-value">
-                                    <div>난이도: 어려움</div>
-                                    <div>유형: 프로젝트</div>
-                                </div>
-                            </div>
-                            <div class="stat-item">
-                                <span class="stat-label">문제 2:</span>
-                                <div class="stat-value">
-                                    <div>난이도: 중간</div>
-                                    <div>유형: 객관식</div>
-                                </div>
-                            </div>
-                            <div class="stat-item">
-                                <span class="stat-label">문제 3:</span>
-                                <div class="stat-value">
-                                    <div>난이도: 쉬움</div>
-                                    <div>유형: 객관식</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+<div class="chart-info-container">
+  <div class="chart-controls-wrapper">
+    <div class="controls-container">
+      <button class="question-button active" data-question="1">1</button>
+      <button class="question-button" data-question="2">2</button>
+      <button class="question-button" data-question="3">3</button>
+    </div>
+    <div class="chart-container">
+      <canvas id="scoreDistributionByQuestionChart"></canvas>
+    </div>
+  </div>
+  <div class="stats-wrapper">
+    <h3>문제 정보</h3>
+    <div class="stats-container">
+      <div class="stat-item">
+        <span class="stat-label">난이도:</span>
+        <span class="stat-value" id="questionDifficulty"></span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-label">유형:</span>
+        <span class="stat-value" id="questionType"></span>
+      </div>
+    </div>
+  </div>
+</div>
                 </div>
             </div>
 
@@ -162,42 +221,35 @@
                 </div>
 
                 <h3>문제별 정답자 수</h3>
-                <div class="chart-container">
-                    <canvas id="sqlCorrectAnswersChart"></canvas>
-                </div>
+    <div class="chart-container">
+        <canvas id="sqlCorrectAnswersChart"></canvas>
+    </div>
 
-                <h3>문제별 점수 분포</h3>
-                <div class="chart-info-container">
-                    <div class="chart-container">
-                        <canvas id="sqlScoreDistributionByQuestionChart"></canvas>
-                    </div>
-                    <div class="stats-wrapper">
-                        <h3>문제 정보</h3>
-                        <div class="stats-container">
-                            <div class="stat-item">
-                                <span class="stat-label">문제 1:</span>
-                                <div class="stat-value">
-                                    <div>난이도: 어려움</div>
-                                    <div>유형: 프로젝트</div>
-                                </div>
-                            </div>
-                            <div class="stat-item">
-                                <span class="stat-label">문제 2:</span>
-                                <div class="stat-value">
-                                    <div>난이도: 중간</div>
-                                    <div>유형: 객관식</div>
-                                </div>
-                            </div>
-                            <div class="stat-item">
-                                <span class="stat-label">문제 3:</span>
-                                <div class="stat-value">
-                                    <div>난이도: 쉬움</div>
-                                    <div>유형: 객관식</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+    <h3>문제별 점수 분포</h3>
+    <div class="chart-info-container">
+        <div class="chart-controls-wrapper">
+            <div class="controls-container">
+                <button class="sql-question-button active" data-question="1">1</button>
+                <button class="sql-question-button" data-question="2">2</button>
+                <button class="sql-question-button" data-question="3">3</button>
+            </div>
+            <div class="chart-container">
+                <canvas id="sqlScoreDistributionByQuestionChart"></canvas>
+            </div>
+        </div>
+        <div class="stats-wrapper">
+            <h3>문제 정보</h3>
+            <div class="stats-container">
+                <div class="stat-item">
+                    <span class="stat-label">난이도:</span>
+                    <span class="stat-value" id="sqlQuestionDifficulty"></span>
                 </div>
+                <div class="stat-item">
+                    <span class="stat-label">유형:</span>
+                    <span class="stat-value" id="sqlQuestionType"></span>
+                </div>
+            </div>
+        </div>
             </div>
         </div>
     </div>
@@ -212,61 +264,157 @@
             createScoreDistributionByQuestionChart('sql');
         });
 
-        function createScoreDistributionByQuestionChart(subject) {
-            const ctx = document.getElementById(subject + 'ScoreDistributionByQuestionChart').getContext('2d');
-            new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: ['0-20%', '21-40%', '41-60%', '61-80%', '81-100%'],
-                    datasets: [
-                        {
-                            label: '문제 1',
-                            data: [5, 10, 15, 40, 30],
-                            backgroundColor: 'rgba(75, 192, 192, 0.6)',
-                            borderColor: 'rgba(75, 192, 192, 1)',
-                            borderWidth: 1
-                        },
-                        {
-                            label: '문제 2',
-                            data: [10, 20, 30, 25, 15],
-                            backgroundColor: 'rgba(255, 159, 64, 0.6)',
-                            borderColor: 'rgba(255, 159, 64, 1)',
-                            borderWidth: 1
-                        },
-                        {
-                            label: '문제 3',
-                            data: [8, 12, 25, 35, 20],
-                            backgroundColor: 'rgba(153, 102, 255, 0.6)',
-                            borderColor: 'rgba(153, 102, 255, 1)',
-                            borderWidth: 1
-                        }
-                    ]
-                },
-                options: {
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            title: {
-                                display: true,
-                                text: '분포'
-                            }
-                        },
-                        x: {
-                            title: {
-                                display: true,
-                                text: '점수 구간'
-                            }
-                        }
-                    },
-                    plugins: {
-                        legend: {
-                            display: true,
-                            position: 'top'
-                        }
-                    }
-                }
-            });
+        let currentQuestionIndex = 0;
+const questions = [
+  { number: 1, difficulty: '어려움', type: '프로젝트' },
+  { number: 2, difficulty: '중간', type: '객관식' },
+  { number: 3, difficulty: '쉬움', type: '객관식' }
+];
+
+let chart;
+let sqlCurrentQuestionIndex = 0;
+const sqlQuestions = [
+  { number: 1, difficulty: '중간', type: '객관식' },
+  { number: 2, difficulty: '어려움', type: '에디터' },
+  { number: 3, difficulty: '쉬움', type: '객관식' }
+];
+
+let sqlChart;
+function createScoreDistributionByQuestionChart() {
+  const ctx = document.getElementById('scoreDistributionByQuestionChart').getContext('2d');
+  
+  chart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: ['0-20%', '21-40%', '41-60%', '61-80%', '81-100%'],
+      datasets: [{
+        label: `문제 ${questions[currentQuestionIndex].number}`,
+        data: [5, 10, 15, 40, 30], // 예시 데이터
+        backgroundColor: 'rgba(75, 192, 192, 0.6)',
+        borderColor: 'rgba(75, 192, 192, 1)',
+        borderWidth: 1
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        y: {
+          beginAtZero: true,
+          title: {
+            display: true,
+            text: '분포'
+          }
+        },
+        x: {
+          title: {
+            display: true,
+            text: '점수 구간'
+          }
         }
+      },
+      plugins: {
+        legend: {
+          display: true,
+          position: 'top'
+        }
+      }
+    }
+  });
+
+  updateQuestionInfo();
+}
+function createSqlScoreDistributionByQuestionChart() {
+  const ctx = document.getElementById('sqlScoreDistributionByQuestionChart').getContext('2d');
+  
+  sqlChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: ['0-20%', '21-40%', '41-60%', '61-80%', '81-100%'],
+      datasets: [{
+        label: `문제 ${sqlQuestions[sqlCurrentQuestionIndex].number}`,
+        data: [5, 10, 15, 40, 30], // 예시 데이터
+        backgroundColor: 'rgba(255, 99, 132, 0.6)',
+        borderColor: 'rgba(255, 99, 132, 1)',
+        borderWidth: 1
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        y: {
+          beginAtZero: true,
+          title: {
+            display: true,
+            text: '분포'
+          }
+        },
+        x: {
+          title: {
+            display: true,
+            text: '점수 구간'
+          }
+        }
+      },
+      plugins: {
+        legend: {
+          display: true,
+          position: 'top'
+        }
+      }
+    }
+  });
+
+  updateSqlQuestionInfo();
+}
+function updateChart(questionNumber) {
+  currentQuestionIndex = questionNumber - 1;
+  chart.data.datasets[0].label = `문제 ${questions[currentQuestionIndex].number}`;
+  chart.data.datasets[0].data = getRandomData(); // 실제 데이터로 교체 필요
+  chart.update();
+  updateQuestionInfo();
+}
+
+function updateQuestionInfo() {
+  document.getElementById('questionDifficulty').textContent = questions[currentQuestionIndex].difficulty;
+  document.getElementById('questionType').textContent = questions[currentQuestionIndex].type;
+}
+
+function getRandomData() {
+  return Array.from({length: 5}, () => Math.floor(Math.random() * 50));
+}
+
+document.querySelectorAll('.question-button').forEach(button => {
+  button.addEventListener('click', function() {
+    document.querySelectorAll('.question-button').forEach(btn => btn.classList.remove('active'));
+    this.classList.add('active');
+    updateChart(parseInt(this.dataset.question));
+  });
+});
+function updateSqlChart(questionNumber) {
+  sqlCurrentQuestionIndex = questionNumber - 1;
+  sqlChart.data.datasets[0].label = `문제 ${sqlQuestions[sqlCurrentQuestionIndex].number}`;
+  sqlChart.data.datasets[0].data = getRandomData(); // 실제 데이터로 교체 필요
+  sqlChart.update();
+  updateSqlQuestionInfo();
+}
+
+function updateSqlQuestionInfo() {
+  document.getElementById('sqlQuestionDifficulty').textContent = sqlQuestions[sqlCurrentQuestionIndex].difficulty;
+  document.getElementById('sqlQuestionType').textContent = sqlQuestions[sqlCurrentQuestionIndex].type;
+}
+
+document.querySelectorAll('.sql-question-button').forEach(button => {
+  button.addEventListener('click', function() {
+    document.querySelectorAll('.sql-question-button').forEach(btn => btn.classList.remove('active'));
+    this.classList.add('active');
+    updateSqlChart(parseInt(this.dataset.question));
+  });
+});
+
+createScoreDistributionByQuestionChart();
+createSqlScoreDistributionByQuestionChart();
     </script>
 </body>
 </html>
