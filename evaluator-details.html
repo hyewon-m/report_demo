@@ -1,602 +1,33 @@
 <!DOCTYPE html>
 <html lang="ko">
-
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>평가자 상세 정보</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation"></script>
-  <style>
-    body {
-      font-family: 'Roboto', sans-serif;
-      line-height: 1.6;
-      color: #333;
-      max-width: 900px;
-      margin: 0 auto;
-      padding: 20px;
-      background-color: #f0f4f8;
-    }
-
-    .container {
-      background-color: white;
-      padding: 30px;
-      border-radius: 10px;
-      box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-    }
-
-    h1,
-    h2 {
-      color: #0f3a68;
-      border-bottom: 2px solid #0f3a68;
-      padding-bottom: 10px;
-    }
-
-    .tab-container {
-      display: flex;
-      justify-content: center;
-      margin-bottom: 20px;
-    }
-
-    .tab-button {
-      background-color: #0f3a68;
-      color: white;
-      border: none;
-      padding: 10px 20px;
-      margin: 0 5px;
-      cursor: pointer;
-      border-radius: 5px;
-    }
-
-    .tab-button.active {
-      background-color: #4CAF50;
-    }
-
-    .tab-content {
-      display: none;
-    }
-
-    .tab-content.active {
-      display: block;
-    }
-
-    .score-summary {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 30px;
-    }
-
-    .total-score,
-    .individual-scores {
-      flex: 1;
-    }
-
-    .score-circle {
-      width: 150px;
-      height: 150px;
-      border-radius: 50%;
-      background-color: #4CAF50;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      color: white;
-      margin: 0 auto;
-    }
-
-    .score-circle_sql {
-      width: 150px;
-      height: 150px;
-      border-radius: 50%;
-      background-color: #FF4136;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      color: white;
-      margin: 0 auto;
-    }
-
-    .score-value {
-      font-size: 48px;
-      font-weight: bold;
-    }
-
-    .score-max {
-      font-size: 24px;
-    }
-
-    .score-bar {
-      margin-bottom: 15px;
-    }
-
-    .score-label {
-      margin-bottom: 5px;
-      font-weight: bold;
-    }
-
-    .score-progress {
-      height: 30px;
-      background-color: #4CAF50;
-      border-radius: 15px;
-      display: flex;
-      align-items: center;
-      justify-content: flex-end;
-      padding-right: 10px;
-      color: white;
-      font-weight: bold;
-    }
-
-    .score-progress.low-score {
-      background-color: #FF4136;
-    }
-
-    .time-info {
-      margin-top: 30px;
-    }
-
-    .time-bar {
-      height: 30px;
-      background-color: #e0e0e0;
-      border-radius: 15px;
-      overflow: hidden;
-    }
-
-    .time-progress {
-      height: 100%;
-      background-color: #2196F3;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-weight: bold;
-      transition: width 1s ease-in-out;
-    }
-
-    .chart-container {
-      margin-top: 20px;
-      height: 300px;
-    }
-
-    .sub-tab-container {
-      display: flex;
-      justify-content: center;
-      margin-top: 20px;
-      margin-bottom: 20px;
-    }
-
-    .sub-tab-button {
-      background-color: #0f3a68;
-      color: white;
-      border: none;
-      padding: 10px 20px;
-      margin: 0 5px;
-      cursor: pointer;
-      border-radius: 5px;
-    }
-
-    .sub-tab-button.active {
-      background-color: #4CAF50;
-    }
-
-    .sub-tab-content {
-      display: none;
-    }
-
-    .sub-tab-content.active {
-      display: block;
-    }
-
-    #suspiciousActivitiesList {
-      list-style-type: none;
-      padding: 0;
-    }
-
-    #suspiciousActivitiesList li {
-      background-color: #f0f0f0;
-      margin-bottom: 10px;
-      padding: 10px;
-      border-radius: 5px;
-    }
-
-    #suspiciousActivitiesTable,
-    #sqlSuspiciousActivitiesTable {
-      width: 100%;
-      border-collapse: collapse;
-    }
-
-    #suspiciousActivitiesTable th,
-    #suspiciousActivitiesTable td,
-    #sqlSuspiciousActivitiesTable th,
-    #sqlSuspiciousActivitiesTable td {
-      border: 1px solid #ddd;
-      padding: 8px;
-      text-align: left;
-    }
-
-    #suspiciousActivitiesTable th,
-    #sqlSuspiciousActivitiesTable th {
-      background-color: #f2f2f2;
-      font-weight: bold;
-    }
-
-    #suspiciousActivitiesTable tr:nth-child(even),
-    #sqlSuspiciousActivitiesTable tr:nth-child(even) {
-      background-color: #f9f9f9;
-    }
-
-    #suspiciousActivitiesTable tr:hover,
-    #sqlSuspiciousActivitiesTable tr:hover {
-      background-color: #f5f5f5;
-    }
-
-    .scrollable-table {
-      max-height: 300px;
-      overflow-y: auto;
-    }
-
-    button {
-      background-color: #0f3a68;
-      color: white;
-      border: none;
-      padding: 10px 20px;
-      margin: 5px;
-      cursor: pointer;
-      border-radius: 5px;
-      font-size: 14px;
-      transition: all 0.3s ease;
-    }
-
-    button:hover {
-      background-color: #1c5a9c;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      transform: translateY(-2px);
-    }
-
-    button:active {
-      background-color: #0c2d52;
-      transform: translateY(0);
-    }
-
-    button.active {
-      background-color: #4CAF50;
-    }
-
-    button.active:hover {
-      background-color: #45a049;
-    }
-
-    .code-check-btn {
-      background-color: #4CAF50;
-      color: white;
-      border: none;
-      padding: 8px 15px;
-      margin-left: 10px;
-      cursor: pointer;
-      border-radius: 5px;
-      font-size: 14px;
-      transition: all 0.3s ease;
-    }
-
-    .code-check-btn:hover {
-      background-color: #45a049;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    }
-
-    .popup {
-      display: none;
-      position: fixed;
-      z-index: 1000;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      overflow: auto;
-      background-color: rgba(0, 0, 0, 0.4);
-    }
-
-    .popup-content {
-      background-color: #fefefe;
-      margin: 10% auto;
-      padding: 20px;
-      border: 1px solid #888;
-      width: 80%;
-      border-radius: 10px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    }
-
-    .close {
-      color: #aaa;
-      float: right;
-      font-size: 28px;
-      font-weight: bold;
-      cursor: pointer;
-      transition: color 0.3s ease;
-    }
-
-    .close:hover,
-    .close:focus {
-      color: #0f3a68;
-      text-decoration: none;
-    }
-
-    #codeEditor {
-      width: 95%;
-      height: 200px;
-      margin-bottom: 20px;
-      border: 1px solid #ddd;
-      border-radius: 5px;
-      padding: 10px;
-      font-family: monospace;
-      resize: vertical;
-    }
-
-    #scoringResult {
-      background-color: #f0f4f8;
-      border: 1px solid #ddd;
-      border-radius: 5px;
-      padding: 15px;
-      margin-top: 20px;
-    }
-
-    .popup h3 {
-      color: #0f3a68;
-      border-bottom: 2px solid #0f3a68;
-      padding-bottom: 10px;
-      margin-top: 0;
-    }
-
-    .popup-content {
-      display: flex;
-      justify-content: space-between;
-    }
-
-    .code-editor-container {
-      width: 70%;
-    }
-
-    .sidebar {
-      width: 25%;
-      padding-left: 20px;
-    }
-
-    .static-analysis {
-      background-color: #f0f4f8;
-      padding: 10px;
-      margin-bottom: 10px;
-      border-radius: 5px;
-    }
-
-    .problem-content {
-      background-color: #f0f4f8;
-      padding: 10px;
-      margin-bottom: 10px;
-      border-radius: 5px;
-    }
-
-    .problem-content h4,
-    .guideline-content h4 {
-      margin-top: 0;
-      color: #0f3a68;
-    }
-
-    .highlighted-line {
-      background-color: yellow;
-      display: block;
-    }
-
-    #codeEditor {
-      width: 100%;
-      height: 600px;
-      margin-bottom: 20px;
-      border: 1px solid #ddd;
-      border-radius: 5px;
-      padding: 10px;
-      font-family: monospace;
-      resize: vertical;
-      white-space: pre;
-      overflow-x: auto;
-      overflow-y: auto;
-      font-size: 14px;
-      line-height: 1.5;
-      display: block;
-    }
-
-    .tag {
-      background-color: #0f3a68;
-      color: white;
-      padding: 5px 10px;
-      margin: 5px;
-      border-radius: 5px;
-      cursor: pointer;
-      display: inline-block;
-    }
-
-    .tag:hover {
-      background-color: #1c5a9c;
-    }
-
-
-    .guideline-content {
-      background-color: #f0f4f8;
-      padding: 10px;
-      margin-bottom: 10px;
-      border-radius: 5px;
-    }
-
-    .static-analysis {
-      background-color: #f0f4f8;
-      padding: 15px;
-      border-radius: 8px;
-      margin-bottom: 20px;
-    }
-
-    .static-analysis h4 {
-      margin-top: 0;
-      color: #0f3a68;
-      border-bottom: 2px solid #0f3a68;
-      padding-bottom: 10px;
-    }
-
-    .metrics-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 15px;
-      margin-top: 15px;
-    }
-
-    .metric {
-      background-color: white;
-      padding: 10px;
-      border-radius: 5px;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    }
-
-    .metric-label {
-      display: block;
-      font-weight: bold;
-      margin-bottom: 5px;
-      color: #0f3a68;
-    }
-
-    .metric-value {
-      display: block;
-      font-size: 1.2em;
-      color: #4CAF50;
-    }
-
-    .metric-value[style^="--percentage"]::before {
-      content: '';
-      display: block;
-      width: var(--percentage);
-      height: 5px;
-      background-color: #4CAF50;
-      border-radius: 2.5px;
-      margin-top: 5px;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>평가자 상세 정보</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation"></script>
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="evaluator_styles.css">
+    <script src="evaluator_script.js" defer></script>
 </head>
-
 <body>
-  <div class="container">
-    <h1 id="evaluatorName">평가자 상세 정보</h1>
-    <div class="tab-container">
-      <button class="tab-button active" onclick="openTab('ds')">DS</button>
-      <button class="tab-button" onclick="openTab('sql')">SQL</button>
+  <div class="tab">
+    <button class="tablink" onclick="openTab('ds')">DS</button>
+    <button class="tablink" onclick="openTab('sql')">SQL</button>
+  </div>
+  <div id="ds" class="tabcontent">
+    <div class="subtab">
+      <button class="subtablink" onclick="openSubTab('dsResult', 'ds', event)">결과</button>
+      <button class="subtablink" onclick="openSubTab('dsCode', 'ds', event)">코드</button>
+      <button class="subtablink" onclick="openSubTab('dsCheating', 'ds', event)">치팅</button>
     </div>
-    <div id="ds" class="tab-content active">
-      <h2>DS Level 1 Result<button class="code-check-btn" onclick="openCodePopup()">작성 코드 확인</button></h2>
-      <div id="codePopup" class="popup">
-        <div class="popup-content">
-          <div class="code-editor-container">
-            <span class="close" onclick="closeCodePopup()">&times;</span>
-            <h3>작성 코드</h3>
-            <div class="static-analysis">
-              <h4>정적 분석 지표</h4>
-              <div class="metrics-grid">
-                <div class="metric">
-                  <span class="metric-label">DUPLICATIONS</span>
-                  <span class="metric-value" style="--percentage: 15%;">15%</span>
-                </div>
-                <div class="metric">
-                  <span class="metric-label">CYCLOMATIC_COMPLEXITY</span>
-                  <span class="metric-value">7</span>
-                </div>
-                <div class="metric">
-                  <span class="metric-label">BUGS</span>
-                  <span class="metric-value">3</span>
-                </div>
-                <div class="metric">
-                  <span class="metric-label">CODING_STYLE</span>
-                  <span class="metric-value" style="--percentage: 85%;">85%</span>
-                </div>
-                <div class="metric">
-                  <span class="metric-label">CODE SMELL</span>
-                  <span class="metric-value">5</span>
-                </div>
-              </div>
-            </div>
-            <pre><code id="codeEditor" class="python"></code></pre>
-            <h3>채점 결과</h3>
-            <div id="scoringResult">
-              <p>TestCase #1 >>> PASS ✔️</p>
-              <p>TestCase #2 >>> PASS ✔️</p>
-              <p>TestCase #3 >>> PASS ✔️</p>
-              <p>TestCase #4 >>> PASS ✔️</p>
-              <p>TestCase #5 >>> PASS ✔️</p>
-              <p>TestCase #6 >>> PASS ✔️</p>
-            </div>
-          </div>
-          <div class="sidebar">
-            <div class="tags">
-              <div class="tag" data-tag="Preprocessing">Preprocessing</div>
-              <div class="tag" data-tag="model prediction and evaluation">model prediction and evaluation</div>
-              <div class="tag" data-tag="Visualization">Visualization</div>
-            </div>
-            <div class="problem-content">
-              <h4>문제</h4>
-              <p>당신은 영화 제작 회사의 데이터 분석 팀에 속해 있습니다. 당신의 임무는 다양한 특성을 기반으로 영화의 박스오피스 수익을 예측하는 모델을 구축하는 것입니다. 제공된 영화 메타데이터를
-                사용하여 회귀 모델을 만들고 그 성능을 평가하세요.</p>
-            </div>
-            <div class="guideline-content">
-              <h4>지침</h4>
-              <p>모든 코드는 evaluate_model() 함수에 작성하세요. 다음 순서를 따라 코드를 작성하세요:</p>
-              <ol>
-                <li>
-                  <strong>[Step.1] 데이터 로드 및 전처리</strong>
-                  <ul>
-                    <li>Pandas 라이브러리를 사용하여 './data.csv' 파일을 읽어 DataFrame 변수인 data에 저장하세요.</li>
-                    <li>결측값이 있는 행을 제거하여 데이터의 완전성을 유지하세요.</li>
-                  </ul>
-                </li>
-                <li>
-                  <strong>[Step.2] 훈련 세트와 테스트 세트 분할</strong>
-                  <ul>
-                    <li>선택된 특성과 목표 변수를 사용하여 데이터를 훈련 세트(80%)와 테스트 세트(20%)로 분할하세요.</li>
-                    <li>random_state는 42로 설정하세요.</li>
-                  </ul>
-                </li>
-                <li>
-                  <strong>[Step.3] 특성 스케일링 및 선택</strong>
-                  <ul>
-                    <li>StandardScaler를 사용하여 특성을 스케일링하세요.</li>
-                    <li>SelectKBest와 f_regression을 사용하여 상위 2개의 가장 중요한 특성을 선택하여 selected_features 변수에 리스트로 저장하세요.</li>
-                  </ul>
-                </li>
-                <li>
-                  <strong>[Step.4] 모델 초기화 및 학습</strong>
-                  <ul>
-                    <li>여러 회귀 모델(Random Forest, Linear Regression, Ridge Regression, Lasso Regression)을 정의하고 초기화하세요.
-                    </li>
-                    <li>각 모델을 훈련 데이터에 대해 학습시키세요.</li>
-                    <li>가장 적합한 모델명을 best_model_name 변수에 저장하세요.</li>
-                  </ul>
-                </li>
-                <li>
-                  <strong>[Step.5] 모델 예측 및 평가</strong>
-                  <ul>
-                    <li>각 모델을 사용하여 테스트 데이터에 대한 예측을 수행합니다.</li>
-                    <li>예측 결과와 실제 결과 간의 MSE와 R2 점수를 계산하여 model_scores 변수에 리스트로 저장하세요.</li>
-                    <li>MSE를 기준으로 가장 성능이 좋은 모델을 선택하고, 해당 모델의 MSE와 R2 점수를 출력하세요.</li>
-                  </ul>
-                </li>
-                <li>
-                  <strong>[Step.6] 결과 시각화</strong>
-                  <ul>
-                    <li>하나의 차트에 모든 플롯을 포함하여 작성하세요 (figsize=(10, 6)).</li>
-                    <li>실제 수익(x축)과 예측 수익(y축)을 산점도로 표시하세요 (투명도 50%).</li>
-                    <li>실제 수익과 예측 수익이 일치하는 이상적인 라인을 굵기가 2인 빨간색 점선으로 표시하세요.</li>
-                    <li>그래프 제목을 'Actual vs Predicted Box Office Revenue\nusing {best_model_name}'로 설정하세요.</li>
-                  </ul>
-                </li>
-              </ol>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="score-summary">
+
+      <div id="dsResult" class="subtabcontent">
+        
+    <div class="score-summary">
         <div class="total-score">
           <h3>Competency Score</h3>
           <div class="score-circle">
@@ -625,12 +56,149 @@
             </div>
           </div>
         </div>
-      </div>
-      <h2>DS 점수 분포 및 평가자 위치</h2>
-      <div class="chart-container">
-        <canvas id="dsScoreDistributionChart"></canvas>
+    </div>
+        <h2>DS 점수 분포 및 평가자 위치</h2>
+        <div class="chart-container">
+          <canvas id="dsScoreDistributionChart"></canvas>
+        </div>
+        
+        <h2>스킬 분포 및 평가자 위치</h2>
+
+        <!-- 첫 번째 스킬 그래프 -->
+        <div class="graph" id="graph1">
+          <h3>Preprocessing 점수 분포</h3>
+          <canvas id="skillScoreDistributionChart_1"></canvas>
+        </div>
+      
+        <!-- 두 번째 스킬 그래프 -->
+        <div class="graph" id="graph2" style="display: none;">
+          <h3>Feature scaling 점수 분포</h3>
+          <canvas id="skillScoreDistributionChart_2"></canvas>
+        </div>
+      
+        <!-- 세 번째 스킬 그래프 -->
+        <div class="graph" id="graph3" style="display: none;">
+          <h3>Visualization 점수 분포</h3>
+          <canvas id="skillScoreDistributionChart_3"></canvas>
+        </div>
+        
+        <button id="prevGraph" disabled>이전</button>
+        <button id="nextGraph">다음</button>
+
+        <h2>DS Competency comment</h2>
+        <p id="dsCompetencyDescription"></p>
+  
+        <h2>DS Skill comment</h2>
+        <ul id="dsCompetencyComments"></ul>
       </div>
 
+      <div id="dsCode" class="subtabcontent">
+          <div class="static-analysis">
+            <h4>정적 분석 지표</h4>
+            <div class="metrics-grid">
+              <div class="metric">
+                <span class="metric-label">DUPLICATIONS</span>
+                <span class="metric-value" style="--percentage: 15%;">15%</span>
+              </div>
+              <div class="metric">
+                <span class="metric-label">CYCLOMATIC_COMPLEXITY</span>
+                <span class="metric-value">7</span>
+              </div>
+              <div class="metric">
+                <span class="metric-label">BUGS</span>
+                <span class="metric-value">3</span>
+              </div>
+              <div class="metric">
+                <span class="metric-label">CODING_STYLE</span>
+                <span class="metric-value" style="--percentage: 85%;">85%</span>
+              </div>
+              <div class="metric">
+                <span class="metric-label">CODE SMELL</span>
+                <span class="metric-value">5</span>
+              </div>
+            </div>
+          </div>
+          <pre><code id="codeEditor" class="python"></code></pre>
+          <h3>채점 결과</h3>
+          <div id="scoringResult">
+            <p>TestCase #1 >>> PASS ✔️</p>
+            <p>TestCase #2 >>> PASS ✔️</p>
+            <p>TestCase #3 >>> PASS ✔️</p>
+            <p>TestCase #4 >>> PASS ✔️</p>
+            <p>TestCase #5 >>> PASS ✔️</p>
+            <p>TestCase #6 >>> PASS ✔️</p>
+          </div>
+      
+
+        <div class="sidebar">
+          <div class="tags">
+            <div class="tag" data-tag="Preprocessing">Preprocessing</div>
+            <div class="tag" data-tag="model prediction and evaluation">model prediction and evaluation</div>
+            <div class="tag" data-tag="Visualization">Visualization</div>
+          </div>
+          <div class="problem-content">
+            <h4>문제</h4>
+            <p>당신은 영화 제작 회사의 데이터 분석 팀에 속해 있습니다. 당신의 임무는 다양한 특성을 기반으로 영화의 박스오피스 수익을 예측하는 모델을 구축하는 것입니다. 제공된 영화 메타데이터를
+              사용하여 회귀 모델을 만들고 그 성능을 평가하세요.</p>
+          </div>
+          <div class="guideline-content">
+            <h4>지침</h4>
+            <p>모든 코드는 evaluate_model() 함수에 작성하세요. 다음 순서를 따라 코드를 작성하세요:</p>
+            <ol>
+              <li>
+                <strong>[Step.1] 데이터 로드 및 전처리</strong>
+                <ul>
+                  <li>Pandas 라이브러리를 사용하여 './data.csv' 파일을 읽어 DataFrame 변수인 data에 저장하세요.</li>
+                  <li>결측값이 있는 행을 제거하여 데이터의 완전성을 유지하세요.</li>
+                </ul>
+              </li>
+              <li>
+                <strong>[Step.2] 훈련 세트와 테스트 세트 분할</strong>
+                <ul>
+                  <li>선택된 특성과 목표 변수를 사용하여 데이터를 훈련 세트(80%)와 테스트 세트(20%)로 분할하세요.</li>
+                  <li>random_state는 42로 설정하세요.</li>
+                </ul>
+              </li>
+              <li>
+                <strong>[Step.3] 특성 스케일링 및 선택</strong>
+                <ul>
+                  <li>StandardScaler를 사용하여 특성을 스케일링하세요.</li>
+                  <li>SelectKBest와 f_regression을 사용하여 상위 2개의 가장 중요한 특성을 선택하여 selected_features 변수에 리스트로 저장하세요.</li>
+                </ul>
+              </li>
+              <li>
+                <strong>[Step.4] 모델 초기화 및 학습</strong>
+                <ul>
+                  <li>여러 회귀 모델(Random Forest, Linear Regression, Ridge Regression, Lasso Regression)을 정의하고 초기화하세요.
+                  </li>
+                  <li>각 모델을 훈련 데이터에 대해 학습시키세요.</li>
+                  <li>가장 적합한 모델명을 best_model_name 변수에 저장하세요.</li>
+                </ul>
+              </li>
+              <li>
+                <strong>[Step.5] 모델 예측 및 평가</strong>
+                <ul>
+                  <li>각 모델을 사용하여 테스트 데이터에 대한 예측을 수행합니다.</li>
+                  <li>예측 결과와 실제 결과 간의 MSE와 R2 점수를 계산하여 model_scores 변수에 리스트로 저장하세요.</li>
+                  <li>MSE를 기준으로 가장 성능이 좋은 모델을 선택하고, 해당 모델의 MSE와 R2 점수를 출력하세요.</li>
+                </ul>
+              </li>
+              <li>
+                <strong>[Step.6] 결과 시각화</strong>
+                <ul>
+                  <li>하나의 차트에 모든 플롯을 포함하여 작성하세요 (figsize=(10, 6)).</li>
+                  <li>실제 수익(x축)과 예측 수익(y축)을 산점도로 표시하세요 (투명도 50%).</li>
+                  <li>실제 수익과 예측 수익이 일치하는 이상적인 라인을 굵기가 2인 빨간색 점선으로 표시하세요.</li>
+                  <li>그래프 제목을 'Actual vs Predicted Box Office Revenue\nusing {best_model_name}'로 설정하세요.</li>
+                </ul>
+              </li>
+            </ol>
+          </div>
+        </div>
+      </div>
+
+    
+    <div id="dsCheating" class="subtabcontent">
       <div class="time-info">
         <h3>소요 시간</h3>
         <div class="time-bar">
@@ -639,17 +207,12 @@
           </div>
         </div>
 
-        <div class="sub-tab-container">
-          <button class="sub-tab-button active" onclick="openSubTab('chartTab', 'ds')">Chart</button>
-          <button class="sub-tab-button" onclick="openSubTab('listTab', 'ds')">List</button>
-
-        </div>
-        <div id="chartTab" class="sub-tab-content active">
+        <div id="chartTab">
           <h4>타임라인 그래프</h4>
           <canvas id="ganttChart"></canvas>
         </div>
 
-        <div id="listTab" class="sub-tab-content">
+        <div id="listTab">
           <h4>부정행위 상세</h4>
           <table id="suspiciousActivitiesTable">
             <thead>
@@ -666,16 +229,17 @@
           </table>
         </div>
       </div>
-      <h2>DS Competency comment</h2>
-      <p id="dsCompetencyDescription"></p>
-
-      <h2>DS Skill comment</h2>
-      <ul id="dsCompetencyComments"></ul>
-    
   </div>
+  </div>
+  
+  <div id="sql" class="tabcontent">
+    <div class="subtab">
+      <button class="subtablink" onclick="openSubTab('sqlResult', 'sql', event)">결과</button>
+      <button class="subtablink" onclick="openSubTab('sqlCode', 'sql',event)">코드</button>
+      <button class="subtablink" onclick="openSubTab('sqlCheating', 'sql',event)">치팅</button>
+    </div>
 
-  <div id="sql" class="tab-content">
-    <h2>SQL Level 2 Result</h2>
+    <div id="sqlResult" class="subtabcontent">
     <div class="score-summary">
       <div class="total-score">
         <h3>Competency Score</h3>
@@ -706,11 +270,25 @@
         </div>
       </div>
     </div>
-
     <h2>SQL 점수 분포 및 평가자 위치</h2>
     <div class="chart-container">
       <canvas id="sqlScoreDistributionChart"></canvas>
     </div>
+    <h2>SQL Competency comment</h2>
+    <p id="sqlCompetencyDescription"></p>
+
+    <h2>SQL Skill comment</h2>
+    <ul id="sqlCompetencyComments"></ul>
+
+    <div id="sqlCode" class="subtabcontent">
+      <h3>SQL 코드</h3>
+      <pre><code>
+      </code></pre>
+    </div>
+
+
+
+    <div id="sqlCheating" class="subtabcontent">
     <div class="time-info">
       <h3>소요 시간</h3>
       <div class="time-bar">
@@ -719,17 +297,12 @@
         </div>
       </div>
 
-      <div class="sub-tab-container">
-        <button class="sub-tab-button active" onclick="openSubTab('sqlChartTab', 'sql')">Chart</button>
-        <button class="sub-tab-button" onclick="openSubTab('sqlListTab', 'sql')">List</button>
-
-      </div>
-      <div id="sqlChartTab" class="sub-tab-content active">
+      <div id="sqlChartTab">
         <h4>타임라인 그래프</h4>
         <canvas id="sqlGanttChart"></canvas>
       </div>
 
-      <div id="sqlListTab" class="sub-tab-content">
+      <div id="sqlListTab">
         <h4>부정행위 상세</h4>
         <div class="scrollable-table">
           <table id="sqlSuspiciousActivitiesTable">
@@ -748,521 +321,101 @@
         </div>
       </div>
     </div>
-
-    <h2>SQL Competency comment</h2>
-    <p id="sqlCompetencyDescription"></p>
-
-    <h2>SQL Skill comment</h2>
-    <ul id="sqlCompetencyComments"></ul>
+    </div>
   </div>
   </div>
 
   <script>
-    function updateScoreProgressColors() {
-      const scoreProgressBars = document.querySelectorAll('.score-progress');
-      scoreProgressBars.forEach(bar => {
-        const width = parseFloat(bar.style.width);
-        if (width < 70) {
-          bar.classList.add('low-score');
-        } else {
-          bar.classList.remove('low-score');
+document.addEventListener('DOMContentLoaded', function () {
+    let currentGraph = 1;
+    const totalGraphs = 3;
+
+    // 그래프 전환 함수
+    function showGraph(graphIndex) {
+        for (let i = 1; i <= totalGraphs; i++) {
+            const graph = document.getElementById(`graph${i}`);
+            if (i === graphIndex) {
+                graph.style.display = 'block';
+            } else {
+                graph.style.display = 'none';
+            }
         }
-      });
+
+        // 이전/다음 버튼 활성화/비활성화 처리
+        document.getElementById('prevGraph').disabled = graphIndex === 1;
+        document.getElementById('nextGraph').disabled = graphIndex === totalGraphs;
     }
 
-    function openTab(tabName) {
-      var tabContents = document.getElementsByClassName("tab-content");
-      var tabButtons = document.getElementsByClassName("tab-button");
+    // 초기 상태로 첫 번째 그래프 표시
+    showGraph(currentGraph);
 
-      for (var i = 0; i < tabContents.length; i++) {
-        tabContents[i].style.display = "none";
-        tabButtons[i].classList.remove("active");
-      }
-
-      document.getElementById(tabName).style.display = "block";
-      event.currentTarget.classList.add("active");
-
-      runAnimations(tabName);
-      setTimeout(updateScoreProgressColors, 100);
-      if (tabName === 'ds') {
-        openSubTab('chartTab', 'ds');
-      } else if (tabName === 'sql') {
-        openSubTab('sqlChartTab', 'sql');
-      }
-    }
-
-    function openSubTab(tabName, parentTabId) {
-      // 부모 탭 내의 모든 서브 탭 컨텐츠와 버튼을 찾습니다
-      var parentTab = document.getElementById(parentTabId);
-      var tabContents = parentTab.getElementsByClassName("sub-tab-content");
-      var tabButtons = parentTab.getElementsByClassName("sub-tab-button");
-
-      // 모든 서브 탭 컨텐츠를 숨기고 버튼의 active 클래스를 제거합니다
-      for (var i = 0; i < tabContents.length; i++) {
-        tabContents[i].style.display = "none";
-        tabButtons[i].classList.remove("active");
-      }
-
-      // 선택된 서브 탭 컨텐츠를 보이게 하고 해당 버튼을 활성화합니다
-      document.getElementById(tabName).style.display = "block";
-      event.currentTarget.classList.add("active");
-    }
-
-    // 페이지 로드 시 초기 상태 설정
-    document.addEventListener('DOMContentLoaded', function () {
-      // DS 탭의 초기 서브 탭 설정
-      document.getElementById('chartTab').style.display = "block";
-      // document.querySelector('#ds .sub-tab-button').classList.add("active");
-      document.querySelector('.tab-button[onclick="openTab(\'ds\')"]').addEventListener('click', function () {
-        openTab('ds');
-      });
-      // SQL 탭의 초기 서브 탭 설정
-      document.getElementById('sqlChartTab').style.display = "block";
-      // document.querySelector('#sql .sub-tab-button').classList.add("active");
-      document.querySelector('.tab-button[onclick="openTab(\'sql\')"]').addEventListener('click', function () {
-        openTab('sql');
-      });
-      const toggleInputs = document.querySelectorAll('.toggle-input');
-      toggleInputs.forEach(input => {
-        input.addEventListener('change', function () {
-          const contentId = this.closest('.toggle-container').querySelector('div').id;
-          const content = document.getElementById(contentId);
-          if (this.checked) {
-            content.style.display = 'block';
-          } else {
-            content.style.display = 'none';
-          }
-        });
-      });
-      const closeBtn = document.querySelector('.close');
-      closeBtn.addEventListener('click', closeCodePopup);
+    // 이전 버튼 클릭 이벤트
+    document.getElementById('prevGraph').addEventListener('click', function () {
+        if (currentGraph > 1) {
+            currentGraph--;
+            showGraph(currentGraph);
+        }
     });
 
-
-    function runAnimations(tabName) {
-      document.querySelectorAll('.time-progress').forEach(el => {
-        el.style.width = '0%';
-      });
-
-      setTimeout(() => {
-        if (tabName === 'ds') {
-          document.getElementById('dsTimeProgress').style.width = '91.7%';
-        } else if (tabName === 'sql') {
-          document.getElementById('sqlTimeProgress').style.width = '83.3%';
+    // 다음 버튼 클릭 이벤트
+    document.getElementById('nextGraph').addEventListener('click', function () {
+        if (currentGraph < totalGraphs) {
+            currentGraph++;
+            showGraph(currentGraph);
         }
-      }, 100);
-    }
-
-
-    function createScoreDistributionChart(canvasId, label, data, score) {
-      const ctx = document.getElementById(canvasId).getContext('2d');
-      const labels = ['0-20', '21-40', '41-60', '61-80', '81-100'];
-      const scoreIndex = Math.floor(score / 20);
-
-      new Chart(ctx, {
-        type: 'line',
-        data: {
-          labels: labels,
-          datasets: [{
-            label: label + ' 점수 분포',
-            data: data,
-            borderColor: 'rgba(75, 192, 192, 1)',
-            backgroundColor: 'rgba(75, 192, 192, 0.2)',
-            borderWidth: 2,
-            pointRadius: 5,
-            pointBackgroundColor: 'rgba(75, 192, 192, 1)',
-            fill: true
-          }, {
-            label: '평가자 점수',
-            data: labels.map((_, index) => index === scoreIndex ? score : null),
-            borderColor: 'rgba(255, 99, 132, 1)',
-            backgroundColor: 'rgba(255, 99, 132, 1)',
-            borderWidth: 2,
-            pointRadius: 7,
-            pointStyle: 'dot'
-          }]
-        },
-        options: {
-          responsive: true,
-          scales: {
-            y: {
-              beginAtZero: true,
-              title: { display: true, text: '인원 수' }
-            },
-            x: {
-              title: { display: true, text: '점수 구간' }
-            }
-          },
-          plugins: {
-            legend: { display: true },
-            title: { display: true, text: label + ' 평가 참가자 점수 분포' },
-            tooltip: {
-              callbacks: {
-                label: function (context) {
-                  if (context.dataset.label === '평가자 점수') {
-                    return `평가자 점수: ${score}`;
-                  }
-                  return `${context.dataset.label}: ${context.parsed.y}명`;
-                }
-              }
-            }
-          }
-        }
-      });
-    }
-
-    function getCompetencyDescription(score, field) {
-      if (field === 'DS') {
-        if (score >= 80) return "데이터 사이언스 분야에서 뛰어난 역량을 보여주고 있습니다.데이터 전처리, 특성 스케일링, 시각화 등의 핵심 기술을 능숙하게 다룰 수 있습니다. 복잡한 데이터셋을 효과적으로 분석하고 인사이트를 도출할 수 있는 능력을 갖추고 있습니다.";
-        else if (score >= 60) return "데이터 사이언스의 기본 개념을 잘 이해하고 있으며, 실무에 적용할 수 있는 수준입니다. 기본적인 데이터 분석과 모델링 작업을 수행할 수 있지만, 더 복잡한 문제에 대해서는 추가적인 학습이 필요할 수 있습니다.";
-        else return "데이터 사이언스의 기초 개념을 이해하고 있지만, 더 많은 학습과 실습이 필요합니다. 기본적인 데이터 처리와 분석은 가능하지만, 고급 기술의 적용에는 어려움이 있을 수 있습니다.";
-      } else if (field === 'SQL') {
-        if (score >= 80) return "SQL을 능숙하게 다루며, 복잡한 쿼리를 작성하고 최적화할 수 있는 수준입니다. 대규모 데이터베이스에서 효율적으로 데이터를 추출하고 조작할 수 있는 고급 기술을 보유하고 있습니다.";
-        else if (score >= 60) return "SQL의 기본 문법을 이해하고 일반적인 데이터베이스 작업을 수행할 수 있는 수준입니다. 간단한 쿼리부터 중간 수준의 복잡한 쿼리까지 작성할 수 있지만, 더 복잡한 최적화 기법에 대해서는 추가 학습이 필요할 수 있습니다.";
-        else return "SQL의 기초를 이해하고 있지만, 더 복잡한 쿼리 작성 능력을 향상시킬 필요가 있습니다. 기본적인 SELECT, INSERT, UPDATE, DELETE 문은 사용할 수 있지만, 조인이나 서브쿼리 등의 고급 기능 사용에는 어려움이 있을 수 있습니다.";
-      }
-    }
-    function getCompetencyComments(scores, field) {
-      const comments = [];
-      if (field === 'DS') {
-        if (scores.preprocessing >= 30) comments.push("데이터 전처리 능력이 우수합니다. 다양한 데이터 유형에 대한 효과적인 정제 및 변환 기술을 보유하고 있습니다.");
-        else comments.push("데이터 전처리 기술을 더 향상시킬 필요가 있습니다. 결측치 처리, 이상치 탐지, 데이터 정규화 등의 기법에 대한 추가 학습이 도움이 될 것입니다.");
-
-        if (scores.featureScaling >= 28) comments.push("특성 스케일링을 효과적으로 수행할 수 있습니다. 다양한 스케일링 기법을 상황에 맞게 적용할 수 있는 능력이 돋보입니다.");
-        else comments.push("특성 스케일링 기법에 대한 추가 학습이 필요합니다. 정규화, 표준화 등 다양한 스케일링 방법의 특성과 적용 시기에 대한 이해를 깊게 할 필요가 있습니다.");
-
-        if (scores.visualization >= 27) comments.push("데이터 시각화 능력이 뛰어납니다. 복잡한 데이터를 효과적으로 표현하고 인사이트를 도출할 수 있는 시각화 기술을 보유하고 있습니다.");
-        else comments.push("데이터 시각화 기술을 더 발전시킬 필요가 있습니다. 다양한 차트 유형과 시각화 라이브러리 사용법에 대한 추가 학습이 도움이 될 것입니다.");
-      } else if (field === 'SQL') {
-        if (scores.dataRetrieval >= 25) comments.push("데이터 검색 능력이 우수합니다. 복잡한 조건을 가진 쿼리를 효율적으로 작성할 수 있습니다.");
-        else comments.push("데이터 검색 쿼리 작성 능력을 향상시킬 필요가 있습니다. WHERE 절의 다양한 조건 사용과 서브쿼리 활용 등에 대한 추가 학습이 도움이 될 것입니다.");
-
-        if (scores.dataFiltering >= 28) comments.push("데이터 필터링을 효과적으로 수행할 수 있습니다. 복잡한 조건을 사용한 데이터 필터링 능력이 뛰어납니다.");
-        else comments.push("데이터 필터링 기법에 대한 추가 학습이 필요합니다. 고급 WHERE 절 사용법과 HAVING 절 활용 등에 대한 이해를 깊게 할 필요가 있습니다.");
-
-        if (scores.dataJoining >= 25) comments.push("데이터 조인 능력이 뛰어납니다. 다양한 조인 유형을 상황에 맞게 적절히 사용할 수 있습니다.");
-        else comments.push("데이터 조인 기술을 더 발전시킬 필요가 있습니다. INNER JOIN, OUTER JOIN, CROSS JOIN 등 다양한 조인 유형과 그 활용에 대한 추가 학습이 도움이 될 것입니다.");
-      }
-      return comments;
-    }
-
-    function updateCompetencyInfo() {
-      const dsScore = 85;
-      const sqlScore = 70;
-      const dsScores = { preprocessing: 30, featureScaling: 28, visualization: 27 };
-      const sqlScores = { dataRetrieval: 15, dataFiltering: 30, dataJoining: 20 };
-
-      document.getElementById('dsCompetencyDescription').textContent = getCompetencyDescription(dsScore, 'DS');
-      document.getElementById('sqlCompetencyDescription').textContent = getCompetencyDescription(sqlScore, 'SQL');
-
-      const dsComments = getCompetencyComments(dsScores, 'DS');
-      const sqlComments = getCompetencyComments(sqlScores, 'SQL');
-
-      document.getElementById('dsCompetencyComments').innerHTML = dsComments.map(comment => `<li>${comment}</li>`).join('');
-      document.getElementById('sqlCompetencyComments').innerHTML = sqlComments.map(comment => `<li>${comment}</li>`).join('');
-    }
-
-    document.addEventListener('DOMContentLoaded', function () {
-      const urlParams = new URLSearchParams(window.location.search);
-      const evaluatorName = urlParams.get('name') || '평가자';
-      document.getElementById('evaluatorName').textContent = evaluatorName + ' 상세 정보';
-
-      createScoreDistributionChart('dsScoreDistributionChart', 'DS', [1, 3, 8, 15, 8], 85);
-      createScoreDistributionChart('sqlScoreDistributionChart', 'SQL', [2, 5, 10, 12, 6], 70);
-
-      updateCompetencyInfo();
-      runAnimations('ds');
-      updateScoreProgressColors();
     });
 
-    function createGanttChart(canvasId, data) {
-      const ctx = document.getElementById(canvasId).getContext('2d');
-      new Chart(ctx, {
-        type: 'bar',
-        data: data,
-        options: {
-          indexAxis: 'y',
-          scales: {
-            x: {
-              type: 'linear',
-              position: 'top',
-              title: {
-                display: true,
-                text: '시간 (분)'
-              }
+    // Chart.js로 각 스킬의 점수 분포 차트 생성
+    function createSkillScoreDistributionChart(canvasId, label, data, evaluatorScore) {
+        const ctx = document.getElementById(canvasId);
+        const labels = ['0-20', '21-40', '41-60', '61-80', '81-100'];
+        const scoreIndex = Math.floor(evaluatorScore / 20);
+
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [
+                    {
+                        label: `${label} 점수 분포`,
+                        data: data,
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        borderWidth: 2,
+                        pointRadius: 5,
+                        pointBackgroundColor: 'rgba(75, 192, 192, 1)',
+                        fill: true,
+                    },
+                    {
+                        label: '평가자 점수',
+                        data: labels.map((_, index) => (index === scoreIndex ? evaluatorScore : null)),
+                        borderColor: 'rgba(255,99,132,1)',
+                        backgroundColor: 'rgba(255,99,132,1)',
+                        borderWidth: 2,
+                        pointRadius: 7,
+                        pointStyle: 'rectRot',
+                    },
+                ],
             },
-            y: {
-              title: {
-                display: true,
-                text: '문제'
-              }
-            }
-          },
-          plugins: {
-            legend: {
-              display: true,
-              position: 'bottom'
-            },
-            tooltip: {
-              callbacks: {
-                title: function (context) {
-                  return context[0].dataset.label;
+            options: {
+                responsive: true,
+                animation: false,
+                scales: {
+                    y: { beginAtZero: true },
+                    x: { title: { display: true, text: '점수 구간' } },
                 },
-                label: function (context) {
-                  const start = context.raw.x[0];
-                  const end = context.raw.x[1];
-                  return `${context.label}: ${start}분 - ${end}분`;
-                }
-              }
-            }
-          }
-        }
-      });
-    }
-
-    function populateSuspiciousActivitiesTable(tableId, activities) {
-      const tableBody = document.querySelector(`#${tableId} tbody`);
-      activities.forEach(activity => {
-        const row = tableBody.insertRow();
-        row.insertCell(0).textContent = activity.time;
-        row.insertCell(1).textContent = activity.problem;
-        row.insertCell(2).textContent = activity.type;
-        const detailCell = row.insertCell(3);
-        if (activity.detail === '동영상 재생버튼') {
-          detailCell.innerHTML = '<i class="fas fa-play-circle"></i> ';
-        } else {
-          detailCell.textContent = activity.detail;
-        }
-      });
-    }
-
-    // DS 간트 차트 데이터
-    const dsGanttData = {
-      labels: ['문제 1', '문제 2', '문제 3', '문제 4'],
-      datasets: [
-        {
-          label: '문제 풀이',
-          data: [
-            { x: [0, 25], y: '문제 1' },
-            { x: [30, 60], y: '문제 2' },
-            { x: [65, 90], y: '문제 3' },
-            { x: [95, 110], y: '문제 4' }
-          ],
-          backgroundColor: 'rgba(75, 192, 192, 0.6)'
-        },
-        {
-          label: '탭 전환',
-          data: [
-            { x: [15, 17], y: '문제 1' },
-            { x: [45, 47], y: '문제 2' },
-            { x: [80, 82], y: '문제 3' }
-          ],
-          backgroundColor: 'rgba(255, 99, 132, 0.6)'
-        },
-        {
-          label: '복사 붙여넣기',
-          data: [
-            { x: [5, 6], y: '문제 1' },
-            { x: [50, 53], y: '문제 2' },
-            { x: [67, 70], y: '문제 3' }
-          ],
-          backgroundColor: '#e4ec9a'
-        }
-      ]
-    };
-
-    // SQL 간트 차트 데이터
-    const sqlGanttData = {
-      labels: ['문제 1', '문제 2', '문제 3', '문제 4'],
-      datasets: [
-        {
-          label: '문제 풀이',
-          data: [
-            { x: [0, 20], y: '문제 1' },
-            { x: [25, 50], y: '문제 2' },
-            { x: [55, 75], y: '문제 3' },
-            { x: [80, 100], y: '문제 4' }
-          ],
-          backgroundColor: 'rgba(75, 192, 192, 0.6)'
-        },
-        {
-          label: '탭 전환',
-          data: [
-            { x: [10, 12], y: '문제 1' },
-            { x: [35, 37], y: '문제 2' },
-            { x: [65, 67], y: '문제 3' }
-          ],
-          backgroundColor: 'rgba(255, 99, 132, 0.6)'
-        },
-        {
-          label: '복사 붙여넣기',
-          data: [
-            { x: [5, 6], y: '문제 1' },
-            { x: [40, 42], y: '문제 2' },
-            { x: [70, 72], y: '문제 3' }
-          ],
-          backgroundColor: '#e4ec9a'
-        }
-      ]
-    };
-
-    // DS 부정행위 데이터
-    const dsSuspiciousActivities = [
-      { time: '00:15:00', problem: '1번문제', type: '탭 전환', detail: '동영상 재생버튼' },
-      { time: '00:05:00', problem: '1번문제', type: '복사 붙여넣기', detail: '동영상 재생버튼' },
-      { time: '00:45:00', problem: '2번문제', type: '탭 전환', detail: '동영상 재생버튼' },
-      { time: '00:50:00', problem: '2번문제', type: '복사 붙여넣기', detail: '동영상 재생버튼' },
-      { time: '01:20:00', problem: '3번문제', type: '탭 전환', detail: '동영상 재생버튼' },
-      { time: '01:07:00', problem: '3번문제', type: '복사 붙여넣기', detail: '동영상 재생버튼' }
-    ];
-
-    // SQL 부정행위 데이터
-    const sqlSuspiciousActivities = [
-      { time: '00:10:00', problem: '1번문제', type: '탭 전환', detail: '동영상 재생버튼' },
-      { time: '00:05:00', problem: '1번문제', type: '복사 붙여넣기', detail: '동영상 재생버튼' },
-      { time: '00:35:00', problem: '2번문제', type: '탭 전환', detail: '동영상 재생버튼' },
-      { time: '00:40:00', problem: '2번문제', type: '복사 붙여넣기', detail: '동영상 재생버튼' },
-      { time: '00:65:00', problem: '3번문제', type: '탭 전환', detail: '동영상 재생버튼' },
-      { time: '00:70:00', problem: '3번문제', type: '복사 붙여넣기', detail: '동영상 재생버튼' },
-      { time: '00:75:00', problem: '3번문제', type: '탭 전환', detail: '동영상 재생버튼' },
-      { time: '00:85:00', problem: '4번문제', type: '탭 전환', detail: '동영상 재생버튼' },
-      { time: '00:90:00', problem: '4번문제', type: '복사 붙여넣기', detail: '동영상 재생버튼' },
-      { time: '00:95:00', problem: '4번문제', type: '탭 전환', detail: '동영상 재생버튼' }
-    ];
-
-    // 차트 및 테이블 생성
-    createGanttChart('ganttChart', dsGanttData);
-    createGanttChart('sqlGanttChart', sqlGanttData);
-    populateSuspiciousActivitiesTable('suspiciousActivitiesTable', dsSuspiciousActivities);
-    populateSuspiciousActivitiesTable('sqlSuspiciousActivitiesTable', sqlSuspiciousActivities);
-
-    function openCodePopup() {
-      document.getElementById("codePopup").style.display = "block";
-      const code = `import pandas as pd
-import numpy as np
-from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import StandardScaler
-from sklearn.feature_selection import SelectKBest, f_regression
-from sklearn.metrics import mean_squared_error, r2_score
-from sklearn.ensemble import RandomForestRegressor
-from sklearn.linear_model import LinearRegression, Ridge, Lasso
-import matplotlib.pyplot as plt
-import codepresso_util as cu
-
-# Preprocessing
-def evaluate_model():
-  movies_df = pd.read_csv('data.csv', low_memory=False)
-
-  features = ['budget', 'popularity', 'runtime', 'vote_average', 'vote_count']
-  target = 'revenue'
-
-  movies_df = movies_df.dropna(subset=features + [target])
-
-  X = movies_df[features]
-  y = movies_df[target]
-
-# model prediction and evaluation
-  X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
-
-  scaler = StandardScaler()
-  X_train_scaled = scaler.fit_transform(X_train)
-  X_test_scaled = scaler.transform(X_test)
-
-  selector = SelectKBest(score_func=f_regression, k=2)
-  X_train_selected = selector.fit_transform(X_train_scaled, y_train)
-  X_test_selected = selector.transform(X_test_scaled)
-
-  selected_features = X.columns[selector.get_support()].tolist()
-
-  models = {
-    'Random Forest': RandomForestRegressor(n_estimators=100, random_state=42),
-    'Linear Regression': LinearRegression(),
-    'Ridge Regression': Ridge(alpha=1.0),
-    'Lasso Regression': Lasso(alpha=1.0)
-  }
-
-  model_scores = {}
-  for name, model in models.items():
-    model.fit(X_train_selected, y_train)
-    y_pred = model.predict(X_test_selected)
-    mse = mean_squared_error(y_test, y_pred)
-    r2 = r2_score(y_test, y_pred)
-    model_scores[name] = {'MSE': mse, 'R2': r2}
-
-  best_model_name = min(model_scores, key=lambda x: model_scores[x]['MSE'])
-  best_model = models[best_model_name]
-
-  print(f"Best model: {best_model_name}")
-  print(f"Best MSE: {model_scores[best_model_name]['MSE']}")
-  print(f"Best R2: {model_scores[best_model_name]['R2']}")
-
-  y_pred = best_model.predict(X_test_selected)
-
-# Visualization
-  plt.figure(figsize=(10, 6))
-  plt.scatter(y_test, y_pred, alpha=0.5)
-  plt.plot([y_test.min(), y_test.max()], [y_test.min(), y_test.max()], 'r--', lw=2)
-  plt.xlabel('Actual Revenue')
-  plt.ylabel('Predicted Revenue')
-  plt.title(f'Actual vs Predicted Box Office Revenue\\nusing {best_model_name}')
-  plt.show()
-
-  return selected_features, best_model_name
-
-# $ANNOTATION_2
-cu.validate(evaluate_model)`;
-      document.getElementById("codeEditor").textContent = code;
-      addTagClickListeners();
-      highlightCode();
-    }
-
-    //   // 채점 결과를 가져오는 로직을 추가하세요
-    //   document.getElementById("scoringResult").innerHTML = "채점 결과를 여기에 표시합니다.";
-    // }
-    function closeCodePopup() {
-      document.getElementById("codePopup").style.display = "none";
-    }
-
-    function highlightCode() {
-      hljs.highlightElement(document.getElementById("codeEditor"));
-    }
-
-
-    function highlightCodeSection(tagName) {
-      const codeEditor = document.getElementById("codeEditor");
-      const codeLines = codeEditor.textContent.split('\n');
-      let inSection = false;
-      const highlightedLines = codeLines.map(line => {
-        if (line.includes(`# ${tagName}`)) {
-          inSection = true;
-          return `<span class="highlighted-line">${line}</span>`;
-        } else if (line.includes('#') && inSection) {
-          inSection = false;
-        }
-        return inSection ? `<span class="highlighted-line">${line}</span>` : line;
-      });
-      codeEditor.innerHTML = highlightedLines.join('\n');
-    }
-
-    function closeCodePopup() {
-      document.getElementById("codePopup").style.display = "none";
-    }
-
-    // 팝업창 외부 클릭 시 닫기
-    window.onclick = function (event) {
-      if (event.target == document.getElementById("codePopup")) {
-        closeCodePopup();
-      }
-    }
-    function addTagClickListeners() {
-      const tags = document.querySelectorAll('.tag');
-      tags.forEach(tag => {
-        tag.addEventListener('click', function () {
-          const tagName = this.getAttribute('data-tag');
-          highlightCodeSection(tagName);
+                plugins: {
+                    legend: { display: true }
+                },
+            },
         });
-      });
     }
+
+    // 각 스킬에 대한 차트 생성
+    createSkillScoreDistributionChart('skillScoreDistributionChart_1', 'Preprocessing', [5, 10, 15, 20, 10], 75);
+    createSkillScoreDistributionChart('skillScoreDistributionChart_2', 'Feature scaling', [8, 12, 18, 22, 7], 65);
+    createSkillScoreDistributionChart('skillScoreDistributionChart_3', 'Visualization', [6, 9, 14, 19, 12], 85);
+});
   </script>
 </body>
 
