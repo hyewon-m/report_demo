@@ -147,8 +147,11 @@ h1, h2, h3 {
 }
 
 .chart-container {
-  margin-top: 20px;
-  height: 300px;
+  width: 100%;
+  max-width: 800px; /* 차트의 최대 너비 설정 */
+  margin: 0 auto; /* 중앙 정렬 */
+  padding: 20px;
+  box-sizing: border-box;
 }
 
 .sub-tab-container {
@@ -348,10 +351,6 @@ button.active:hover {
   width: 70%;
 }
 
-.sidebar {
-  width: 25%;
-  padding-left: 20px;
-}
 
 .static-analysis {
   background-color: #f0f4f8;
@@ -512,15 +511,22 @@ button.active:hover {
   margin-top: 20px;
 }
 
+
+
+
 .sidebar {
   position: fixed; /* 사이드바를 화면에 고정 */
   right: 0; /* 화면의 오른쪽에 고정 */
   top: 0; /* 상단에서 시작 */
-  width: 250px; /* 고정된 너비 설정 */
+  width: 350px; /* 고정된 너비 설정 */
   height: 100%; /* 전체 화면 높이를 차지 */
+  
+  overflow-y: auto; /* 세로 스크롤 추가 */
   background-color: #f0f0f0;
   padding: 20px;
 }
+
+
 .chart-container {
   text-align: center;
 }
@@ -550,3 +556,21 @@ button:hover {
 button.active {
   background-color: #4CAF50; /* 활성화된 버튼은 녹색 */
 }
+
+
+.content {
+  margin-left: 270px; /* 사이드바 너비 + 여백 */
+  padding: 20px;
+}
+
+/* .chart-container {
+  width: 100%;
+  overflow-x: auto;
+} */
+
+#ganttChart {
+  min-width: 800px;
+  min-height: 400px;
+}
+
+
