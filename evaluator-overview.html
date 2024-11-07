@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evaluator Overview - Codepresso</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="evaluator-overview.css">
+</head>
+<body>
+    <div class="container">
+        <div class="tab-buttons">
+            <button class="tab-button" onclick="goToPage('index.html')">Overview</button>
+            <button class="tab-button active" onclick="goToPage('evaluator-overview.html')">evaluator-overview</button>
+        </div>
+        <div class="container">
+          <div class="evaluator-container">
+              <div class="evaluator-filter">
+                  <h2>Evaluator Filtering</h2>
+                  <div class="filter-group">
+                      <button class="toggle-btn" onclick="toggleFilter('statusFilter')">Status</button>
+                      <div id="statusFilter" class="filter-content">
+                          <label><input type="checkbox" checked> All</label><br>
+                          <label><input type="checkbox"> Pass</label><br>
+                          <label><input type="checkbox"> Fail</label>
+                      </div>
+                  </div>
+                  <div class="filter-group">
+                      <button class="toggle-btn" onclick="toggleFilter('scoreFilter')">Score</button>
+                      <div id="scoreFilter" class="filter-content">
+                          <input type="range" min="0" max="100" value="0">
+                      </div>
+                  </div>
+                  <div class="filter-group">
+                      <button class="toggle-btn" onclick="toggleFilter('competencyFilter')">Competency</button>
+                      <div id="competencyFilter" class="filter-content">
+                          <label><input type="checkbox" checked> All</label><br>
+                          <label><input type="checkbox"> DS</label><br>
+                          <label><input type="checkbox"> SQL</label>
+                      </div>
+                  </div>
+              </div>
+              <div class="evaluator-table">
+                  <table id="evaluatorTable">
+                      <thead>
+                          <tr>
+                              <th>Name</th>
+                              <th>DS</th>
+                              <th>Status</th>
+                              <th>SQL</th>
+                              <th>Status</th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                          <!-- JavaScript will populate this -->
+                      </tbody>
+                  </table>
+              </div>
+          </div>
+      </div>
+    </div>
+
+    <script src="evaluator-overview.js"></script>
+</body>
+</html>
