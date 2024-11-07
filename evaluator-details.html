@@ -10,6 +10,8 @@
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation"></script>
     <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
     <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-annotation/1.0.2/chartjs-plugin-annotation.min.js"></script>
     <link rel="stylesheet" href="evaluator_styles.css">
     <script src="evaluator_script.js" defer></script>
 </head>
@@ -20,9 +22,9 @@
   </div>
   <div id="ds" class="tabcontent">
     <div class="subtab">
-      <button class="subtablink" onclick="openSubTab('dsResult', 'ds', event)">결과</button>
-      <button class="subtablink" onclick="openSubTab('dsCode', 'ds', event)">코드</button>
-      <button class="subtablink" onclick="openSubTab('dsCheating', 'ds', event)">치팅</button>
+      <button class="subtablink" onclick="openSubTab('dsResult', 'ds', event)">Results</button>
+      <button class="subtablink" onclick="openSubTab('dsCode', 'ds', event)">Code</button>
+      <button class="subtablink" onclick="openSubTab('dsCheating', 'ds', event)">Cheating</button>
     </div>
 
       <div id="dsResult" class="subtabcontent">
@@ -57,228 +59,239 @@
           </div>
         </div>
     </div>
-        <h2>DS 점수 분포 및 평가자 위치</h2>
-        <div class="chart-container">
-          <canvas id="dsScoreDistributionChart"></canvas>
-        </div>
-        
-        <h2>스킬 분포 및 평가자 위치</h2>
+    <h3>DS Competency comment</h3>
+    <p id="dsCompetencyDescription"></p>
 
-        <!-- 첫 번째 스킬 그래프 -->
-        <div class="graph" id="graph1">
-          <h3>Preprocessing 점수 분포</h3>
-          <canvas id="skillScoreDistributionChart_1"></canvas>
+    <h3>DS Skill comment</h3>
+    <ul id="dsCompetencyComments"></ul>
+    <h3>DS score distribution and evaluator position</h3>
+    <div class="chart-container">
+      <canvas id="dsScoreDistributionChart"></canvas>
+    </div>
+    
+    <h3>Skill distribution and evaluator position</h3>
+    
+    <!-- First skill graph -->
+    <div class="graph" id="graph1">
+      <canvas id="skillScoreDistributionChart_1"></canvas>
+    </div>
+    
+    <!-- Second skill graph -->
+    <div class="graph" id="graph2" style="display: none;">
+      <canvas id="skillScoreDistributionChart_2"></canvas>
+    </div>
+    
+    <!-- Third skill graph -->
+    <div class="graph" id="graph3" style="display: none;">
+      <canvas id="skillScoreDistributionChart_3"></canvas>
+    </div>
+    
+    <button id="prevGraph" disabled>Previous</button>
+    <button id="nextGraph">Next</button>
+    
+    </div>
+    
+    <div id="dsCode" class="subtabcontent">
+      <div class="static-analysis">
+        <h4>Static Analysis Metrics</h4>
+        <div class="metrics-grid">
+          <div class="metric">
+            <span class="metric-label">DUPLICATIONS</span>
+            <span class="metric-value" style="--percentage: 15%;">15%</span>
+          </div>
+          <div class="metric">
+            <span class="metric-label">CYCLOMATIC_COMPLEXITY</span>
+            <span class="metric-value">7</span>
+          </div>
+          <div class="metric">
+            <span class="metric-label">BUGS</span>
+            <span class="metric-value">3</span>
+          </div>
+          <div class="metric">
+            <span class="metric-label">CODING_STYLE</span>
+            <span class="metric-value" style="--percentage: 85%;">85%</span>
+          </div>
+          <div class="metric">
+            <span class="metric-label">CODE SMELL</span>
+            <span class="metric-value">5</span>
+          </div>
         </div>
-      
-        <!-- 두 번째 스킬 그래프 -->
-        <div class="graph" id="graph2" style="display: none;">
-          <h3>Feature scaling 점수 분포</h3>
-          <canvas id="skillScoreDistributionChart_2"></canvas>
-        </div>
-      
-        <!-- 세 번째 스킬 그래프 -->
-        <div class="graph" id="graph3" style="display: none;">
-          <h3>Visualization 점수 분포</h3>
-          <canvas id="skillScoreDistributionChart_3"></canvas>
-        </div>
-        
-        <button id="prevGraph" disabled>이전</button>
-        <button id="nextGraph">다음</button>
-
-        <h2>DS Competency comment</h2>
-        <p id="dsCompetencyDescription"></p>
-  
-        <h2>DS Skill comment</h2>
-        <ul id="dsCompetencyComments"></ul>
       </div>
-
-      <div id="dsCode" class="subtabcontent">
-          <div class="static-analysis">
-            <h4>정적 분석 지표</h4>
-            <div class="metrics-grid">
-              <div class="metric">
-                <span class="metric-label">DUPLICATIONS</span>
-                <span class="metric-value" style="--percentage: 15%;">15%</span>
-              </div>
-              <div class="metric">
-                <span class="metric-label">CYCLOMATIC_COMPLEXITY</span>
-                <span class="metric-value">7</span>
-              </div>
-              <div class="metric">
-                <span class="metric-label">BUGS</span>
-                <span class="metric-value">3</span>
-              </div>
-              <div class="metric">
-                <span class="metric-label">CODING_STYLE</span>
-                <span class="metric-value" style="--percentage: 85%;">85%</span>
-              </div>
-              <div class="metric">
-                <span class="metric-label">CODE SMELL</span>
-                <span class="metric-value">5</span>
-              </div>
-            </div>
-          </div>
-          <pre><code id="codeEditor" class="python"></code></pre>
-          <h3>채점 결과</h3>
-          <div id="scoringResult">
-            <p>TestCase #1 >>> PASS ✔️</p>
-            <p>TestCase #2 >>> PASS ✔️</p>
-            <p>TestCase #3 >>> PASS ✔️</p>
-            <p>TestCase #4 >>> PASS ✔️</p>
-            <p>TestCase #5 >>> PASS ✔️</p>
-            <p>TestCase #6 >>> PASS ✔️</p>
-          </div>
+      <pre><code id="codeEditor" class="python"></code></pre>
+      <h3>Scoring Results</h3>
+      <div id="scoringResult">
+        <p>TestCase #1 >>> PASS ✔️</p>
+        <p>TestCase #2 >>> PASS ✔️</p>
+        <p>TestCase #3 >>> PASS ✔️</p>
+        <p>TestCase #4 >>> PASS ✔️</p>
+        <p>TestCase #5 >>> PASS ✔️</p>
+        <p>TestCase #6 >>> PASS ✔️</p>
+      </div>
       
 
         <div class="sidebar">
-          <div class="tags">
-            <div class="tag" data-tag="Preprocessing">Preprocessing</div>
-            <div class="tag" data-tag="model prediction and evaluation">model prediction and evaluation</div>
-            <div class="tag" data-tag="Visualization">Visualization</div>
-          </div>
-          <div class="problem-content">
-            <h4>문제</h4>
-            <p>당신은 영화 제작 회사의 데이터 분석 팀에 속해 있습니다. 당신의 임무는 다양한 특성을 기반으로 영화의 박스오피스 수익을 예측하는 모델을 구축하는 것입니다. 제공된 영화 메타데이터를
-              사용하여 회귀 모델을 만들고 그 성능을 평가하세요.</p>
-          </div>
-          <div class="guideline-content">
-            <h4>지침</h4>
-            <p>모든 코드는 evaluate_model() 함수에 작성하세요. 다음 순서를 따라 코드를 작성하세요:</p>
-            <ol>
-              <li>
-                <strong>[Step.1] 데이터 로드 및 전처리</strong>
-                <ul>
-                  <li>Pandas 라이브러리를 사용하여 './data.csv' 파일을 읽어 DataFrame 변수인 data에 저장하세요.</li>
-                  <li>결측값이 있는 행을 제거하여 데이터의 완전성을 유지하세요.</li>
-                </ul>
-              </li>
-              <li>
-                <strong>[Step.2] 훈련 세트와 테스트 세트 분할</strong>
-                <ul>
-                  <li>선택된 특성과 목표 변수를 사용하여 데이터를 훈련 세트(80%)와 테스트 세트(20%)로 분할하세요.</li>
-                  <li>random_state는 42로 설정하세요.</li>
-                </ul>
-              </li>
-              <li>
-                <strong>[Step.3] 특성 스케일링 및 선택</strong>
-                <ul>
-                  <li>StandardScaler를 사용하여 특성을 스케일링하세요.</li>
-                  <li>SelectKBest와 f_regression을 사용하여 상위 2개의 가장 중요한 특성을 선택하여 selected_features 변수에 리스트로 저장하세요.</li>
-                </ul>
-              </li>
-              <li>
-                <strong>[Step.4] 모델 초기화 및 학습</strong>
-                <ul>
-                  <li>여러 회귀 모델(Random Forest, Linear Regression, Ridge Regression, Lasso Regression)을 정의하고 초기화하세요.
-                  </li>
-                  <li>각 모델을 훈련 데이터에 대해 학습시키세요.</li>
-                  <li>가장 적합한 모델명을 best_model_name 변수에 저장하세요.</li>
-                </ul>
-              </li>
-              <li>
-                <strong>[Step.5] 모델 예측 및 평가</strong>
-                <ul>
-                  <li>각 모델을 사용하여 테스트 데이터에 대한 예측을 수행합니다.</li>
-                  <li>예측 결과와 실제 결과 간의 MSE와 R2 점수를 계산하여 model_scores 변수에 리스트로 저장하세요.</li>
-                  <li>MSE를 기준으로 가장 성능이 좋은 모델을 선택하고, 해당 모델의 MSE와 R2 점수를 출력하세요.</li>
-                </ul>
-              </li>
-              <li>
-                <strong>[Step.6] 결과 시각화</strong>
-                <ul>
-                  <li>하나의 차트에 모든 플롯을 포함하여 작성하세요 (figsize=(10, 6)).</li>
-                  <li>실제 수익(x축)과 예측 수익(y축)을 산점도로 표시하세요 (투명도 50%).</li>
-                  <li>실제 수익과 예측 수익이 일치하는 이상적인 라인을 굵기가 2인 빨간색 점선으로 표시하세요.</li>
-                  <li>그래프 제목을 'Actual vs Predicted Box Office Revenue\nusing {best_model_name}'로 설정하세요.</li>
-                </ul>
-              </li>
-            </ol>
-          </div>
-        </div>
-      </div>
+  <div class="tags">
+    <div class="tag" data-tag="Preprocessing">Preprocessing</div>
+    <div class="tag" data-tag="model prediction and evaluation">model prediction and evaluation</div>
+    <div class="tag" data-tag="Visualization">Visualization</div>
+  </div>
+  <div class="problem-content">
+    <h4>Problem</h4>
+    <p>You are part of the data analysis team at a movie production company. Your task is to build a model that predicts box office revenue based on various features. Use the provided movie metadata to create a regression model and evaluate its performance.</p>
+  </div>
+  <div class="guideline-content">
+    <h4>Guidelines</h4>
+    <p>Write all your code in the evaluate_model() function. Follow these steps to write your code:</p>
+    <ol>
+      <li>
+        <strong>[Step.1] Load and preprocess data</strong>
+        <ul>
+          <li>Use the Pandas library to read the './data.csv' file and store it in a DataFrame variable called data.</li>
+          <li>Remove rows with missing values to maintain data completeness.</li>
+        </ul>
+      </li>
+      <li>
+        <strong>[Step.2] Split into training and test sets</strong>
+        <ul>
+          <li>Split the data into training (80%) and test (20%) sets using the selected features and target variable.</li>
+          <li>Set random_state to 42.</li>
+        </ul>
+      </li>
+      <li>
+        <strong>[Step.3] Feature scaling and selection</strong>
+        <ul>
+          <li>Use StandardScaler to scale the features.</li>
+          <li>Use SelectKBest and f_regression to select the top 2 most important features and store them in a list variable called selected_features.</li>
+        </ul>
+      </li>
+      <li>
+        <strong>[Step.4] Initialize and train models</strong>
+        <ul>
+          <li>Define and initialize multiple regression models (Random Forest, Linear Regression, Ridge Regression, Lasso Regression).</li>
+          <li>Train each model on the training data.</li>
+          <li>Store the name of the best-performing model in the best_model_name variable.</li>
+        </ul>
+      </li>
+      <li>
+        <strong>[Step.5] Model prediction and evaluation</strong>
+        <ul>
+          <li>Use each model to make predictions on the test data.</li>
+          <li>Calculate the MSE and R2 score between the predicted and actual results, and store them in a list variable called model_scores.</li>
+          <li>Select the best-performing model based on MSE and print its MSE and R2 score.</li>
+        </ul>
+      </li>
+      <li>
+        <strong>[Step.6] Visualize results</strong>
+        <ul>
+          <li>Create a single chart containing all plots (figsize=(10, 6)).</li>
+          <li>Display actual revenue (x-axis) vs. predicted revenue (y-axis) as a scatter plot (50% transparency).</li>
+          <li>Show the ideal line where actual revenue matches predicted revenue as a red dashed line with a thickness of 2.</li>
+          <li>Set the graph title to 'Actual vs Predicted Box Office Revenue\nusing {best_model_name}'.</li>
+        </ul>
+      </li>
+    </ol>
+  </div>
+</div>
+</div>
+
 
     
-    <div id="dsCheating" class="subtabcontent">
-      <div class="time-info">
-        <h3>소요 시간</h3>
-        <div class="time-bar">
-          <div class="time-progress" id="dsTimeProgress">
-            <span class="time-text">110분 / 120분</span>
-          </div>
-        </div>
-
-        <div id="chartTab">
-          <h4>타임라인 그래프</h4>
-          <canvas id="ganttChart"></canvas>
-        </div>
-
-        <div id="listTab">
-          <h4>부정행위 상세</h4>
-          <table id="suspiciousActivitiesTable">
-            <thead>
-              <tr>
-                <th>시간</th>
-                <th>문제 번호</th>
-                <th>활동 유형</th>
-                <th>영상 확인</th>
-              </tr>
-            </thead>
-            <tbody>
-              <!-- Table body will be populated by JavaScript -->
-            </tbody>
-          </table>
-        </div>
+<div id="dsCheating" class="subtabcontent">
+  <div class="time-info">
+    <h3>Time Spent</h3>
+    <div class="time-bar">
+      <div class="time-progress" id="dsTimeProgress">
+        <span class="time-text">110 minutes / 120 minutes</span>
       </div>
+    </div>
+
+    <div id="chartTab">
+      <h4>Timeline Graph</h4>
+      <canvas id="ganttChart"></canvas>
+    </div>
+
+    <div id="listTab">
+      <h4>Cheating Details</h4>
+      <table id="suspiciousActivitiesTable">
+        <thead>
+          <tr>
+            <th>Time</th>
+            <th>Problem Number</th>
+            <th>Activity Type</th>
+            <th>Video Confirmation</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Table body will be populated by JavaScript -->
+        </tbody>
+      </table>
+    </div>
   </div>
+</div>
   </div>
   
-  <div id="sql" class="tabcontent">
-    <div class="subtab">
-      <button class="subtablink" onclick="openSubTab('sqlResult', 'sql', event)">결과</button>
-      <button class="subtablink" onclick="openSubTab('sqlCode', 'sql',event)">코드</button>
-      <button class="subtablink" onclick="openSubTab('sqlCheating', 'sql',event)">치팅</button>
-    </div>
+<div id="sql" class="tabcontent">
+  <div class="subtab">
+    <button class="subtablink" onclick="openSubTab('sqlResult', 'sql', event)">Results</button>
+    <button class="subtablink" onclick="openSubTab('sqlCode', 'sql',event)">Code</button>
+    <button class="subtablink" onclick="openSubTab('sqlCheating', 'sql',event)">Cheating</button>
+  </div>
 
-    <div id="sqlResult" class="subtabcontent">
-    <div class="score-summary">
-      <div class="total-score">
-        <h3>Competency Score</h3>
-        <div class="score-circle_sql">
-          <span class="score-value">70</span>
-          <span class="score-max">/100</span>
+  <div id="sqlResult" class="subtabcontent">
+  <div class="score-summary">
+    <div class="total-score">
+      <h3>Competency Score</h3>
+      <div class="score-circle_sql">
+        <span class="score-value">70</span>
+        <span class="score-max">/100</span>
+      </div>
+    </div>
+    <div class="individual-scores">
+      <h3>Skill</h3>
+      <div class="score-bar">
+        <div class="score-label">Data Retrieval</div>
+        <div class="score-progress" style="width: 42.9%;">
+          <span class="score-text">15/35</span>
         </div>
       </div>
-      <div class="individual-scores">
-        <h3>Skill</h3>
-        <div class="score-bar">
-          <div class="score-label">Data Retrieval</div>
-          <div class="score-progress" style="width: 42.9%;">
-            <span class="score-text">15/35</span>
-          </div>
+      <div class="score-bar">
+        <div class="score-label">Data Filtering</div>
+        <div class="score-progress" style="width: 85.7%;">
+          <span class="score-text">30/35</span>
         </div>
-        <div class="score-bar">
-          <div class="score-label">Data Filtering</div>
-          <div class="score-progress" style="width: 85.7%;">
-            <span class="score-text">30/35</span>
-          </div>
-        </div>
-        <div class="score-bar">
-          <div class="score-label">Data Joining</div>
-          <div class="score-progress" style="width: 66.7%;">
-            <span class="score-text">20/30</span>
-          </div>
+      </div>
+      <div class="score-bar">
+        <div class="score-label">Data Joining</div>
+        <div class="score-progress" style="width: 66.7%;">
+          <span class="score-text">20/30</span>
         </div>
       </div>
     </div>
-    <h2>SQL 점수 분포 및 평가자 위치</h2>
+  </div>
+    
+    <h3>SQL Competency comment</h3>
+    <p id="sqlCompetencyDescription"></p>
+
+    <h3>SQL Skill comment</h3>
+    <ul id="sqlCompetencyComments"></ul>
+    <h3>SQL score distribution and evaluator position</h3>
     <div class="chart-container">
       <canvas id="sqlScoreDistributionChart"></canvas>
     </div>
-    <h2>SQL Competency comment</h2>
-    <p id="sqlCompetencyDescription"></p>
 
-    <h2>SQL Skill comment</h2>
-    <ul id="sqlCompetencyComments"></ul>
+    <h3>Skill distribution and evaluator position</h3>
+<div class="graph" id="sqlGraph1">
+  <canvas id="sqlSkillScoreDistributionChart_1"></canvas>
+</div>
+<div class="graph" id="sqlGraph2" style="display: none;">
+  <canvas id="sqlSkillScoreDistributionChart_2"></canvas>
+</div>
+<div class="graph" id="sqlGraph3" style="display: none;">
+  <canvas id="sqlSkillScoreDistributionChart_3"></canvas>
+</div>
+<button id="sqlPrevGraph" disabled>Previous</button>
+<button id="sqlNextGraph">Next</button>
+
 
     <div id="sqlCode" class="subtabcontent">
       <h3>SQL 코드</h3>
@@ -329,6 +342,8 @@
 document.addEventListener('DOMContentLoaded', function () {
     let currentGraph = 1;
     const totalGraphs = 3;
+    let sqlCurrentGraph = 1;
+  const sqlTotalGraphs = 3;
 
     // 그래프 전환 함수
     function showGraph(graphIndex) {
@@ -364,6 +379,36 @@ document.addEventListener('DOMContentLoaded', function () {
             showGraph(currentGraph);
         }
     });
+    
+  function showSqlGraph(graphIndex) {
+    for (let i = 1; i <= sqlTotalGraphs; i++) {
+      const graph = document.getElementById(`sqlGraph${i}`);
+      if (i === graphIndex) {
+        graph.style.display = 'block';
+      } else {
+        graph.style.display = 'none';
+      }
+    }
+    document.getElementById('sqlPrevGraph').disabled = graphIndex === 1;
+    document.getElementById('sqlNextGraph').disabled = graphIndex === sqlTotalGraphs;
+  }
+
+  showSqlGraph(sqlCurrentGraph);
+
+  document.getElementById('sqlPrevGraph').addEventListener('click', function () {
+    if (sqlCurrentGraph > 1) {
+      sqlCurrentGraph--;
+      showSqlGraph(sqlCurrentGraph);
+    }
+  });
+
+  document.getElementById('sqlNextGraph').addEventListener('click', function () {
+    if (sqlCurrentGraph < sqlTotalGraphs) {
+      sqlCurrentGraph++;
+      showSqlGraph(sqlCurrentGraph);
+    }
+  });
+
 
     // Chart.js로 각 스킬의 점수 분포 차트 생성
     function createSkillScoreDistributionChart(canvasId, label, data, evaluatorScore) {
@@ -376,45 +421,73 @@ document.addEventListener('DOMContentLoaded', function () {
             data: {
                 labels: labels,
                 datasets: [
-                    {
-                        label: `${label} 점수 분포`,
-                        data: data,
-                        borderColor: 'rgba(75, 192, 192, 1)',
-                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                        borderWidth: 2,
-                        pointRadius: 5,
-                        pointBackgroundColor: 'rgba(75, 192, 192, 1)',
-                        fill: true,
-                    },
-                    {
-                        label: '평가자 점수',
-                        data: labels.map((_, index) => (index === scoreIndex ? evaluatorScore : null)),
-                        borderColor: 'rgba(255,99,132,1)',
-                        backgroundColor: 'rgba(255,99,132,1)',
-                        borderWidth: 2,
-                        pointRadius: 7,
-                        pointStyle: 'rectRot',
-                    },
-                ],
+                {
+                label: `${label} Score Distribution`,
+                data: data,
+                borderColor: 'rgba(75, 192, 192, 1)',
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                borderWidth: 2,
+                pointRadius: 5,
+                pointBackgroundColor: 'rgba(75, 192, 192, 1)',
+                fill: true,
+            }
+          ]
             },
             options: {
-                responsive: true,
-                animation: false,
-                scales: {
-                    y: { beginAtZero: true },
-                    x: { title: { display: true, text: '점수 구간' } },
-                },
-                plugins: {
-                    legend: { display: true }
-                },
-            },
-        });
+      responsive: true,
+      scales: {
+        y: {
+          beginAtZero: true,
+          title: {
+            display: true,
+            text: 'Number of People'
+          }
+        },
+        x: {
+          title: {
+            display: true,
+            text: 'Score Range'
+          }
+        }
+      },
+      plugins: {
+        legend: { display: true },
+        tooltip: {
+          callbacks: {
+            label: function(context) {
+              return `${context.dataset.label}: ${context.parsed.y} people`;
+            }
+          }
+        },
+        annotation: {
+          annotations: {
+            line1: {
+              type: 'line',
+              xMin: scoreIndex,
+              xMax: scoreIndex,
+              borderColor: 'rgba(255, 99, 132, 1)',
+              borderWidth: 2,
+              label: {
+                content: `Evaluator Score: ${evaluatorScore}`,
+                enabled: true,
+                position: 'top'
+              }
+            }
+          }
+        }
+      }
     }
-
+  });
+}
     // 각 스킬에 대한 차트 생성
     createSkillScoreDistributionChart('skillScoreDistributionChart_1', 'Preprocessing', [5, 10, 15, 20, 10], 75);
     createSkillScoreDistributionChart('skillScoreDistributionChart_2', 'Feature scaling', [8, 12, 18, 22, 7], 65);
     createSkillScoreDistributionChart('skillScoreDistributionChart_3', 'Visualization', [6, 9, 14, 19, 12], 85);
+
+    createSkillScoreDistributionChart('sqlSkillScoreDistributionChart_1', 'Data Retrieval', [7, 12, 18, 22, 8], 15);
+  createSkillScoreDistributionChart('sqlSkillScoreDistributionChart_2', 'Data Filtering', [5, 10, 20, 25, 10], 30);
+  createSkillScoreDistributionChart('sqlSkillScoreDistributionChart_3', 'Data Joining', [8, 15, 22, 18, 7], 20);
+
 });
   </script>
 </body>
