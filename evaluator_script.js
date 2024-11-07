@@ -215,24 +215,20 @@ function runAnimations(tabName) {
 
 
 function createScoreDistributionChart(canvasId, label, data, score) {
-  const ctx = document.getElementById(canvasId);
-  if (!ctx) {
-    console.error(`Canvas with id ${canvasId} not found`);
-    return;
-  }
+  const ctx = document.getElementById(canvasId).getContext('2d');
   const labels = ['0-20', '21-40', '41-60', '61-80', '81-100'];
   const scoreIndex = Math.floor(score / 20);
   
   if (window.myChart && window.myChart[canvasId]) {
     window.myChart[canvasId].destroy();
   }
-
+  
   new Chart(ctx, {
     type: 'line',
     data: {
       labels: labels,
       datasets: [{
-        label: label + ' 점수 분포',
+        label: label + ' Score Distribution',
         data: data,
         borderColor: 'rgba(75, 192, 192, 1)',
         backgroundColor: 'rgba(75, 192, 192, 0.2)',
@@ -240,14 +236,6 @@ function createScoreDistributionChart(canvasId, label, data, score) {
         pointRadius: 5,
         pointBackgroundColor: 'rgba(75, 192, 192, 1)',
         fill: true
-      }, {
-        label: '평가자 점수',
-        data: labels.map((_, index) => index === scoreIndex ? score : null),
-        borderColor: 'rgba(255, 99, 132, 1)',
-        backgroundColor: 'rgba(255, 99, 132, 1)',
-        borderWidth: 2,
-        pointRadius: 7,
-        pointStyle: 'dot'
       }]
     },
     options: {
@@ -255,22 +243,34 @@ function createScoreDistributionChart(canvasId, label, data, score) {
       scales: {
         y: {
           beginAtZero: true,
-          title: { display: true, text: '인원 수' }
+          title: { display: true, text: 'Number of People' }
         },
         x: {
-          title: { display: true, text: '점수 구간' }
+          title: { display: true, text: 'Score Range' }
         }
       },
       plugins: {
         legend: { display: true },
-        title: { display: true, text: label + ' 평가 참가자 점수 분포' },
         tooltip: {
           callbacks: {
             label: function (context) {
-              if (context.dataset.label === '평가자 점수') {
-                return `평가자 점수: ${score}`;
+              return `${context.dataset.label}: ${context.parsed.y} people`;
+            }
+          }
+        },
+        annotation: {
+          annotations: {
+            line1: {
+              type: 'line',
+              xMin: scoreIndex,
+              xMax: scoreIndex,
+              borderColor: 'rgba(255, 99, 132, 1)',
+              borderWidth: 2,
+              label: {
+                content: `Evaluator Score: ${score}`,
+                enabled: true,
+                position: 'top'
               }
-              return `${context.dataset.label}: ${context.parsed.y}명`;
             }
           }
         }
@@ -281,35 +281,36 @@ function createScoreDistributionChart(canvasId, label, data, score) {
 
 function getCompetencyDescription(score, field) {
   if (field === 'DS') {
-    if (score >= 80) return "데이터 사이언스 분야에서 뛰어난 역량을 보여주고 있습니다.데이터 전처리, 특성 스케일링, 시각화 등의 핵심 기술을 능숙하게 다룰 수 있습니다. 복잡한 데이터셋을 효과적으로 분석하고 인사이트를 도출할 수 있는 능력을 갖추고 있습니다.";
-    else if (score >= 60) return "데이터 사이언스의 기본 개념을 잘 이해하고 있으며, 실무에 적용할 수 있는 수준입니다. 기본적인 데이터 분석과 모델링 작업을 수행할 수 있지만, 더 복잡한 문제에 대해서는 추가적인 학습이 필요할 수 있습니다.";
-    else return "데이터 사이언스의 기초 개념을 이해하고 있지만, 더 많은 학습과 실습이 필요합니다. 기본적인 데이터 처리와 분석은 가능하지만, 고급 기술의 적용에는 어려움이 있을 수 있습니다.";
+    if (score >= 80) return "You demonstrate excellent competence in the field of data science. You can skillfully handle core techniques such as data preprocessing, feature scaling, and visualization. You have the ability to effectively analyze complex datasets and derive insights.";
+    else if (score >= 60) return "You have a good understanding of basic data science concepts and can apply them in practical situations. You can perform basic data analysis and modeling tasks, but may need additional learning for more complex problems.";
+    else return "You understand the basic concepts of data science, but more learning and practice are needed. Basic data processing and analysis are possible, but you may have difficulties applying advanced techniques.";
   } else if (field === 'SQL') {
-    if (score >= 80) return "SQL을 능숙하게 다루며, 복잡한 쿼리를 작성하고 최적화할 수 있는 수준입니다. 대규모 데이터베이스에서 효율적으로 데이터를 추출하고 조작할 수 있는 고급 기술을 보유하고 있습니다.";
-    else if (score >= 60) return "SQL의 기본 문법을 이해하고 일반적인 데이터베이스 작업을 수행할 수 있는 수준입니다. 간단한 쿼리부터 중간 수준의 복잡한 쿼리까지 작성할 수 있지만, 더 복잡한 최적화 기법에 대해서는 추가 학습이 필요할 수 있습니다.";
-    else return "SQL의 기초를 이해하고 있지만, 더 복잡한 쿼리 작성 능력을 향상시킬 필요가 있습니다. 기본적인 SELECT, INSERT, UPDATE, DELETE 문은 사용할 수 있지만, 조인이나 서브쿼리 등의 고급 기능 사용에는 어려움이 있을 수 있습니다.";
+    if (score >= 80) return "You are proficient in SQL and can write and optimize complex queries. You possess advanced skills to efficiently extract and manipulate data from large-scale databases.";
+    else if (score >= 60) return "You understand the basic syntax of SQL and can perform common database operations. You can write simple to moderately complex queries, but may need additional learning for more complex optimization techniques.";
+    else return "You understand the basics of SQL, but need to improve your ability to write more complex queries. You can use basic SELECT, INSERT, UPDATE, DELETE statements, but may have difficulties with advanced features like joins or subqueries.";
   }
 }
+
 function getCompetencyComments(scores, field) {
   const comments = [];
   if (field === 'DS') {
-    if (scores.preprocessing >= 30) comments.push("데이터 전처리 능력이 우수합니다. 다양한 데이터 유형에 대한 효과적인 정제 및 변환 기술을 보유하고 있습니다.");
-    else comments.push("데이터 전처리 기술을 더 향상시킬 필요가 있습니다. 결측치 처리, 이상치 탐지, 데이터 정규화 등의 기법에 대한 추가 학습이 도움이 될 것입니다.");
+    if (scores.preprocessing >= 30) comments.push("Your data preprocessing skills are excellent. You have effective refinement and transformation techniques for various data types.");
+    else comments.push("You need to improve your data preprocessing techniques. Additional learning on handling missing values, outlier detection, and data normalization would be beneficial.");
 
-    if (scores.featureScaling >= 28) comments.push("특성 스케일링을 효과적으로 수행할 수 있습니다. 다양한 스케일링 기법을 상황에 맞게 적용할 수 있는 능력이 돋보입니다.");
-    else comments.push("특성 스케일링 기법에 대한 추가 학습이 필요합니다. 정규화, 표준화 등 다양한 스케일링 방법의 특성과 적용 시기에 대한 이해를 깊게 할 필요가 있습니다.");
+    if (scores.featureScaling >= 28) comments.push("You can perform feature scaling effectively. Your ability to apply various scaling techniques appropriately to different situations is noteworthy.");
+    else comments.push("You need additional learning on feature scaling techniques. A deeper understanding of various scaling methods like normalization, standardization, and when to apply them is necessary.");
 
-    if (scores.visualization >= 27) comments.push("데이터 시각화 능력이 뛰어납니다. 복잡한 데이터를 효과적으로 표현하고 인사이트를 도출할 수 있는 시각화 기술을 보유하고 있습니다.");
-    else comments.push("데이터 시각화 기술을 더 발전시킬 필요가 있습니다. 다양한 차트 유형과 시각화 라이브러리 사용법에 대한 추가 학습이 도움이 될 것입니다.");
+    if (scores.visualization >= 27) comments.push("Your data visualization skills are outstanding. You have the visualization techniques to effectively represent complex data and derive insights.");
+    else comments.push("You need to further develop your data visualization skills. Additional learning on various chart types and the use of visualization libraries would be helpful.");
   } else if (field === 'SQL') {
-    if (scores.dataRetrieval >= 25) comments.push("데이터 검색 능력이 우수합니다. 복잡한 조건을 가진 쿼리를 효율적으로 작성할 수 있습니다.");
-    else comments.push("데이터 검색 쿼리 작성 능력을 향상시킬 필요가 있습니다. WHERE 절의 다양한 조건 사용과 서브쿼리 활용 등에 대한 추가 학습이 도움이 될 것입니다.");
+    if (scores.dataRetrieval >= 25) comments.push("Your data retrieval skills are excellent. You can efficiently write queries with complex conditions.");
+    else comments.push("You need to improve your data retrieval query writing skills. Additional learning on using various conditions in WHERE clauses and utilizing subqueries would be beneficial.");
 
-    if (scores.dataFiltering >= 28) comments.push("데이터 필터링을 효과적으로 수행할 수 있습니다. 복잡한 조건을 사용한 데이터 필터링 능력이 뛰어납니다.");
-    else comments.push("데이터 필터링 기법에 대한 추가 학습이 필요합니다. 고급 WHERE 절 사용법과 HAVING 절 활용 등에 대한 이해를 깊게 할 필요가 있습니다.");
+    if (scores.dataFiltering >= 28) comments.push("You can perform data filtering effectively. Your ability to use complex conditions for data filtering is outstanding.");
+    else comments.push("You need additional learning on data filtering techniques. A deeper understanding of advanced WHERE clause usage and HAVING clause utilization is necessary.");
 
-    if (scores.dataJoining >= 25) comments.push("데이터 조인 능력이 뛰어납니다. 다양한 조인 유형을 상황에 맞게 적절히 사용할 수 있습니다.");
-    else comments.push("데이터 조인 기술을 더 발전시킬 필요가 있습니다. INNER JOIN, OUTER JOIN, CROSS JOIN 등 다양한 조인 유형과 그 활용에 대한 추가 학습이 도움이 될 것입니다.");
+    if (scores.dataJoining >= 25) comments.push("Your data joining skills are excellent. You can appropriately use various join types according to the situation.");
+    else comments.push("You need to further develop your data joining skills. Additional learning on various join types such as INNER JOIN, OUTER JOIN, CROSS JOIN, and their applications would be helpful.");
   }
   return comments;
 }
@@ -347,13 +348,13 @@ function createGanttChart(canvasId, data) {
           position: 'top',
           title: {
             display: true,
-            text: '시간 (분)'
+            text: 'Time (minutes)'
           }
         },
         y: {
           title: {
             display: true,
-            text: '문제'
+            text: 'Problem'
           }
         }
       },
@@ -370,7 +371,7 @@ function createGanttChart(canvasId, data) {
             label: function (context) {
               const start = context.raw.x[0];
               const end = context.raw.x[1];
-              return `${context.label}: ${start}분 - ${end}분`;
+              return `${context.label}: ${start}min - ${end}min`;
             }
           }
         }
@@ -387,7 +388,7 @@ function populateSuspiciousActivitiesTable(tableId, activities) {
     row.insertCell(1).textContent = activity.problem;
     row.insertCell(2).textContent = activity.type;
     const detailCell = row.insertCell(3);
-    if (activity.detail === '동영상 재생버튼') {
+    if (activity.detail === 'Video play button') {
       detailCell.innerHTML = '<i class="fas fa-play-circle"></i> ';
     } else {
       detailCell.textContent = activity.detail;
@@ -395,98 +396,98 @@ function populateSuspiciousActivitiesTable(tableId, activities) {
   });
 }
 
-// DS 간트 차트 데이터
+// DS Gantt chart data
 const dsGanttData = {
-  labels: ['문제 1', '문제 2', '문제 3', '문제 4'],
+  labels: ['Problem 1', 'Problem 2', 'Problem 3', 'Problem 4'],
   datasets: [
     {
-      label: '문제 풀이',
+      label: 'Problem Solving',
       data: [
-        { x: [0, 25], y: '문제 1' },
-        { x: [30, 60], y: '문제 2' },
-        { x: [65, 90], y: '문제 3' },
-        { x: [95, 110], y: '문제 4' }
+        { x: [0, 25], y: 'Problem 1' },
+        { x: [30, 60], y: 'Problem 2' },
+        { x: [65, 90], y: 'Problem 3' },
+        { x: [95, 110], y: 'Problem 4' }
       ],
       backgroundColor: 'rgba(75, 192, 192, 0.6)'
     },
     {
-      label: '탭 전환',
+      label: 'Tab Switching',
       data: [
-        { x: [15, 17], y: '문제 1' },
-        { x: [45, 47], y: '문제 2' },
-        { x: [80, 82], y: '문제 3' }
+        { x: [15, 17], y: 'Problem 1' },
+        { x: [45, 47], y: 'Problem 2' },
+        { x: [80, 82], y: 'Problem 3' }
       ],
       backgroundColor: 'rgba(255, 99, 132, 0.6)'
     },
     {
-      label: '복사 붙여넣기',
+      label: 'Copy and Paste',
       data: [
-        { x: [5, 6], y: '문제 1' },
-        { x: [50, 53], y: '문제 2' },
-        { x: [67, 70], y: '문제 3' }
+        { x: [5, 6], y: 'Problem 1' },
+        { x: [50, 53], y: 'Problem 2' },
+        { x: [67, 70], y: 'Problem 3' }
       ],
       backgroundColor: '#e4ec9a'
     }
   ]
 };
 
-// SQL 간트 차트 데이터
+// SQL Gantt chart data
 const sqlGanttData = {
-  labels: ['문제 1', '문제 2', '문제 3', '문제 4'],
+  labels: ['Problem 1', 'Problem 2', 'Problem 3', 'Problem 4'],
   datasets: [
     {
-      label: '문제 풀이',
+      label: 'Problem Solving',
       data: [
-        { x: [0, 20], y: '문제 1' },
-        { x: [25, 50], y: '문제 2' },
-        { x: [55, 75], y: '문제 3' },
-        { x: [80, 100], y: '문제 4' }
+        { x: [0, 20], y: 'Problem 1' },
+        { x: [25, 50], y: 'Problem 2' },
+        { x: [55, 75], y: 'Problem 3' },
+        { x: [80, 100], y: 'Problem 4' }
       ],
       backgroundColor: 'rgba(75, 192, 192, 0.6)'
     },
     {
-      label: '탭 전환',
+      label: 'Tab Switching',
       data: [
-        { x: [10, 12], y: '문제 1' },
-        { x: [35, 37], y: '문제 2' },
-        { x: [65, 67], y: '문제 3' }
+        { x: [10, 12], y: 'Problem 1' },
+        { x: [35, 37], y: 'Problem 2' },
+        { x: [65, 67], y: 'Problem 3' }
       ],
       backgroundColor: 'rgba(255, 99, 132, 0.6)'
     },
     {
-      label: '복사 붙여넣기',
+      label: 'Copy and Paste',
       data: [
-        { x: [5, 6], y: '문제 1' },
-        { x: [40, 42], y: '문제 2' },
-        { x: [70, 72], y: '문제 3' }
+        { x: [5, 6], y: 'Problem 1' },
+        { x: [40, 42], y: 'Problem 2' },
+        { x: [70, 72], y: 'Problem 3' }
       ],
       backgroundColor: '#e4ec9a'
     }
   ]
 };
 
-// DS 부정행위 데이터
+// DS suspicious activities data
 const dsSuspiciousActivities = [
-  { time: '00:15:00', problem: '1번문제', type: '탭 전환', detail: '동영상 재생버튼' },
-  { time: '00:05:00', problem: '1번문제', type: '복사 붙여넣기', detail: '동영상 재생버튼' },
-  { time: '00:45:00', problem: '2번문제', type: '탭 전환', detail: '동영상 재생버튼' },
-  { time: '00:50:00', problem: '2번문제', type: '복사 붙여넣기', detail: '동영상 재생버튼' },
-  { time: '01:20:00', problem: '3번문제', type: '탭 전환', detail: '동영상 재생버튼' },
-  { time: '01:07:00', problem: '3번문제', type: '복사 붙여넣기', detail: '동영상 재생버튼' }
+  { time: '00:15:00', problem: 'Problem 1', type: 'Tab Switching', detail: 'Video play button' },
+  { time: '00:05:00', problem: 'Problem 1', type: 'Copy and Paste', detail: 'Video play button' },
+  { time: '00:45:00', problem: 'Problem 2', type: 'Tab Switching', detail: 'Video play button' },
+  { time: '00:50:00', problem: 'Problem 2', type: 'Copy and Paste', detail: 'Video play button' },
+  { time: '01:20:00', problem: 'Problem 3', type: 'Tab Switching', detail: 'Video play button' },
+  { time: '01:07:00', problem: 'Problem 3', type: 'Copy and Paste', detail: 'Video play button' }
 ];
 
-// SQL 부정행위 데이터
+// SQL suspicious activities data
 const sqlSuspiciousActivities = [
-  { time: '00:10:00', problem: '1번문제', type: '탭 전환', detail: '동영상 재생버튼' },
-  { time: '00:05:00', problem: '1번문제', type: '복사 붙여넣기', detail: '동영상 재생버튼' },
-  { time: '00:35:00', problem: '2번문제', type: '탭 전환', detail: '동영상 재생버튼' },
-  { time: '00:40:00', problem: '2번문제', type: '복사 붙여넣기', detail: '동영상 재생버튼' },
-  { time: '00:65:00', problem: '3번문제', type: '탭 전환', detail: '동영상 재생버튼' },
-  { time: '00:70:00', problem: '3번문제', type: '복사 붙여넣기', detail: '동영상 재생버튼' },
-  { time: '00:75:00', problem: '3번문제', type: '탭 전환', detail: '동영상 재생버튼' },
-  { time: '00:85:00', problem: '4번문제', type: '탭 전환', detail: '동영상 재생버튼' },
-  { time: '00:90:00', problem: '4번문제', type: '복사 붙여넣기', detail: '동영상 재생버튼' },
-  { time: '00:95:00', problem: '4번문제', type: '탭 전환', detail: '동영상 재생버튼' }
+  { time: '00:10:00', problem: 'Problem 1', type: 'Tab Switching', detail: 'Video play button' },
+  { time: '00:05:00', problem: 'Problem 1', type: 'Copy and Paste', detail: 'Video play button' },
+  { time: '00:35:00', problem: 'Problem 2', type: 'Tab Switching', detail: 'Video play button' },
+  { time: '00:40:00', problem: 'Problem 2', type: 'Copy and Paste', detail: 'Video play button' },
+  { time: '00:65:00', problem: 'Problem 3', type: 'Tab Switching', detail: 'Video play button' },
+  { time: '00:70:00', problem: 'Problem 3', type: 'Copy and Paste', detail: 'Video play button' },
+  { time: '00:75:00', problem: 'Problem 3', type: 'Tab Switching', detail: 'Video play button' },
+  { time: '00:85:00', problem: 'Problem 4', type: 'Tab Switching', detail: 'Video play button' },
+  { time: '00:90:00', problem: 'Problem 4', type: 'Copy and Paste', detail: 'Video play button' },
+  { time: '00:95:00', problem: 'Problem 4', type: 'Tab Switching', detail: 'Video play button' }
 ];
 
 // 차트 및 테이블 생성
@@ -523,12 +524,7 @@ function closeCodePopup() {
   document.getElementById("codePopup").style.display = "none";
 }
 
-// 팝업창 외부 클릭 시 닫기
-window.onclick = function (event) {
-  if (event.target == document.getElementById("codePopup")) {
-    closeCodePopup();
-  }
-}
+
 function addTagClickListeners() {
   const tags = document.querySelectorAll('.tag');
   tags.forEach(tag => {
