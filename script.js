@@ -16,7 +16,7 @@ function showTab(tabId) {
   }
 
   if (tabId === 'overview') {
-      showSubTab('ds'); // Overview 탭에서 기본적으로 DS 탭 표시
+      showSubTab('ds'); // Overview 탭에서 기본적으로 Data Science 탭 표시
   }
 }
 
@@ -123,38 +123,105 @@ function updateStats(field, testData, allData) {
       (<span style="color: rgba(255, 99, 132, 1)">${allStats.median}</span>)`;
 }
 
+// function createScoreDistributionChart(canvasId, label, testScores, allScores) {
+//   const createData = (scores) => {
+//     const data = [0, 0, 0, 0, 0];
+//     scores.forEach(score => {
+//       const index = Math.min(Math.floor(score / 20), 4);
+//       data[index]++;
+//     });
+//     return data;
+//   };
+
+//   const data = {
+//     labels: ['0-20', '21-40', '41-60', '61-80', '81-100'],
+//     datasets: [
+//       {
+//         label: 'Test Candidates',
+//         data: createData(testScores),
+//         borderColor: 'rgba(75, 192, 192, 1)',
+//         backgroundColor: 'rgba(75, 192, 192, 0.2)',
+//         borderWidth: 2,
+//         pointRadius: 5,
+//         pointBackgroundColor: 'rgba(75, 192, 192, 1)',
+//         fill: true
+//       },
+//       {
+//         label: 'All Candidates',
+//         data: createData(allScores),
+//         borderColor: 'rgba(255, 99, 132, 1)',
+//         backgroundColor: 'rgba(255, 99, 132, 0.2)',
+//         borderWidth: 2,
+//         pointRadius: 5,
+//         pointBackgroundColor: 'rgba(255, 99, 132, 1)',
+//         fill: true
+//       }
+//     ]
+//   };
+
+//   const options = {
+//     responsive: true,
+//     scales: {
+//       y: {
+//         beginAtZero: true,
+//         title: {
+//           display: true,
+//           text: 'Number of Candidates'
+//         }
+//       },
+//       x: {
+//         title: {
+//           display: true,
+//           text: 'Score Range'
+//         }
+//       }
+//     },
+//     plugins: {
+//       legend: { display: true },
+//       title: {
+//         display: true,
+//         text: label + ' Evaluation Candidates Score Distribution'
+//       }
+//     }
+//   };
+
+//   createChart(canvasId, 'line', data, options);
+// }
 function createScoreDistributionChart(canvasId, label, testScores, allScores) {
-  const createData = (scores) => {
-    const data = [0, 0, 0, 0, 0];
+  const createPercentageData = (scores) => {
+    const total = scores.length;
+    const data = new Array(11).fill(0);
     scores.forEach(score => {
-      const index = Math.min(Math.floor(score / 20), 4);
+      const index = Math.min(Math.floor(score / 10), 10);
       data[index]++;
     });
-    return data;
+    return data.map(count => (count / total) * 100);
   };
 
+  const labels = Array.from({length: 11}, (_, i) => i * 10);
+
   const data = {
-    labels: ['0-20', '21-40', '41-60', '61-80', '81-100'],
+    labels: labels,
     datasets: [
       {
         label: 'Test Candidates',
-        data: createData(testScores),
+        data: createPercentageData(testScores),
         borderColor: 'rgba(75, 192, 192, 1)',
         backgroundColor: 'rgba(75, 192, 192, 0.2)',
         borderWidth: 2,
-        pointRadius: 5,
-        pointBackgroundColor: 'rgba(75, 192, 192, 1)',
-        fill: true
+        pointRadius: 0,
+        fill: true,
+        tension: 0.4
       },
       {
         label: 'All Candidates',
-        data: createData(allScores),
+        data: createPercentageData(allScores),
         borderColor: 'rgba(255, 99, 132, 1)',
         backgroundColor: 'rgba(255, 99, 132, 0.2)',
         borderWidth: 2,
-        pointRadius: 5,
-        pointBackgroundColor: 'rgba(255, 99, 132, 1)',
-        fill: true
+        pointRadius: 0,
+        fill: true,
+        tension: 0.4
       }
     ]
   };
@@ -166,13 +233,23 @@ function createScoreDistributionChart(canvasId, label, testScores, allScores) {
         beginAtZero: true,
         title: {
           display: true,
-          text: 'Number of Candidates'
+          text: 'Percentage of Candidates'
+        },
+        ticks: {
+          callback: function(value) {
+            return value + '%';
+          }
         }
       },
       x: {
         title: {
           display: true,
-          text: 'Score Range'
+          text: 'Score'
+        },
+        ticks: {
+          callback: function(value, index) {
+            return index * 10;
+          }
         }
       }
     },
@@ -180,7 +257,14 @@ function createScoreDistributionChart(canvasId, label, testScores, allScores) {
       legend: { display: true },
       title: {
         display: true,
-        text: label + ' Evaluation Candidates Score Distribution'
+        text: label + ' Candidates Score Distribution'
+      },
+      tooltip: {
+        callbacks: {
+          label: function(context) {
+            return context.dataset.label + ': ' + context.parsed.y.toFixed(2) + '%';
+          }
+        }
       }
     }
   };
@@ -188,20 +272,24 @@ function createScoreDistributionChart(canvasId, label, testScores, allScores) {
   createChart(canvasId, 'line', data, options);
 }
 
-
 document.addEventListener('DOMContentLoaded', function () {
   showTab('overview');
   
-  // DS와 SQL 탭 버튼에 이벤트 리스너 추가
+  // Data Science와 SQL 탭 버튼에 이벤트 리스너 추가
   document.querySelector('[onclick="showSubTab(\'ds\')"]').addEventListener('click', () => showSubTab('ds'));
   document.querySelector('[onclick="showSubTab(\'sql\')"]').addEventListener('click', () => showSubTab('sql'));
 });
 
 function loadData(tabId) {
   if (tabId === 'ds') {
-    // DS 데이터
-    const dsScoresTest = [65, 70, 75, 80, 85, 90, 95];
-    const dsScoresAll = [60, 65, 70, 75, 80, 85, 90, 95, 100];
+    // Data Science 데이터
+    const dsScoresTest = [0, 14, 20, 33, 11, 45,50, 57, 55, 62, 64, 65, 65, 65, 70, 72, 74, 75, 80, 81, 82, 85, 90, 95];
+
+    const dsScoresAll = [
+      10, 11, 25,33, 36, 4, 44,50, 52, 55, 58, 60, 62, 65, 68, 70, 72, 75, 78, 80, 82, 85, 
+      87, 88, 90, 90, 92, 92, 95, 95, 96, 97, 98, 98, 99, 100, 100,74, 73
+    ];
+    
     const dsQuestionScoresTest = [
       [60, 70, 80, 90, 100],
       [55, 65, 75, 85, 95],
@@ -226,17 +314,23 @@ function loadData(tabId) {
   };
 
   Object.keys(dsTagScores).forEach(tag => {
-      createTagDetailChart(`ds${tag}Chart`, `DS ${tag.replace('_', ' ')}`, dsTagScores[tag].scores);
+      createTagDetailChart(`ds${tag}Chart`, `Data Science ${tag.replace('_', ' ')}`, dsTagScores[tag].scores);
   });
     updateStats('ds', dsScoresTest, dsScoresAll);
-    createScoreDistributionChart('dsScoreDistributionChart', 'DS', dsScoresTest, dsScoresAll);
+    createScoreDistributionChart('dsScoreDistributionChart', 'Data Science', dsScoresTest, dsScoresAll);
     createQuestionScoreCharts('ds', dsQuestionScoresTest, dsQuestionScoresAll);
     showQuestionGraph('ds', 1);
     showFirstTag('ds');
   } else if (tabId === 'sql') {
     // SQL 데이터
-    const sqlScoresTest = [60, 65, 70, 75, 80, 85, 90];
-    const sqlScoresAll = [55, 60, 65, 70, 75, 80, 85, 90, 95];
+    const sqlScoresTest = [
+      0,0,0,10,15,30,37,44, 45, 52, 60, 65, 68, 70, 72, 75, 78, 80, 82, 85, 87, 90, 92, 95
+    ];
+    
+    const sqlScoresAll = [
+      0, 20, 22, 17, 46,26,32, 36, 40, 45, 50, 55, 58, 60, 62, 65, 68, 70, 72, 75, 77, 80, 82, 85, 
+      87, 88, 90, 92, 93, 95, 97, 98, 100, 100, 95
+    ];
     const sqlQuestionScoresTest = [
       [55, 65, 75, 85, 95],
       [50, 60, 70, 80, 90],
