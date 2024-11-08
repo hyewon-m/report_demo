@@ -31,6 +31,9 @@ function openTab(tabName) {
     firstSubTab.click();
   }
   
+  if (tabName === 'cheating') {
+    updateCheatingInfo();
+  }
   updateTabContent(tabName);
 }
 function updateTabContent(tabName) {
@@ -170,7 +173,7 @@ highlightCode();
 
 // 페이지 로드 시 초기 상태 설정
 document.addEventListener('DOMContentLoaded', function () {
-  // DS 탭의 초기 서브 탭 설정
+  // Data Science 탭의 초기 서브 탭 설정
   document.getElementById('chartTab').style.display = "block";
   // document.querySelector('#ds .sub-tab-button').classList.add("active");
   document.querySelector('.tab-button[onclick="openTab(\'ds\')"]').addEventListener('click', function () {
@@ -267,7 +270,7 @@ function createScoreDistributionChart(canvasId, label, data, score) {
               borderColor: 'rgba(255, 99, 132, 1)',
               borderWidth: 2,
               label: {
-                content: `Evaluator Score: ${score}`,
+                content: `Candidate Score: ${score}`,
                 enabled: true,
                 position: 'top'
               }
@@ -280,7 +283,7 @@ function createScoreDistributionChart(canvasId, label, data, score) {
 }
 
 function getCompetencyDescription(score, field) {
-  if (field === 'DS') {
+  if (field === 'Data Science') {
     if (score >= 80) return "You demonstrate excellent competence in the field of data science. You can skillfully handle core techniques such as data preprocessing, feature scaling, and visualization. You have the ability to effectively analyze complex datasets and derive insights.";
     else if (score >= 60) return "You have a good understanding of basic data science concepts and can apply them in practical situations. You can perform basic data analysis and modeling tasks, but may need additional learning for more complex problems.";
     else return "You understand the basic concepts of data science, but more learning and practice are needed. Basic data processing and analysis are possible, but you may have difficulties applying advanced techniques.";
@@ -293,7 +296,7 @@ function getCompetencyDescription(score, field) {
 
 function getCompetencyComments(scores, field) {
   const comments = [];
-  if (field === 'DS') {
+  if (field === 'Data Science') {
     if (scores.preprocessing >= 30) comments.push("Your data preprocessing skills are excellent. You have effective refinement and transformation techniques for various data types.");
     else comments.push("You need to improve your data preprocessing techniques. Additional learning on handling missing values, outlier detection, and data normalization would be beneficial.");
 
@@ -321,17 +324,17 @@ function updateCompetencyInfo() {
   const dsScores = { preprocessing: 30, featureScaling: 28, visualization: 27 };
   const sqlScores = { dataRetrieval: 15, dataFiltering: 30, dataJoining: 20 };
 
-  document.getElementById('dsCompetencyDescription').textContent = getCompetencyDescription(dsScore, 'DS');
+  document.getElementById('dsCompetencyDescription').textContent = getCompetencyDescription(dsScore, 'Data Science');
   document.getElementById('sqlCompetencyDescription').textContent = getCompetencyDescription(sqlScore, 'SQL');
 
-  const dsComments = getCompetencyComments(dsScores, 'DS');
+  const dsComments = getCompetencyComments(dsScores, 'Data Science');
   const sqlComments = getCompetencyComments(sqlScores, 'SQL');
 
   document.getElementById('dsCompetencyComments').innerHTML = dsComments.map(comment => `<li>${comment}</li>`).join('');
   document.getElementById('sqlCompetencyComments').innerHTML = sqlComments.map(comment => `<li>${comment}</li>`).join('');
 
   // 분포 그래프 생성
-  createScoreDistributionChart('dsScoreDistributionChart', 'DS', [5, 10, 20, 30, 35], dsScore);
+  createScoreDistributionChart('dsScoreDistributionChart', 'Data Science', [5, 10, 20, 30, 35], dsScore);
   createScoreDistributionChart('sqlScoreDistributionChart', 'SQL', [8, 15, 25, 28, 24], sqlScore);
 }
 
@@ -396,7 +399,7 @@ function populateSuspiciousActivitiesTable(tableId, activities) {
   });
 }
 
-// DS Gantt chart data
+// Data Science Gantt chart data
 const dsGanttData = {
   labels: ['Question 1', 'Question 2', 'Question 3', 'Question 4'],
   datasets: [
@@ -466,7 +469,7 @@ const sqlGanttData = {
   ]
 };
 
-// DS suspicious activities data
+// Data Science suspicious activities data
 const dsSuspiciousActivities = [
   { time: '00:15:00', problem: 'Question 1', type: 'Tab Switching', detail: 'Video play button' },
   { time: '00:05:00', problem: 'Question 1', type: 'Copy and Paste', detail: 'Video play button' },
@@ -533,4 +536,12 @@ function addTagClickListeners() {
       highlightCodeSection(tagName);
     });
   });
+}
+
+function updateCheatingInfo() {
+  const cheatingResult = "Not Detected";
+  const cheatingComments = "No evidence of cheating was observed during the test";
+
+  document.getElementById('cheatingResult').textContent = cheatingResult;
+  document.getElementById('cheatingComments').textContent = cheatingComments;
 }

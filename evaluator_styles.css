@@ -572,5 +572,49 @@ button.active {
   min-width: 800px;
   min-height: 400px;
 }
+.cheating-summary {
+  background-color: #f8f8f8;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 30px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
 
+.cheating-summary h3 {
+  margin-top: 0;
+  margin-bottom: 15px;
+  font-size: 1.2em;
+  color: #333;
+}
 
+.cheating-summary h4 {
+  margin-top: 20px;
+  margin-bottom: 10px;
+  font-size: 1.1em;
+  color: #555;
+}
+
+#cheatingResult {
+  font-weight: bold;
+  color: #28a745;
+}
+
+#cheatingComments {
+  margin-top: 10px;
+  line-height: 1.5;
+  color: #666;
+}
+
+.skill-button {
+  padding: 10px 20px;
+  margin-right: 10px;
+  background-color: #f0f0f0;
+  border: none;
+  cursor: pointer;
+}
+
+.skill-button.active {
+  background-color: #007bff;
+  color: white;
+}
