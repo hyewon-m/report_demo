@@ -17,7 +17,7 @@
 </head>
 <body>
   <div class="tab">
-    <button class="tablink" onclick="openTab('ds')">DS</button>
+    <button class="tablink" onclick="openTab('ds')">Data Science</button>
     <button class="tablink" onclick="openTab('sql')">SQL</button>
   </div>
   <div id="ds" class="tabcontent">
@@ -59,17 +59,17 @@
           </div>
         </div>
     </div>
-    <h3>DS Competency Comment</h3>
+    <h3>Overall Competency Comments</h3>
     <p id="dsCompetencyDescription"></p>
 
-    <h3>DS Skill Comment</h3>
+    <h3>Detailed Skill Comments</h3>
     <ul id="dsCompetencyComments"></ul>
-    <h3>DS Score distribution</h3>
+    <h3>Data Science Score distribution</h3>
     <div class="chart-container">
       <canvas id="dsScoreDistributionChart"></canvas>
     </div>
     
-    <h3>DS Score Distribution by Skill</h3>
+    <h3>Data Science Score Distribution by Skill</h3>
     
     <!-- First skill graph -->
     <div class="graph" id="graph1">
@@ -136,7 +136,7 @@
     <div class="tag" data-tag="Visualization">Visualization</div>
   </div>
   <div class="problem-content">
-    <h4>Problem</h4>
+    <h4>Question</h4>
     <p>You are part of the data analysis team at a movie production company. Your task is to build a model that predicts box office revenue based on various features. Use the provided movie metadata to create a regression model and evaluate its performance.</p>
   </div>
   <div class="guideline-content">
@@ -195,10 +195,16 @@
 </div>
 
 
-    
+
+
 <div id="dsCheating" class="subtabcontent">
+  <div class="cheating-summary">
+    <h3>Cheating Result: <span id="cheatingResult">Not Detected</span></h3>
+    <h4>Cheating Comments:</h4>
+    <p id="cheatingComments">No evidence of cheating was observed during the test</p>
+  </div>
   <div class="time-info">
-    <h3>Time Spent</h3>
+    <h3> Total Time Taken</h3>
     <div class="time-bar">
       <div class="time-progress" id="dsTimeProgress">
         <span class="time-text">110 minutes / 120 minutes</span>
@@ -216,7 +222,7 @@
         <thead>
           <tr>
             <th>Time</th>
-            <th>Problem Number</th>
+            <th>Question Number</th>
             <th>Activity Type</th>
             <th>Video Confirmation</th>
           </tr>
@@ -269,10 +275,10 @@
     </div>
   </div>
     
-    <h3>SQL Competency Comment</h3>
+    <h3>Overall Competency Comments</h3>
     <p id="sqlCompetencyDescription"></p>
 
-    <h3>SQL Skill Comment</h3>
+    <h3>Detailed Skill Comments</h3>
     <ul id="sqlCompetencyComments"></ul>
     <h3>SQL score distribution</h3>
     <div class="chart-container">
@@ -468,7 +474,7 @@ document.addEventListener('DOMContentLoaded', function () {
               borderColor: 'rgba(255, 99, 132, 1)',
               borderWidth: 2,
               label: {
-                content: `Evaluator Score: ${evaluatorScore}`,
+                content: `Candidate Score: ${evaluatorScore}`,
                 enabled: true,
                 position: 'top'
               }
