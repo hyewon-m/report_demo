@@ -59,17 +59,17 @@
           </div>
         </div>
     </div>
-    <h3>DS Competency comment</h3>
+    <h3>DS Competency Comment</h3>
     <p id="dsCompetencyDescription"></p>
 
-    <h3>DS Skill comment</h3>
+    <h3>DS Skill Comment</h3>
     <ul id="dsCompetencyComments"></ul>
-    <h3>DS score distribution and evaluator position</h3>
+    <h3>DS Score distribution</h3>
     <div class="chart-container">
       <canvas id="dsScoreDistributionChart"></canvas>
     </div>
     
-    <h3>Skill distribution and evaluator position</h3>
+    <h3>DS Score Distribution by Skill</h3>
     
     <!-- First skill graph -->
     <div class="graph" id="graph1">
@@ -269,17 +269,17 @@
     </div>
   </div>
     
-    <h3>SQL Competency comment</h3>
+    <h3>SQL Competency Comment</h3>
     <p id="sqlCompetencyDescription"></p>
 
-    <h3>SQL Skill comment</h3>
+    <h3>SQL Skill Comment</h3>
     <ul id="sqlCompetencyComments"></ul>
-    <h3>SQL score distribution and evaluator position</h3>
+    <h3>SQL score distribution</h3>
     <div class="chart-container">
       <canvas id="sqlScoreDistributionChart"></canvas>
     </div>
 
-    <h3>Skill distribution and evaluator position</h3>
+    <h3>SQL Score Distribution by Skill</h3>
 <div class="graph" id="sqlGraph1">
   <canvas id="sqlSkillScoreDistributionChart_1"></canvas>
 </div>
@@ -440,7 +440,7 @@ document.addEventListener('DOMContentLoaded', function () {
           beginAtZero: true,
           title: {
             display: true,
-            text: 'Number of People'
+            text: 'Number of Candidates'
           }
         },
         x: {
@@ -455,7 +455,7 @@ document.addEventListener('DOMContentLoaded', function () {
         tooltip: {
           callbacks: {
             label: function(context) {
-              return `${context.dataset.label}: ${context.parsed.y} people`;
+              return `${context.dataset.label}: ${context.parsed.y} Candidates`;
             }
           }
         },

@@ -137,7 +137,7 @@ function createScoreDistributionChart(canvasId, label, testScores, allScores) {
     labels: ['0-20', '21-40', '41-60', '61-80', '81-100'],
     datasets: [
       {
-        label: 'Test Participants',
+        label: 'Test Candidates',
         data: createData(testScores),
         borderColor: 'rgba(75, 192, 192, 1)',
         backgroundColor: 'rgba(75, 192, 192, 0.2)',
@@ -147,7 +147,7 @@ function createScoreDistributionChart(canvasId, label, testScores, allScores) {
         fill: true
       },
       {
-        label: 'All Participants',
+        label: 'All Candidates',
         data: createData(allScores),
         borderColor: 'rgba(255, 99, 132, 1)',
         backgroundColor: 'rgba(255, 99, 132, 0.2)',
@@ -166,7 +166,7 @@ function createScoreDistributionChart(canvasId, label, testScores, allScores) {
         beginAtZero: true,
         title: {
           display: true,
-          text: 'Number of People'
+          text: 'Number of Candidates'
         }
       },
       x: {
@@ -180,7 +180,7 @@ function createScoreDistributionChart(canvasId, label, testScores, allScores) {
       legend: { display: true },
       title: {
         display: true,
-        text: label + ' Evaluation Participants Score Distribution'
+        text: label + ' Evaluation Candidates Score Distribution'
       }
     }
   };
@@ -285,14 +285,14 @@ function createQuestionScoreChart(canvasId, label, testScores, allScores) {
     labels: testScores.map((_, index) => `${index * 20}-${(index + 1) * 20}`),
     datasets: [
       {
-        label: 'Test Participants',
+        label: 'Test Candidates',
         data: testScores,
         backgroundColor: 'rgba(75, 192, 192, 0.2)',
         borderColor: 'rgba(75, 192, 192, 1)',
         borderWidth: 1
       },
       {
-        label: 'All Participants',
+        label: 'All Candidates',
         data: allScores,
         backgroundColor: 'rgba(255, 99, 132, 0.2)',
         borderColor: 'rgba(255, 99, 132, 1)',
@@ -308,7 +308,7 @@ function createQuestionScoreChart(canvasId, label, testScores, allScores) {
         beginAtZero: true,
         title: {
           display: true,
-          text: 'Number of People'
+          text: 'Number of Candidates'
         }
       },
       x: {
@@ -389,7 +389,7 @@ function updateQuestionInfo(tabId, questionInfos) {
           <span class="stat-value">${info.difficulty}</span>
         </div>
         <div class="stat-item">
-          <span class="stat-label">type:</span>
+          <span class="stat-label">Type:</span>
           <span class="stat-value">${info.type}</span>
         </div>
       `;
@@ -460,7 +460,7 @@ function createTagDetailChart(canvasId, label, scores) {
         beginAtZero: true,
         title: {
           display: true,
-          text: 'Number of People'
+          text: 'Number of Candidates'
         }
       },
       x: {

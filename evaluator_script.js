@@ -243,7 +243,7 @@ function createScoreDistributionChart(canvasId, label, data, score) {
       scales: {
         y: {
           beginAtZero: true,
-          title: { display: true, text: 'Number of People' }
+          title: { display: true, text: 'Number of Candidates' }
         },
         x: {
           title: { display: true, text: 'Score Range' }
@@ -254,7 +254,7 @@ function createScoreDistributionChart(canvasId, label, data, score) {
         tooltip: {
           callbacks: {
             label: function (context) {
-              return `${context.dataset.label}: ${context.parsed.y} people`;
+              return `${context.dataset.label}: ${context.parsed.y} Candidates`;
             }
           }
         },
@@ -354,7 +354,7 @@ function createGanttChart(canvasId, data) {
         y: {
           title: {
             display: true,
-            text: 'Problem'
+            text: 'Question'
           }
         }
       },
@@ -398,33 +398,33 @@ function populateSuspiciousActivitiesTable(tableId, activities) {
 
 // DS Gantt chart data
 const dsGanttData = {
-  labels: ['Problem 1', 'Problem 2', 'Problem 3', 'Problem 4'],
+  labels: ['Question 1', 'Question 2', 'Question 3', 'Question 4'],
   datasets: [
     {
-      label: 'Problem Solving',
+      label: 'Question Solving',
       data: [
-        { x: [0, 25], y: 'Problem 1' },
-        { x: [30, 60], y: 'Problem 2' },
-        { x: [65, 90], y: 'Problem 3' },
-        { x: [95, 110], y: 'Problem 4' }
+        { x: [0, 25], y: 'Question 1' },
+        { x: [30, 60], y: 'Question 2' },
+        { x: [65, 90], y: 'Question 3' },
+        { x: [95, 110], y: 'Question 4' }
       ],
       backgroundColor: 'rgba(75, 192, 192, 0.6)'
     },
     {
       label: 'Tab Switching',
       data: [
-        { x: [15, 17], y: 'Problem 1' },
-        { x: [45, 47], y: 'Problem 2' },
-        { x: [80, 82], y: 'Problem 3' }
+        { x: [15, 17], y: 'Question 1' },
+        { x: [45, 47], y: 'Question 2' },
+        { x: [80, 82], y: 'Question 3' }
       ],
       backgroundColor: 'rgba(255, 99, 132, 0.6)'
     },
     {
       label: 'Copy and Paste',
       data: [
-        { x: [5, 6], y: 'Problem 1' },
-        { x: [50, 53], y: 'Problem 2' },
-        { x: [67, 70], y: 'Problem 3' }
+        { x: [5, 6], y: 'Question 1' },
+        { x: [50, 53], y: 'Question 2' },
+        { x: [67, 70], y: 'Question 3' }
       ],
       backgroundColor: '#e4ec9a'
     }
@@ -433,33 +433,33 @@ const dsGanttData = {
 
 // SQL Gantt chart data
 const sqlGanttData = {
-  labels: ['Problem 1', 'Problem 2', 'Problem 3', 'Problem 4'],
+  labels: ['Question 1', 'Question 2', 'Question 3', 'Question 4'],
   datasets: [
     {
-      label: 'Problem Solving',
+      label: 'Question Solving',
       data: [
-        { x: [0, 20], y: 'Problem 1' },
-        { x: [25, 50], y: 'Problem 2' },
-        { x: [55, 75], y: 'Problem 3' },
-        { x: [80, 100], y: 'Problem 4' }
+        { x: [0, 20], y: 'Question 1' },
+        { x: [25, 50], y: 'Question 2' },
+        { x: [55, 75], y: 'Question 3' },
+        { x: [80, 100], y: 'Question 4' }
       ],
       backgroundColor: 'rgba(75, 192, 192, 0.6)'
     },
     {
       label: 'Tab Switching',
       data: [
-        { x: [10, 12], y: 'Problem 1' },
-        { x: [35, 37], y: 'Problem 2' },
-        { x: [65, 67], y: 'Problem 3' }
+        { x: [10, 12], y: 'Question 1' },
+        { x: [35, 37], y: 'Question 2' },
+        { x: [65, 67], y: 'Question 3' }
       ],
       backgroundColor: 'rgba(255, 99, 132, 0.6)'
     },
     {
       label: 'Copy and Paste',
       data: [
-        { x: [5, 6], y: 'Problem 1' },
-        { x: [40, 42], y: 'Problem 2' },
-        { x: [70, 72], y: 'Problem 3' }
+        { x: [5, 6], y: 'Question 1' },
+        { x: [40, 42], y: 'Question 2' },
+        { x: [70, 72], y: 'Question 3' }
       ],
       backgroundColor: '#e4ec9a'
     }
@@ -468,26 +468,26 @@ const sqlGanttData = {
 
 // DS suspicious activities data
 const dsSuspiciousActivities = [
-  { time: '00:15:00', problem: 'Problem 1', type: 'Tab Switching', detail: 'Video play button' },
-  { time: '00:05:00', problem: 'Problem 1', type: 'Copy and Paste', detail: 'Video play button' },
-  { time: '00:45:00', problem: 'Problem 2', type: 'Tab Switching', detail: 'Video play button' },
-  { time: '00:50:00', problem: 'Problem 2', type: 'Copy and Paste', detail: 'Video play button' },
-  { time: '01:20:00', problem: 'Problem 3', type: 'Tab Switching', detail: 'Video play button' },
-  { time: '01:07:00', problem: 'Problem 3', type: 'Copy and Paste', detail: 'Video play button' }
+  { time: '00:15:00', problem: 'Question 1', type: 'Tab Switching', detail: 'Video play button' },
+  { time: '00:05:00', problem: 'Question 1', type: 'Copy and Paste', detail: 'Video play button' },
+  { time: '00:45:00', problem: 'Question 2', type: 'Tab Switching', detail: 'Video play button' },
+  { time: '00:50:00', problem: 'Question 2', type: 'Copy and Paste', detail: 'Video play button' },
+  { time: '01:20:00', problem: 'Question 3', type: 'Tab Switching', detail: 'Video play button' },
+  { time: '01:07:00', problem: 'Question 3', type: 'Copy and Paste', detail: 'Video play button' }
 ];
 
 // SQL suspicious activities data
 const sqlSuspiciousActivities = [
-  { time: '00:10:00', problem: 'Problem 1', type: 'Tab Switching', detail: 'Video play button' },
-  { time: '00:05:00', problem: 'Problem 1', type: 'Copy and Paste', detail: 'Video play button' },
-  { time: '00:35:00', problem: 'Problem 2', type: 'Tab Switching', detail: 'Video play button' },
-  { time: '00:40:00', problem: 'Problem 2', type: 'Copy and Paste', detail: 'Video play button' },
-  { time: '00:65:00', problem: 'Problem 3', type: 'Tab Switching', detail: 'Video play button' },
-  { time: '00:70:00', problem: 'Problem 3', type: 'Copy and Paste', detail: 'Video play button' },
-  { time: '00:75:00', problem: 'Problem 3', type: 'Tab Switching', detail: 'Video play button' },
-  { time: '00:85:00', problem: 'Problem 4', type: 'Tab Switching', detail: 'Video play button' },
-  { time: '00:90:00', problem: 'Problem 4', type: 'Copy and Paste', detail: 'Video play button' },
-  { time: '00:95:00', problem: 'Problem 4', type: 'Tab Switching', detail: 'Video play button' }
+  { time: '00:10:00', problem: 'Question 1', type: 'Tab Switching', detail: 'Video play button' },
+  { time: '00:05:00', problem: 'Question 1', type: 'Copy and Paste', detail: 'Video play button' },
+  { time: '00:35:00', problem: 'Question 2', type: 'Tab Switching', detail: 'Video play button' },
+  { time: '00:40:00', problem: 'Question 2', type: 'Copy and Paste', detail: 'Video play button' },
+  { time: '00:65:00', problem: 'Question 3', type: 'Tab Switching', detail: 'Video play button' },
+  { time: '00:70:00', problem: 'Question 3', type: 'Copy and Paste', detail: 'Video play button' },
+  { time: '00:75:00', problem: 'Question 3', type: 'Tab Switching', detail: 'Video play button' },
+  { time: '00:85:00', problem: 'Question 4', type: 'Tab Switching', detail: 'Video play button' },
+  { time: '00:90:00', problem: 'Question 4', type: 'Copy and Paste', detail: 'Video play button' },
+  { time: '00:95:00', problem: 'Question 4', type: 'Tab Switching', detail: 'Video play button' }
 ];
 
 // 차트 및 테이블 생성
