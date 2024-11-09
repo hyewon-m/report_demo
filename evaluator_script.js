@@ -242,6 +242,7 @@ function createScoreDistributionChart(canvasId, label, data, score) {
       }]
     },
     options: {
+      animation: false,
       responsive: true,
       scales: {
         y: {
