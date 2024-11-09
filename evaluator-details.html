@@ -1,20 +1,23 @@
 <!DOCTYPE html>
 <html lang="ko">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>평가자 상세 정보</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation"></script>
-    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
-    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-annotation/1.0.2/chartjs-plugin-annotation.min.js"></script>
-    <link rel="stylesheet" href="evaluator_styles.css">
-    <script src="evaluator_script.js" defer></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>평가자 상세 정보</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation"></script>
+  <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-annotation/1.0.2/chartjs-plugin-annotation.min.js"></script>
+  <link rel="stylesheet" href="evaluator_styles.css">
+  <script src="evaluator_script.js" defer></script>
 </head>
+
 <body>
   <div class="tab">
     <button class="tablink" onclick="openTab('ds')">Data Science</button>
@@ -27,9 +30,9 @@
       <button class="subtablink" onclick="openSubTab('dsCheating', 'ds', event)">Cheating</button>
     </div>
 
-      <div id="dsResult" class="subtabcontent">
-        
-    <div class="score-summary">
+    <div id="dsResult" class="subtabcontent">
+
+      <div class="score-summary">
         <div class="total-score">
           <h3>Competency Score</h3>
           <div class="score-circle">
@@ -58,39 +61,58 @@
             </div>
           </div>
         </div>
-    </div>
-    <h3>Overall Competency Comments</h3>
-    <p id="dsCompetencyDescription"></p>
+      </div>
+      <h3>Overall Competency Comments</h3>
+      <p id="dsCompetencyDescription"></p>
 
-    <h3>Detailed Skill Comments</h3>
-    <ul id="dsCompetencyComments"></ul>
-    <h3>Data Science Score distribution</h3>
-    <div class="chart-container">
-      <canvas id="dsScoreDistributionChart"></canvas>
-    </div>
-    
-    <h3>Data Science Score Distribution by Skill</h3>
-    
-    <!-- First skill graph -->
-    <div class="graph" id="graph1">
+      <h3>Detailed Skill Comments</h3>
+      <ul id="dsCompetencyComments"></ul>
+      <h3>Data Science Score distribution</h3>
+      <div class="chart-container">
+        <canvas id="dsScoreDistributionChart"></canvas>
+      </div>
+
+      <h3>Data Science Score Distribution by Skill</h3>
+
+      <!-- <div class="graph" id="graph1">
       <canvas id="skillScoreDistributionChart_1"></canvas>
     </div>
     
-    <!-- Second skill graph -->
     <div class="graph" id="graph2" style="display: none;">
       <canvas id="skillScoreDistributionChart_2"></canvas>
     </div>
     
-    <!-- Third skill graph -->
     <div class="graph" id="graph3" style="display: none;">
       <canvas id="skillScoreDistributionChart_3"></canvas>
     </div>
     
     <button id="prevGraph" disabled>Previous</button>
-    <button id="nextGraph">Next</button>
-    
+    <button id="nextGraph">Next</button> -->
+
+      <!-- Skill graphs -->
+      <div class="graphs-container">
+        <div class="graph" id="graph1">
+          <canvas id="skillScoreDistributionChart_1"></canvas>
+        </div>
+
+        <div class="graph" id="graph2" style="display: none;">
+          <canvas id="skillScoreDistributionChart_2"></canvas>
+        </div>
+
+        <div class="graph" id="graph3" style="display: none;">
+          <canvas id="skillScoreDistributionChart_3"></canvas>
+        </div>
+      </div>
+
+      <!-- Skill buttons -->
+      <div class="tab">
+        <button class="tab-button active" id="skillButton1">Preprocessing</button>
+        <button class="tab-button" id="skillButton2">Feature scaling</button>
+        <button class="tab-button" id="skillButton3">Visualization</button>
+      </div>
+
     </div>
-    
+
     <div id="dsCode" class="subtabcontent">
       <div class="static-analysis">
         <h4>Static Analysis Metrics</h4>
@@ -127,373 +149,374 @@
         <p>TestCase #5 >>> PASS ✔️</p>
         <p>TestCase #6 >>> PASS ✔️</p>
       </div>
-      
-
-        <div class="sidebar">
-  <div class="tags">
-    <div class="tag" data-tag="Preprocessing">Preprocessing</div>
-    <div class="tag" data-tag="model prediction and evaluation">model prediction and evaluation</div>
-    <div class="tag" data-tag="Visualization">Visualization</div>
-  </div>
-  <div class="problem-content">
-    <h4>Question</h4>
-    <p>You are part of the data analysis team at a movie production company. Your task is to build a model that predicts box office revenue based on various features. Use the provided movie metadata to create a regression model and evaluate its performance.</p>
-  </div>
-  <div class="guideline-content">
-    <h4>Guidelines</h4>
-    <p>Write all your code in the evaluate_model() function. Follow these steps to write your code:</p>
-    <ol>
-      <li>
-        <strong>[Step.1] Load and preprocess data</strong>
-        <ul>
-          <li>Use the Pandas library to read the './data.csv' file and store it in a DataFrame variable called data.</li>
-          <li>Remove rows with missing values to maintain data completeness.</li>
-        </ul>
-      </li>
-      <li>
-        <strong>[Step.2] Split into training and test sets</strong>
-        <ul>
-          <li>Split the data into training (80%) and test (20%) sets using the selected features and target variable.</li>
-          <li>Set random_state to 42.</li>
-        </ul>
-      </li>
-      <li>
-        <strong>[Step.3] Feature scaling and selection</strong>
-        <ul>
-          <li>Use StandardScaler to scale the features.</li>
-          <li>Use SelectKBest and f_regression to select the top 2 most important features and store them in a list variable called selected_features.</li>
-        </ul>
-      </li>
-      <li>
-        <strong>[Step.4] Initialize and train models</strong>
-        <ul>
-          <li>Define and initialize multiple regression models (Random Forest, Linear Regression, Ridge Regression, Lasso Regression).</li>
-          <li>Train each model on the training data.</li>
-          <li>Store the name of the best-performing model in the best_model_name variable.</li>
-        </ul>
-      </li>
-      <li>
-        <strong>[Step.5] Model prediction and evaluation</strong>
-        <ul>
-          <li>Use each model to make predictions on the test data.</li>
-          <li>Calculate the MSE and R2 score between the predicted and actual results, and store them in a list variable called model_scores.</li>
-          <li>Select the best-performing model based on MSE and print its MSE and R2 score.</li>
-        </ul>
-      </li>
-      <li>
-        <strong>[Step.6] Visualize results</strong>
-        <ul>
-          <li>Create a single chart containing all plots (figsize=(10, 6)).</li>
-          <li>Display actual revenue (x-axis) vs. predicted revenue (y-axis) as a scatter plot (50% transparency).</li>
-          <li>Show the ideal line where actual revenue matches predicted revenue as a red dashed line with a thickness of 2.</li>
-          <li>Set the graph title to 'Actual vs Predicted Box Office Revenue\nusing {best_model_name}'.</li>
-        </ul>
-      </li>
-    </ol>
-  </div>
-</div>
-</div>
 
 
-
-
-<div id="dsCheating" class="subtabcontent">
-  <div class="cheating-summary">
-    <h3>Cheating Result: <span id="cheatingResult">Not Detected</span></h3>
-    <h4>Cheating Comments:</h4>
-    <p id="cheatingComments">No evidence of cheating was observed during the test</p>
-  </div>
-  <div class="time-info">
-    <h3> Total Time Taken</h3>
-    <div class="time-bar">
-      <div class="time-progress" id="dsTimeProgress">
-        <span class="time-text">110 minutes / 120 minutes</span>
-      </div>
-    </div>
-
-    <div id="chartTab">
-      <h4>Timeline Graph</h4>
-      <canvas id="ganttChart"></canvas>
-    </div>
-
-    <div id="listTab">
-      <h4>Cheating Details</h4>
-      <table id="suspiciousActivitiesTable">
-        <thead>
-          <tr>
-            <th>Time</th>
-            <th>Question Number</th>
-            <th>Activity Type</th>
-            <th>Video Confirmation</th>
-          </tr>
-        </thead>
-        <tbody>
-          <!-- Table body will be populated by JavaScript -->
-        </tbody>
-      </table>
-    </div>
-  </div>
-</div>
-  </div>
-  
-<div id="sql" class="tabcontent">
-  <div class="subtab">
-    <button class="subtablink" onclick="openSubTab('sqlResult', 'sql', event)">Results</button>
-    <button class="subtablink" onclick="openSubTab('sqlCode', 'sql',event)">Code</button>
-    <button class="subtablink" onclick="openSubTab('sqlCheating', 'sql',event)">Cheating</button>
-  </div>
-
-  <div id="sqlResult" class="subtabcontent">
-  <div class="score-summary">
-    <div class="total-score">
-      <h3>Competency Score</h3>
-      <div class="score-circle_sql">
-        <span class="score-value">70</span>
-        <span class="score-max">/100</span>
-      </div>
-    </div>
-    <div class="individual-scores">
-      <h3>Skill</h3>
-      <div class="score-bar">
-        <div class="score-label">Data Retrieval</div>
-        <div class="score-progress" style="width: 42.9%;">
-          <span class="score-text">15/35</span>
+      <div class="sidebar">
+        <div class="tags">
+          <div class="tag" data-tag="Preprocessing">Preprocessing</div>
+          <div class="tag" data-tag="model prediction and evaluation">model prediction and evaluation</div>
+          <div class="tag" data-tag="Visualization">Visualization</div>
         </div>
-      </div>
-      <div class="score-bar">
-        <div class="score-label">Data Filtering</div>
-        <div class="score-progress" style="width: 85.7%;">
-          <span class="score-text">30/35</span>
+        <div class="problem-content">
+          <h4>Question</h4>
+          <p>You are part of the data analysis team at a movie production company. Your task is to build a model that
+            predicts box office revenue based on various features. Use the provided movie metadata to create a
+            regression model and evaluate its performance.</p>
         </div>
-      </div>
-      <div class="score-bar">
-        <div class="score-label">Data Joining</div>
-        <div class="score-progress" style="width: 66.7%;">
-          <span class="score-text">20/30</span>
+        <div class="guideline-content">
+          <h4>Guidelines</h4>
+          <p>Write all your code in the evaluate_model() function. Follow these steps to write your code:</p>
+          <ol>
+            <li>
+              <strong>[Step.1] Load and preprocess data</strong>
+              <ul>
+                <li>Use the Pandas library to read the './data.csv' file and store it in a DataFrame variable called
+                  data.</li>
+                <li>Remove rows with missing values to maintain data completeness.</li>
+              </ul>
+            </li>
+            <li>
+              <strong>[Step.2] Split into training and test sets</strong>
+              <ul>
+                <li>Split the data into training (80%) and test (20%) sets using the selected features and target
+                  variable.</li>
+                <li>Set random_state to 42.</li>
+              </ul>
+            </li>
+            <li>
+              <strong>[Step.3] Feature scaling and selection</strong>
+              <ul>
+                <li>Use StandardScaler to scale the features.</li>
+                <li>Use SelectKBest and f_regression to select the top 2 most important features and store them in a
+                  list variable called selected_features.</li>
+              </ul>
+            </li>
+            <li>
+              <strong>[Step.4] Initialize and train models</strong>
+              <ul>
+                <li>Define and initialize multiple regression models (Random Forest, Linear Regression, Ridge
+                  Regression, Lasso Regression).</li>
+                <li>Train each model on the training data.</li>
+                <li>Store the name of the best-performing model in the best_model_name variable.</li>
+              </ul>
+            </li>
+            <li>
+              <strong>[Step.5] Model prediction and evaluation</strong>
+              <ul>
+                <li>Use each model to make predictions on the test data.</li>
+                <li>Calculate the MSE and R2 score between the predicted and actual results, and store them in a list
+                  variable called model_scores.</li>
+                <li>Select the best-performing model based on MSE and print its MSE and R2 score.</li>
+              </ul>
+            </li>
+            <li>
+              <strong>[Step.6] Visualize results</strong>
+              <ul>
+                <li>Create a single chart containing all plots (figsize=(10, 6)).</li>
+                <li>Display actual revenue (x-axis) vs. predicted revenue (y-axis) as a scatter plot (50% transparency).
+                </li>
+                <li>Show the ideal line where actual revenue matches predicted revenue as a red dashed line with a
+                  thickness of 2.</li>
+                <li>Set the graph title to 'Actual vs Predicted Box Office Revenue\nusing {best_model_name}'.</li>
+              </ul>
+            </li>
+          </ol>
         </div>
       </div>
     </div>
-  </div>
-    
-    <h3>Overall Competency Comments</h3>
-    <p id="sqlCompetencyDescription"></p>
-
-    <h3>Detailed Skill Comments</h3>
-    <ul id="sqlCompetencyComments"></ul>
-    <h3>SQL score distribution</h3>
-    <div class="chart-container">
-      <canvas id="sqlScoreDistributionChart"></canvas>
-    </div>
-
-    <h3>SQL Score Distribution by Skill</h3>
-<div class="graph" id="sqlGraph1">
-  <canvas id="sqlSkillScoreDistributionChart_1"></canvas>
-</div>
-<div class="graph" id="sqlGraph2" style="display: none;">
-  <canvas id="sqlSkillScoreDistributionChart_2"></canvas>
-</div>
-<div class="graph" id="sqlGraph3" style="display: none;">
-  <canvas id="sqlSkillScoreDistributionChart_3"></canvas>
-</div>
-<button id="sqlPrevGraph" disabled>Previous</button>
-<button id="sqlNextGraph">Next</button>
-
-
-    <div id="sqlCode" class="subtabcontent">
-      <h3>SQL 코드</h3>
-      <pre><code>
-      </code></pre>
-    </div>
 
 
 
-    <div id="sqlCheating" class="subtabcontent">
-    <div class="time-info">
-      <h3>소요 시간</h3>
-      <div class="time-bar">
-        <div class="time-progress" id="sqlTimeProgress">
-          <span class="time-text">100분 / 120분</span>
+
+    <div id="dsCheating" class="subtabcontent">
+      <div class="cheating-summary">
+        <h3>Cheating Result: <span id="cheatingResult">Not Detected</span></h3>
+        <h4>Cheating Comments:</h4>
+        <p id="cheatingComments">No evidence of cheating was observed during the test</p>
+      </div>
+      <div class="time-info">
+        <h3> Total Time Taken</h3>
+        <div class="time-bar">
+          <div class="time-progress" id="dsTimeProgress">
+            <span class="time-text">110 minutes / 120 minutes</span>
+          </div>
         </div>
-      </div>
 
-      <div id="sqlChartTab">
-        <h4>타임라인 그래프</h4>
-        <canvas id="sqlGanttChart"></canvas>
-      </div>
+        <div id="chartTab">
+          <h4>Timeline Graph</h4>
+          <canvas id="ganttChart"></canvas>
+        </div>
 
-      <div id="sqlListTab">
-        <h4>부정행위 상세</h4>
-        <div class="scrollable-table">
-          <table id="sqlSuspiciousActivitiesTable">
+        <div id="listTab">
+          <h4>Cheating Details</h4>
+          <table id="suspiciousActivitiesTable">
             <thead>
               <tr>
-                <th>시간</th>
-                <th>문제 번호</th>
-                <th>활동 유형</th>
-                <th>영상 확인</th>
+                <th>Time</th>
+                <th>Question Number</th>
+                <th>Activity Type</th>
+                <th>Video Confirmation</th>
               </tr>
             </thead>
             <tbody>
-              <!-- 테이블 내용은 JavaScript로 채워집니다 -->
+              <!-- Table body will be populated by JavaScript -->
             </tbody>
           </table>
         </div>
       </div>
     </div>
-    </div>
   </div>
+
+  <div id="sql" class="tabcontent">
+    <div class="subtab">
+      <button class="subtablink" onclick="openSubTab('sqlResult', 'sql', event)">Results</button>
+      <button class="subtablink" onclick="openSubTab('sqlCode', 'sql',event)">Code</button>
+      <button class="subtablink" onclick="openSubTab('sqlCheating', 'sql',event)">Cheating</button>
+    </div>
+
+    <div id="sqlResult" class="subtabcontent">
+      <div class="score-summary">
+        <div class="total-score">
+          <h3>Competency Score</h3>
+          <div class="score-circle_sql">
+            <span class="score-value">70</span>
+            <span class="score-max">/100</span>
+          </div>
+        </div>
+        <div class="individual-scores">
+          <h3>Skill</h3>
+          <div class="score-bar">
+            <div class="score-label">Data Retrieval</div>
+            <div class="score-progress" style="width: 42.9%;">
+              <span class="score-text">15/35</span>
+            </div>
+          </div>
+          <div class="score-bar">
+            <div class="score-label">Data Filtering</div>
+            <div class="score-progress" style="width: 85.7%;">
+              <span class="score-text">30/35</span>
+            </div>
+          </div>
+          <div class="score-bar">
+            <div class="score-label">Data Joining</div>
+            <div class="score-progress" style="width: 66.7%;">
+              <span class="score-text">20/30</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <h3>Overall Competency Comments</h3>
+      <p id="sqlCompetencyDescription"></p>
+
+      <h3>Detailed Skill Comments</h3>
+      <ul id="sqlCompetencyComments"></ul>
+      <h3>SQL score distribution</h3>
+      <div class="chart-container">
+        <canvas id="sqlScoreDistributionChart"></canvas>
+      </div>
+
+      <h3>SQL Score Distribution by Skill</h3>
+<!-- SQL Skill graphs -->
+<div class="graphs-container">
+  <div class="graph" id="sqlGraph1">
+    <canvas id="sqlSkillScoreDistributionChart_1"></canvas>
+  </div>
+  <div class="graph" id="sqlGraph2" style="display: none;">
+    <canvas id="sqlSkillScoreDistributionChart_2"></canvas>
+  </div>
+  <div class="graph" id="sqlGraph3" style="display: none;">
+    <canvas id="sqlSkillScoreDistributionChart_3"></canvas>
+  </div>
+</div>
+
+<!-- SQL Skill buttons -->
+<div class="tab">
+  <button class="tab-button active" id="sqlSkillButton1">Data Retrieval</button>
+  <button class="tab-button" id="sqlSkillButton2">Data Filtering</button>
+  <button class="tab-button" id="sqlSkillButton3">Data Joining</button>
+</div>
+
+      <div id="sqlCode" class="subtabcontent">
+        <h3>SQL 코드</h3>
+        <pre><code>
+      </code></pre>
+      </div>
+
+
+
+      <div id="sqlCheating" class="subtabcontent">
+        <div class="time-info">
+          <h3>소요 시간</h3>
+          <div class="time-bar">
+            <div class="time-progress" id="sqlTimeProgress">
+              <span class="time-text">100분 / 120분</span>
+            </div>
+          </div>
+
+          <div id="sqlChartTab">
+            <h4>타임라인 그래프</h4>
+            <canvas id="sqlGanttChart"></canvas>
+          </div>
+
+          <div id="sqlListTab">
+            <h4>부정행위 상세</h4>
+            <div class="scrollable-table">
+              <table id="sqlSuspiciousActivitiesTable">
+                <thead>
+                  <tr>
+                    <th>시간</th>
+                    <th>문제 번호</th>
+                    <th>활동 유형</th>
+                    <th>영상 확인</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- 테이블 내용은 JavaScript로 채워집니다 -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <script>
 document.addEventListener('DOMContentLoaded', function () {
-    let currentGraph = 1;
-    const totalGraphs = 3;
-    let sqlCurrentGraph = 1;
+  const totalGraphs = 3;
   const sqlTotalGraphs = 3;
 
-    // 그래프 전환 함수
-    function showGraph(graphIndex) {
-        for (let i = 1; i <= totalGraphs; i++) {
-            const graph = document.getElementById(`graph${i}`);
-            if (i === graphIndex) {
-                graph.style.display = 'block';
-            } else {
-                graph.style.display = 'none';
-            }
-        }
-
-        // 이전/다음 버튼 활성화/비활성화 처리
-        document.getElementById('prevGraph').disabled = graphIndex === 1;
-        document.getElementById('nextGraph').disabled = graphIndex === totalGraphs;
+  // 그래프 전환 함수
+  function showGraph(graphIndex) {
+    for (let i = 1; i <= totalGraphs; i++) {
+      const graph = document.getElementById(`graph${i}`);
+      const button = document.getElementById(`skillButton${i}`);
+      if (i === graphIndex) {
+        graph.style.display = 'block';
+        button.classList.add('active');
+      } else {
+        graph.style.display = 'none';
+        button.classList.remove('active');
+      }
     }
-
-    // 초기 상태로 첫 번째 그래프 표시
-    showGraph(currentGraph);
-
-    // 이전 버튼 클릭 이벤트
-    document.getElementById('prevGraph').addEventListener('click', function () {
-        if (currentGraph > 1) {
-            currentGraph--;
-            showGraph(currentGraph);
-        }
-    });
-
-    // 다음 버튼 클릭 이벤트
-    document.getElementById('nextGraph').addEventListener('click', function () {
-        if (currentGraph < totalGraphs) {
-            currentGraph++;
-            showGraph(currentGraph);
-        }
-    });
-    
+  }
+  // SQL 그래프 전환 함수
   function showSqlGraph(graphIndex) {
     for (let i = 1; i <= sqlTotalGraphs; i++) {
       const graph = document.getElementById(`sqlGraph${i}`);
+      const button = document.getElementById(`sqlSkillButton${i}`);
       if (i === graphIndex) {
         graph.style.display = 'block';
+        button.classList.add('active');
       } else {
         graph.style.display = 'none';
+        button.classList.remove('active');
       }
     }
-    document.getElementById('sqlPrevGraph').disabled = graphIndex === 1;
-    document.getElementById('sqlNextGraph').disabled = graphIndex === sqlTotalGraphs;
   }
 
-  showSqlGraph(sqlCurrentGraph);
+  // 일반 스킬 버튼 클릭 이벤트 리스너 추가
+  for (let i = 1; i <= totalGraphs; i++) {
+    document.getElementById(`skillButton${i}`).addEventListener('click', function () {
+      showGraph(i);
+    });
+  }
 
-  document.getElementById('sqlPrevGraph').addEventListener('click', function () {
-    if (sqlCurrentGraph > 1) {
-      sqlCurrentGraph--;
-      showSqlGraph(sqlCurrentGraph);
-    }
-  });
+  // SQL 스킬 버튼 클릭 이벤트 리스너 추가
+  for (let i = 1; i <= sqlTotalGraphs; i++) {
+    document.getElementById(`sqlSkillButton${i}`).addEventListener('click', function () {
+      showSqlGraph(i);
+    });
+  }
+  // 스킬 버튼 클릭 이벤트 리스너 추가
+  for (let i = 1; i <= totalGraphs; i++) {
+    document.getElementById(`skillButton${i}`).addEventListener('click', function () {
+      showGraph(i);
+    });
+  }
 
-  document.getElementById('sqlNextGraph').addEventListener('click', function () {
-    if (sqlCurrentGraph < sqlTotalGraphs) {
-      sqlCurrentGraph++;
-      showSqlGraph(sqlCurrentGraph);
-    }
-  });
+  // Chart.js로 각 스킬의 점수 분포 차트 생성
+  function createSkillScoreDistributionChart(canvasId, label, data, evaluatorScore) {
+    const ctx = document.getElementById(canvasId);
+    const labels = ['0-20', '21-40', '41-60', '61-80', '81-100'];
+    const scoreIndex = Math.floor(evaluatorScore / 20);
 
-
-    // Chart.js로 각 스킬의 점수 분포 차트 생성
-    function createSkillScoreDistributionChart(canvasId, label, data, evaluatorScore) {
-        const ctx = document.getElementById(canvasId);
-        const labels = ['0-20', '21-40', '41-60', '61-80', '81-100'];
-        const scoreIndex = Math.floor(evaluatorScore / 20);
-
-        new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: labels,
-                datasets: [
-                {
-                label: `${label} Score Distribution`,
-                data: data,
-                borderColor: 'rgba(75, 192, 192, 1)',
-                backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                borderWidth: 2,
-                pointRadius: 5,
-                pointBackgroundColor: 'rgba(75, 192, 192, 1)',
-                fill: true,
-            }
-          ]
-            },
-            options: {
-      responsive: true,
-      scales: {
-        y: {
-          beginAtZero: true,
-          title: {
-            display: true,
-            text: 'Number of Candidates'
-          }
-        },
-        x: {
-          title: {
-            display: true,
-            text: 'Score Range'
-          }
-        }
+    new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: labels,
+        datasets: [{
+          label: `${label} Score Distribution`,
+          data: data,
+          borderColor: 'rgba(75, 192, 192, 1)',
+          backgroundColor: 'rgba(75, 192, 192, 0.2)',
+          borderWidth: 2,
+          pointRadius: 5,
+          pointBackgroundColor: 'rgba(75, 192, 192, 1)',
+          fill: true,
+        }]
       },
-      plugins: {
-        legend: { display: true },
-        tooltip: {
-          callbacks: {
-            label: function(context) {
-              return `${context.dataset.label}: ${context.parsed.y} Candidates`;
+      options: {
+        animation: false,
+        responsive: true,
+        scales: {
+          y: {
+            beginAtZero: true,
+            title: {
+              display: true,
+              text: 'Number of Candidates'
+            }
+          },
+          x: {
+            title: {
+              display: true,
+              text: 'Score Range'
             }
           }
         },
-        annotation: {
-          annotations: {
-            line1: {
-              type: 'line',
-              xMin: scoreIndex,
-              xMax: scoreIndex,
-              borderColor: 'rgba(255, 99, 132, 1)',
-              borderWidth: 2,
-              label: {
-                content: `Candidate Score: ${evaluatorScore}`,
-                enabled: true,
-                position: 'top'
+        plugins: {
+          legend: { display: true },
+          tooltip: {
+            callbacks: {
+              label: function(context) {
+                return `${context.dataset.label}: ${context.parsed.y} Candidates`;
+              }
+            }
+          },
+          annotation: {
+            annotations: {
+              line1: {
+                type: 'line',
+                xMin: scoreIndex,
+                xMax: scoreIndex,
+                borderColor: 'rgba(255, 99, 132, 1)',
+                borderWidth: 2,
+                label: {
+                  content: `Candidate Score: ${evaluatorScore}`,
+                  enabled: true,
+                  position: 'top'
+                }
               }
             }
           }
         }
       }
-    }
-  });
-}
-    // 각 스킬에 대한 차트 생성
-    createSkillScoreDistributionChart('skillScoreDistributionChart_1', 'Preprocessing', [5, 10, 15, 20, 10], 75);
-    createSkillScoreDistributionChart('skillScoreDistributionChart_2', 'Feature scaling', [8, 12, 18, 22, 7], 65);
-    createSkillScoreDistributionChart('skillScoreDistributionChart_3', 'Visualization', [6, 9, 14, 19, 12], 85);
+    });
+  }
 
-    createSkillScoreDistributionChart('sqlSkillScoreDistributionChart_1', 'Data Retrieval', [7, 12, 18, 22, 8], 15);
+  createSkillScoreDistributionChart('skillScoreDistributionChart_1', 'Preprocessing', [5, 10, 15, 20, 10], 75);
+  createSkillScoreDistributionChart('skillScoreDistributionChart_2', 'Feature scaling', [8, 12, 18, 22, 7], 65);
+  createSkillScoreDistributionChart('skillScoreDistributionChart_3', 'Visualization', [6, 9, 14, 19, 12], 85);
+
+  // 각 SQL 스킬에 대한 차트 생성
+  createSkillScoreDistributionChart('sqlSkillScoreDistributionChart_1', 'Data Retrieval', [7, 12, 18, 22, 8], 15);
   createSkillScoreDistributionChart('sqlSkillScoreDistributionChart_2', 'Data Filtering', [5, 10, 20, 25, 10], 30);
   createSkillScoreDistributionChart('sqlSkillScoreDistributionChart_3', 'Data Joining', [8, 15, 22, 18, 7], 20);
 
+  // 초기 상태로 첫 번째 그래프 표시
+  showGraph(1);
+  showSqlGraph(1);
 });
   </script>
 </body>
